@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/*
+  P32 design tokens.
+  True black / white / controlled gray scale, with a single restrained
+  signal blue sampled directly from the official logo star (~#9DD2E2).
+  No other color enters the system.
+*/
+:root {
+  --p32-black: #000000;
+  --p32-near-black: #0a0a0a;
+  --p32-panel: #121212;
+  --p32-white: #ffffff;
+
+  --p32-gray-050: #f6f6f5;
+  --p32-gray-100: #e9e9e7;
+  --p32-gray-300: #c2c2be;
+  --p32-gray-500: #86867f;
+  --p32-gray-600: #6b6b66;
+  --p32-gray-700: #46463f;
+  --p32-gray-800: #262622;
+
+  --p32-signal: #9dd2e2;
+  --p32-signal-deep: #288eae;
+
+  --section-pad-y: 7rem;
+  --section-pad-y-sm: 4.5rem;
+  --container-max: 1440px;
+  --container-pad: 1.5rem;
+
+  --ease-precise: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-p32-black: var(--p32-black);
+  --color-p32-near-black: var(--p32-near-black);
+  --color-p32-panel: var(--p32-panel);
+  --color-p32-white: var(--p32-white);
+  --color-p32-gray-050: var(--p32-gray-050);
+  --color-p32-gray-100: var(--p32-gray-100);
+  --color-p32-gray-300: var(--p32-gray-300);
+  --color-p32-gray-500: var(--p32-gray-500);
+  --color-p32-gray-600: var(--p32-gray-600);
+  --color-p32-gray-700: var(--p32-gray-700);
+  --color-p32-gray-800: var(--p32-gray-800);
+  --color-p32-signal: var(--p32-signal);
+  --color-p32-signal-deep: var(--p32-signal-deep);
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-archivo);
+  --font-mono: var(--font-jbmono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--p32-black);
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--p32-white);
+  color: var(--p32-black);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--p32-signal);
+  color: var(--p32-black);
+}
+
+:focus-visible {
+  outline: 2px solid var(--p32-signal-deep);
+  outline-offset: 3px;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.p32-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --container-pad: 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --container-pad: 4rem;
+  }
+}
+
+.p32-section {
+  padding-block: var(--section-pad-y-sm);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .p32-section {
+    padding-block: var(--section-pad-y);
+  }
+}
+
+/* Reduced motion: collapse everything to instant, final-state rendering. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
