@@ -40,11 +40,34 @@ Derivatives generated from them (all committed alongside their sources):
 
 ## Section sequence
 
-Hero (dark) → Vision (light) → Gap (dark) → Uniqueness (light) → Playbook
-(dark) → Execution (light, deliberately inverted for impact) → Team (dark) →
-Contact (dark). Team and Contact break the strict alternation on purpose: one
-sustained dark movement carries the discretion motif into the closing moment
-rather than diluting it with another contrast flip.
+Hero (dark) → Vision (light) → Gap (dark, full-bleed imagery) → Uniqueness
+(light) → Playbook (dark) → Execution (dark, full-screen) → Team (light/
+grayscale) → Contact (dark). Revised from the original alternating pattern
+per an explicit later rhythm instruction ("light or grayscale Team section
+... "); Execution was moved from light to dark to avoid two consecutive
+light sections (Execution/Team) and because a dark field reads better for
+its glowing central point.
+
+## Composition: centered axis + image-led (V3)
+
+A later revision required the page move to a strong central axis and become
+image-led. Applied:
+
+- **Centered**: Hero headline (both axes, not just horizontally), Vision
+  headline/body, Gap's headline (its three-point collision list stays
+  left-aligned below the centered headline -- an intentional grid-break),
+  Uniqueness headline/body/lifecycle diagram, Playbook's headline, Execution
+  statement, Team headline/body/image sequence, Contact (logo, email, phone,
+  address, copyright row all centered, not the old split layout).
+- **Image-led**: ten distinct procedural visual scenes in `components/
+  scenes/`, documented with real-photography generation prompts in
+  `ASSETS.md`. No image-generation capability exists in this environment
+  (checked directly); every scene is SVG/Canvas, marked `TEMPORARY —` in its
+  file, sized to a fixed slot so a real asset can drop in later without a
+  layout change. Rhythm varies deliberately: full-screen (Hero, Execution),
+  full-bleed background (Gap, Vision/Uniqueness's `GlobalRoutes`), per-step
+  changing scenes (Playbook), a large-central-image-with-negative-space
+  scroll-crossfade sequence (Team).
 
 ## Motion system (V2: GSAP/ScrollTrigger scroll choreography)
 

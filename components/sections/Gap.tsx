@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gap } from "@/lib/content";
+import { TopographicScan } from "@/components/scenes/TopographicScan";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ensureGsapRegistered, gsap } from "@/lib/gsapSetup";
 import { EASE_OUT } from "@/lib/motion";
@@ -100,14 +101,17 @@ export function Gap() {
   return (
     <section
       ref={sectionRef}
-      className="p32-section tx-grain-dark overflow-x-hidden bg-p32-black text-p32-white"
+      className="p32-section tx-grain-dark relative overflow-x-hidden bg-p32-black text-p32-white"
     >
-      <div className="p32-container">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-30">
+        <TopographicScan />
+      </div>
+      <div className="p32-container relative flex flex-col items-center text-center">
         <h2 className="max-w-3xl font-display text-3xl font-medium leading-[1.1] tracking-tight sm:text-5xl">
           {gap.headline}
         </h2>
 
-        <div className="relative mt-14 max-w-3xl pl-6 md:mt-20 md:pl-8">
+        <div className="relative mt-14 w-full max-w-3xl pl-6 text-left md:mt-20 md:pl-8">
           <div
             ref={lineRef}
             aria-hidden="true"

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { Nav } from "@/components/Nav";
+import { OrbitalArc } from "@/components/scenes/OrbitalArc";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { hero } from "@/lib/content";
 import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsapSetup";
@@ -17,7 +18,7 @@ import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsapSetup";
 type Node = { fx: number; fy: number; sx: number; sy: number; depth: number; r: number };
 
 const NODE_COUNT = 9;
-const HUB = { fx: 0.63, fy: 0.4 };
+const HUB = { fx: 0.5, fy: 0.27 };
 
 function fbm(x: number, seed: number) {
   return (
@@ -320,15 +321,16 @@ export function Hero() {
     <section
       id="top"
       ref={sectionRef}
-      className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden bg-p32-black text-p32-white"
+      className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-p32-black text-p32-white"
     >
       <Nav />
+      <OrbitalArc />
       <canvas
         ref={canvasRef}
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-[900ms] ease-[var(--ease-out)]"
       />
-      <div ref={headlineWrapRef} className="p32-container relative z-10 pb-16 pt-24 md:pb-24">
+      <div ref={headlineWrapRef} className="p32-container relative z-10 flex flex-col items-center py-24 text-center">
         <h1 className="max-w-4xl font-display text-[13vw] leading-[0.98] font-medium tracking-tight sm:text-6xl md:text-7xl lg:text-[5.5rem]">
           <span className="block overflow-hidden">
             <span ref={line1Ref} className="block will-change-transform">

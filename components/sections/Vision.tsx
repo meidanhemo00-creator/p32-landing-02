@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { vision } from "@/lib/content";
+import { GlobalRoutes } from "@/components/scenes/GlobalRoutes";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ensureGsapRegistered, gsap } from "@/lib/gsapSetup";
 import { EASE_IN_OUT, EASE_OUT } from "@/lib/motion";
@@ -45,21 +46,24 @@ export function Vision() {
   }, [reducedMotion]);
 
   return (
-    <section ref={sectionRef} className="p32-section relative bg-p32-white text-p32-black">
+    <section ref={sectionRef} className="p32-section relative overflow-hidden bg-p32-white text-p32-black">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-40">
+        <GlobalRoutes />
+      </div>
       <div
         ref={flashRef}
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-p32-white opacity-0"
       />
-      <div className="p32-container relative">
-        <div ref={maskRef} className="max-w-5xl">
+      <div className="p32-container relative flex flex-col items-center text-center">
+        <div ref={maskRef} className="max-w-4xl">
           <h2 className="font-display text-3xl font-medium leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
             {vision.headline}
           </h2>
         </div>
         <p
           ref={bodyRef}
-          className="mt-8 max-w-xl text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl"
+          className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl"
         >
           {vision.body}
         </p>

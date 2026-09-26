@@ -6,8 +6,14 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsapSetup";
 import { BuildIcon, DeconstructIcon, OrchestrateIcon, ScanIcon } from "./PlaybookIcons";
+import { OpticalMacro } from "@/components/scenes/OpticalMacro";
+import { EngineeringGrid } from "@/components/scenes/EngineeringGrid";
+import { CommandBands } from "@/components/scenes/CommandBands";
 
 const ICONS = [DeconstructIcon, ScanIcon, BuildIcon, OrchestrateIcon];
+// Per-step background scenes -- this is what makes the Playbook visibly
+// change between steps, not just its text. Step 0 relies on its icon alone.
+const SCENES = [null, OpticalMacro, EngineeringGrid, CommandBands];
 
 export function Playbook() {
   const [active, setActive] = useState<number | null>(null);
@@ -72,7 +78,7 @@ export function Playbook() {
       id="playbook"
     >
       <div className="p32-container">
-        <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl">
+        <h2 className="text-center font-display text-3xl font-medium tracking-tight sm:text-5xl">
           The Playbook
         </h2>
 
@@ -97,15 +103,25 @@ export function Playbook() {
               const panelId = `${baseId}-panel-${i}`;
               const triggerId = `${baseId}-trigger-${i}`;
               const Icon = ICONS[i];
+              const Scene = SCENES[i];
               return (
                 <div
                   key={step.index}
-                  className={`relative border-l-2 pt-8 pl-4 transition-colors duration-300 md:border-l-0 md:px-6 md:pl-6 md:pt-10 md:first:pl-0 ${
+                  className={`relative overflow-hidden border-l-2 pt-8 pl-4 transition-colors duration-300 md:border-l-0 md:px-6 md:pl-6 md:pt-10 md:first:pl-0 ${
                     isOpen ? "border-p32-signal" : "border-transparent"
                   }`}
                   onMouseEnter={() => hoverCapable && setManual(i)}
                   onMouseLeave={() => hoverCapable && clearManual()}
                 >
+                  {Scene && (
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+                      style={{ opacity: isOpen ? 0.4 : 0.12 }}
+                    >
+                      <Scene active={isOpen} />
+                    </div>
+                  )}
                   <button
                     id={triggerId}
                     type="button"
@@ -113,7 +129,7 @@ export function Playbook() {
                     aria-controls={panelId}
                     onClick={() => setManual(active === i ? null : i)}
                     onFocus={() => setManual(i)}
-                    className="block w-full pb-8 text-left md:pb-10"
+                    className="relative block w-full pb-8 text-left md:pb-10"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <span className="font-mono text-sm text-p32-signal">{step.index}</span>
@@ -131,7 +147,7 @@ export function Playbook() {
                     id={panelId}
                     role="region"
                     aria-labelledby={triggerId}
-                    className="grid transition-[grid-template-rows] duration-500 ease-out"
+                    className="relative grid transition-[grid-template-rows] duration-500 ease-out"
                     style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                   >
                     <div className="overflow-hidden">

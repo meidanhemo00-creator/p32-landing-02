@@ -77,7 +77,7 @@ function LifecycleTrace() {
   }, [reducedMotion]);
 
   return (
-    <div ref={wrapRef} className="mt-16 md:mt-24">
+    <div ref={wrapRef} className="mx-auto mt-16 flex max-w-2xl flex-col items-center md:mt-24">
       <svg viewBox="-20 -90 640 130" className="w-full max-w-2xl overflow-visible" aria-hidden="true">
         <line x1="4" y1="20" x2="596" y2="20" stroke="var(--p32-gray-300)" strokeWidth="1" />
         <line
@@ -120,7 +120,7 @@ function LifecycleTrace() {
           />
         ))}
       </svg>
-      <div className="mt-4 flex max-w-2xl justify-between text-sm text-p32-gray-600">
+      <div className="mt-4 flex w-full max-w-2xl justify-between text-sm text-p32-gray-600">
         {stages.map((stage) => (
           <span key={stage}>{stage}</span>
         ))}
@@ -132,9 +132,9 @@ function LifecycleTrace() {
 export function Uniqueness() {
   return (
     <section className="p32-section tx-grain-light bg-p32-white text-p32-black">
-      <div className="p32-container">
+      <div className="p32-container flex flex-col items-center text-center">
         <Headline />
-        <p className="mt-8 max-w-xl text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl">
+        <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl">
           {uniqueness.body}
         </p>
         <LifecycleTrace />
