@@ -6,7 +6,7 @@ import { contact } from "@/lib/content";
 export function Contact() {
   return (
     <section id="contact" className="p32-section bg-p32-black text-p32-white">
-      <div className="p32-container flex flex-col items-center text-center">
+      <div className="reveal-body p32-container flex flex-col items-center text-center">
         <P32LogoOnDark height={26} />
         <h2 className="mt-10 font-mono text-xs uppercase tracking-[0.14em] text-p32-gray-500">
           Contact

@@ -13,14 +13,18 @@ import { NasaPhoto } from "@/components/media/NasaPhoto";
 //
 // No video-generation, image-generation, licensed-footage-acquisition, or
 // video-encoding (no ffmpeg in this environment) capability exists here,
-// and no user-supplied footage was provided -- confirmed and disclosed
-// before building this. So this is not a <video> element: it is a real
-// cinematic-movement-over-imagery sequence (the brief's own sanctioned
-// fallback), built entirely from the four real, credited NASA photographs
-// already in the project, cut and scaled like shots. It does not include
-// shots of people, traffic, crowds, or technical personnel, because no
-// real or licensed source for those exists here -- rather than fabricate
-// them, they are simply not part of the sequence.
+// and no user-supplied footage was provided for this sequence -- confirmed
+// and disclosed before building this. So this is not a <video> element: it
+// is a real cinematic-movement-over-imagery sequence (the brief's own
+// sanctioned fallback), built entirely from seven real, credited NASA
+// photographs (see ASSET_CREDITS.md) -- Black Marble, Blue Marble, SRTM
+// topography, a Tin Bider crater crop, and three orbital/atmospheric ISS
+// photographs (orbital sunrise, Earth's limb over the Pacific, atmospheric
+// glow). It moves between orbital, atmospheric, and terrestrial scale, but
+// does not include shots of people, traffic, crowds, dense cities, or
+// technical personnel, because no real or licensed source for those exists
+// here -- rather than fabricate them, they are simply not part of the
+// sequence.
 // ---------------------------------------------------------------------------
 
 type Shot = {
@@ -32,14 +36,16 @@ type Shot = {
 };
 
 const SHOTS: Shot[] = [
-  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "18% 28%", delay: 0, hold: 0.7 },
-  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "62% 70%", contrast: 1.35, delay: 0.65, hold: 0.7 },
-  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "48% 18%", delay: 1.3, hold: 0.7 },
-  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "55% 45%", contrast: 1.3, delay: 1.95, hold: 0.7 },
-  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "78% 62%", delay: 2.6, hold: 0.7 },
-  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "40% 72%", delay: 3.25, hold: 0.7 },
-  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "30% 35%", contrast: 1.35, delay: 3.9, hold: 1.5 },
-  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "42% 45%", contrast: 1.4, delay: 5.4, hold: 1.5 },
+  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "18% 28%", delay: 0, hold: 0.6 },
+  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "62% 70%", contrast: 1.35, delay: 0.55, hold: 0.6 },
+  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "48% 18%", delay: 1.1, hold: 0.6 },
+  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "55% 45%", contrast: 1.3, delay: 1.65, hold: 0.6 },
+  { src: "/media/nasa/optimized/orbital-sunrise.webp", objectPosition: "center", delay: 2.2, hold: 0.6 },
+  { src: "/media/nasa/optimized/earths-limb-pacific.webp", objectPosition: "center 55%", delay: 2.75, hold: 0.6 },
+  { src: "/media/nasa/optimized/atmospheric-glow-milkyway.webp", objectPosition: "center 40%", delay: 3.3, hold: 0.6 },
+  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "78% 62%", delay: 3.85, hold: 0.6 },
+  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "30% 35%", contrast: 1.35, delay: 4.4, hold: 1.4 },
+  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "42% 45%", contrast: 1.4, delay: 5.8, hold: 1.4 },
 ];
 
 const REST_SHOT = {
@@ -47,7 +53,7 @@ const REST_SHOT = {
   objectPosition: "35% 40%",
 };
 
-const REST_DELAY = 6.7; // seconds -- after the last shot, settle here and stay.
+const REST_DELAY = 7.0; // seconds -- after the last shot, settle here and stay.
 
 export function Hero() {
   return (

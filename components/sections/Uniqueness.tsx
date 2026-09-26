@@ -4,7 +4,7 @@ import { uniqueness } from "@/lib/content";
 function Headline() {
   const [before, after] = uniqueness.headline.split("P32");
   return (
-    <h2 className="max-w-4xl text-balance font-display text-3xl font-medium leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
+    <h2 className="reveal-heading max-w-4xl text-balance font-display text-3xl font-medium leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
       {before}
       <span className="inline-flex items-center align-baseline">
         <P32Logo height={34} className="inline-block h-[0.62em] w-auto translate-y-[0.05em]" />
@@ -51,7 +51,7 @@ export function Uniqueness() {
     <section className="p32-section tx-grain-light bg-p32-white text-p32-black">
       <div className="p32-container flex flex-col items-center text-center">
         <Headline />
-        <p className="mx-auto mt-8 max-w-xl text-pretty text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl">
+        <p className="reveal-body mx-auto mt-8 max-w-xl text-pretty text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl">
           {uniqueness.body}
         </p>
         <LifecycleTrace />

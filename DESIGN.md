@@ -51,31 +51,73 @@ consecutive dark image-led sections (Playbook, Execution, Team). Every
 section is now static-by-default and interaction-driven rather than
 scroll-driven — see "Motion system (V3)" below for why and how.
 
-## Composition: centered axis + image-led (V3)
+## Composition: centered axis + image-led (V5: craft/quality pass)
 
-A later revision required the page move to a strong central axis and become
-image-led. Applied:
+A creative-correction pass ("too much like a generic interface, too many
+boxes, lacks cinematic scale") called for benchmarking against Anduril's
+public site for visual confidence, restraint, and scale — studied directly
+in-browser (screenshots, not code/copy/imagery) purely for calibration, then
+built as an original P32 visual language. Takeaways actually applied: no
+borders/shadows/rounded corners on photography (full-bleed, flat, no
+"cards"); small mono/label text used only functionally (index numbers,
+section eyebrows), never as decorative chrome; generous negative space
+between statements instead of visible rule lines. P32's own explicit
+black/white/pale-blue restriction was kept — Anduril's own varied palette
+was not adopted, only its confidence and restraint from chrome.
 
-- **Centered**: Hero headline (both axes, not just horizontally), Vision
-  headline/body, Gap's label/headline (its three statements are full-width,
-  not narrow-column-centered, by explicit instruction — "large full-width
-  statements," not cards), Uniqueness headline/body/lifecycle diagram,
-  Playbook's headline, Execution statement, Team headline/body, Contact
-  (logo, email, phone, address, copyright row all centered).
-- **Image-led (V4: real photography)**: four official NASA satellite images
-  (Black Marble, Blue Marble, SRTM topography, a Tin Bider crater crop) —
-  see `ASSET_CREDITS.md` for exact sourcing and `ASSETS.md` for the
-  placement map — replace the earlier procedural stand-ins entirely via the
-  shared `NasaPhoto` component (`components/media/NasaPhoto.tsx`), which
-  applies one consistent duotone treatment (grayscale, contrast, a
-  directional darkening gradient, a low-opacity pale-blue color-blend tint)
-  so raw satellite photography reads as part of the brand system rather
-  than stock imagery. Rhythm varies deliberately: full-screen (Hero, Team,
-  Execution), a per-statement image that changes on interaction (Gap), a
-  distinct photo per step (Playbook), and one large wordless full-bleed
-  image as the pacing beat before Contact (Resolution). `Vision`'s
-  `GlobalRoutes` and `Execution`'s `RedButtonAbstract` remain procedural —
-  they were not part of the required real-image placement list.
+- **Centered**: Hero headline (both axes), Vision headline/body, Gap's
+  label/headline (its three statements are full-width, not narrow-column-
+  centered, by explicit instruction — "large full-width statements," not
+  cards), Uniqueness headline/body/lifecycle diagram, Playbook's headline,
+  Execution statement, Team headline/body, Contact (logo, email, phone,
+  address, copyright row all centered).
+- **Image-led (real photography throughout)**: seven official NASA
+  photographs (Black Marble, Blue Marble, SRTM topography, a Tin Bider
+  crater crop, an orbital sunrise, Earth's limb over the Pacific, and
+  atmospheric glow with the Milky Way — the last three added in this pass
+  specifically for Vision/Execution/Hero, sourced via the official NASA
+  Image and Video Library API for full 5568×3712 originals rather than the
+  ~1041×694 copies embedded in the article pages) plus one real photograph
+  supplied directly by the client for Team — see `ASSET_CREDITS.md` for
+  exact sourcing and `ASSETS.md` for the placement map. The seven NASA
+  images share one duotone treatment via `NasaPhoto`
+  (`components/media/NasaPhoto.tsx`): grayscale, contrast, a directional
+  darkening gradient, a low-opacity pale-blue color-blend tint. The Team
+  photo is treated separately (grayscale/contrast/gradient, no blue tint —
+  "restrained pale-blue detail only if necessary," and a full color-blend
+  tint over real people read wrong where it reads fine over satellite
+  imagery). Rhythm: full-screen (Hero, Team, Execution), a per-statement
+  image that changes on interaction (Gap), a single crossfading image stage
+  (Playbook), a full-width band within a white section (Vision), and one
+  large wordless full-bleed image as the pacing beat before Contact
+  (Resolution). `Execution`'s `RedButtonAbstract` now layers over a real
+  photo rather than standing alone. `Vision`'s procedural `GlobalRoutes`
+  diagram was removed and deleted — a real atmospheric photograph replaced
+  it outright once "large atmospheric image" was requested explicitly,
+  and a decorative line-art diagram is exactly what a later brief warned
+  against.
+
+## Entrance reveal (restrained, one-time, non-scroll-linked)
+
+A later revision asked for *some* motion back, specifically not scroll-
+linked: a one-time mask/fade/scale entrance on major statements. Two CSS
+utility classes in `app/globals.css` (`.reveal-heading`, `.reveal-body`)
+handle this with zero JavaScript:
+
+- `.reveal-heading` — `clip-path` mask + fade + `scale(0.98→1)`, 800ms,
+  `var(--ease-out)`, `animation-fill-mode: both`.
+- `.reveal-body` — fade + `translateY(8px→0)`, 600ms, 150ms delay.
+
+Both play once, the instant the element exists in the DOM — deliberately
+**not** scroll-triggered (a scroll-linked version was explicitly rejected
+earlier in this project and is not being reintroduced under a different
+name). Because they are pure CSS: if the stylesheet fails to load, the
+element is simply visible at default opacity — content is never hidden
+behind JavaScript, satisfying "do not hide content if JavaScript fails."
+The sitewide `prefers-reduced-motion` rule (see below) collapses both to
+their end state instantly. Applied to each section's primary
+statement/body — not to Hero's headline, which explicitly stays reveal-free
+("the film provides the movement, the typography provides control").
 
 ## Motion system (V3: no scroll-linked animation, GSAP removed entirely)
 
@@ -94,7 +136,7 @@ viewport, nothing scrubs opacity or transform against scroll progress,
 nothing depends on scroll position to reveal content.
 
 - **Hero** (`Hero.tsx`): a plain server component — no `"use client"`, no
-  refs, no `useEffect`, no JavaScript animation at all. The eight-shot
+  refs, no `useEffect`, no JavaScript animation at all. The ten-shot
   cinematic sequence (`@keyframes p32-hero-shot` / `p32-hero-rest` in
   `app/globals.css`) is pure CSS: each shot layer gets its own
   `animation-delay`/`animation-duration` as inline style, `animation-fill-mode:
@@ -102,54 +144,77 @@ nothing depends on scroll position to reveal content.
   instant the HTML paints. No video-generation, image-generation, licensed-
   footage-acquisition, or video-encoding capability exists in this
   environment (no ffmpeg installed; checked and disclosed before building
-  this) and no user-supplied footage was provided, so this is not a
-  `<video>` element — it is eight real crop/zoom shots of the four already-
-  credited NASA photographs, cut like a film, not a fabricated montage of
-  people, traffic, or technical personnel that no real or licensed source
-  exists for here. It settles on a ninth resting frame (the Black Marble
-  global view) after ~7s and stays there — it does not loop. The headline
-  is present in the static markup from the first paint, with no reveal
-  animation of its own ("no animated letters... the film provides the
-  movement, the typography remains confident and stable").
+  this) and no user-supplied footage was provided for this sequence, so
+  this is not a `<video>` element — it is ten real crop/zoom shots of seven
+  already-credited NASA photographs (Black Marble, Blue Marble, SRTM
+  topography, a Tin Bider crater crop, plus an orbital sunrise, Earth's
+  limb over the Pacific, and atmospheric glow with the Milky Way added in
+  this pass), cut like a film, not a fabricated montage of people, traffic,
+  dense cities, or technical personnel that no real or licensed source
+  exists for here. It settles on an eleventh resting frame (the Black
+  Marble global view) after ~8s and stays there — it does not loop. The
+  headline is present in the static markup from the first paint, with no
+  reveal animation of its own, not even the sitewide `.reveal-heading`
+  ("no animated letters... the film provides the movement, the typography
+  remains confident and stable").
 - **Vision, Uniqueness, Execution, Contact**: fully static. No refs, no
   effects, no client-side JavaScript. `Uniqueness`'s lifecycle diagram lost
   its scroll-scrubbed dot-collapse animation and is now just the settled
   three-node diagram; `Execution` lost its scroll-triggered word-by-word
   "lock" animation and is now stable centered typography from first paint.
-- **Gap** (`Gap.tsx`, fully rebuilt): three large full-width statements,
-  `useState` holds which one is active (index 0 by default, so there is
-  always a selected state — "the other two remain discoverable" implies one
-  is already showing). `onMouseEnter`, `onFocus`, and `onClick` all set the
-  same active index, so hover, keyboard focus, and tap/click all reach the
-  identical state — no information depends only on hover. The active
-  statement's visual (real topography imagery for "an evolving technological
-  landscape"; the procedural `SystemLayers.tsx` for "friction between
-  disparate systems," no real photograph fitting that abstract concept; the
-  procedural `ExposureScan.tsx` for "the security risk of exposure," same
-  reasoning) fades in via a plain CSS `transition-opacity`, and its
-  supporting-context sentence expands via a `grid-template-rows` transition
-  — both driven by React state, nothing tied to scroll position. The three
-  per-point `context` sentences in `lib/content.ts` are the one piece of Gap
-  copy not supplied by the client (there was no prior elaboration to reuse
-  for an explicit "supporting context becomes visible" requirement); they
-  stay strictly a restatement of the pressure itself, no new capability,
-  client, or metric claims, and are flagged there for the client's review.
-- **Playbook** (`Playbook.tsx`): the ScrollTrigger pin is gone; the
-  hover-preview/click-select accordion interaction that already existed is
-  kept, with the scroll-driven fallback state (previously the primary
-  driver on desktop) removed since there is no scroll linkage left to fall
-  back from. Arrow-key navigation was added (`ArrowLeft/Right/Up/Down`,
-  `Home`/`End` move both focus and the active step via a `triggerRefs`
-  array), satisfying "keyboard arrows... work" explicitly. All four step
-  names remain visible simultaneously at every breakpoint; each step's
-  expanded explanation stays present in the DOM at all times (CSS
-  `grid-template-rows: 0fr → 1fr`, not a conditional unmount) — collapsed,
-  not gone.
-- **Team** (`Team.tsx`): one static "powerful image," not an animation — no
-  photograph of "silhouettes, hands, screens, hardware" exists or can be
-  generated/licensed here, so this continues to reuse the real, credited
-  Black Marble photograph (disclosed, not faked), with the two-sentence
-  headline simply present in the markup rather than resolving in beats.
+- **Gap** (`Gap.tsx`): three large full-width statements, `useState` holds
+  which one is active (index 0 by default, so there is always a selected
+  state — "the other two remain discoverable" implies one is already
+  showing). `onMouseEnter`, `onFocus`, and `onClick` all set the same active
+  index, so hover, keyboard focus, and tap/click all reach the identical
+  state — no information depends only on hover. No visible border/divider
+  lines between statements (an earlier version used `divide-y`, which read
+  as a bordered list rather than "large full-width statements" — removed
+  after the Anduril-benchmarking pass); spacing alone separates them, and
+  the active statement's row grows to `48vh` (from a resting `~30–34vh`) so
+  its image reads as genuinely large-scale, not a background tint strip.
+  The active statement's visual (real topography imagery for "an evolving
+  technological landscape"; the procedural `SystemLayers.tsx` for "friction
+  between disparate systems," no real photograph fitting that abstract
+  concept; the procedural `ExposureScan.tsx` for "the security risk of
+  exposure," same reasoning) fades and scales in via plain CSS transitions,
+  and its supporting-context sentence expands via a `grid-template-rows`
+  transition — both driven by React state, nothing tied to scroll position.
+  The three per-point `context` sentences in `lib/content.ts` are the one
+  piece of Gap copy not supplied by the client (there was no prior
+  elaboration to reuse for an explicit "supporting context becomes visible"
+  requirement); they stay strictly a restatement of the pressure itself, no
+  new capability, client, or metric claims, and are flagged there for the
+  client's review.
+- **Playbook** (`Playbook.tsx`, rebuilt again — the four-box grid layout
+  was explicitly rejected and removed completely, along with its four
+  small generative SVG icons in `PlaybookIcons.tsx`, deleted once grep
+  confirmed nothing else referenced them): a slim single-row step-name
+  strip (`role="tablist"`) replaces the four-column grid; below it, one
+  shared image-and-text stage (`role="tabpanel"`) holds all four steps
+  stacked via `position: absolute` inside a fixed-`min-height` container,
+  crossfading via opacity — the section's height never changes when the
+  active step changes (verified: identical stage height before and after a
+  step switch). Hover (desktop, gated to `(hover: hover) and
+  (pointer: fine)`) previews; click/tap selects; `ArrowLeft/Right/Up/Down`
+  and `Home`/`End` move both focus and the active step via a `navRefs`
+  array (`role="tab"` + roving `tabIndex`), satisfying "keyboard
+  navigation works" explicitly. All four step names stay visible
+  simultaneously at every breakpoint (wrapping to a centered stack on
+  narrow widths, never scrolling horizontally or overflowing).
+- **Team** (`Team.tsx`): one static "powerful image," not an animation.
+  Uses the real photograph supplied directly by the client (desert
+  silhouettes in tactical gear, low sun) rather than the earlier NASA
+  stand-in used before a real team photo existed — see `ASSET_CREDITS.md`.
+  Composition is preserved as supplied; no people, weapons, insignia, or
+  effects were added; the pale-blue color-blend tint used on NASA imagery
+  is deliberately *not* applied here (a full color tint over real people
+  reads wrong where it reads fine over satellite photography — "restrained
+  pale-blue detail only if necessary," judged not necessary). Alt text
+  describes only what is visible; no claim about the photographed
+  individuals' identity, unit, or employment is made anywhere. The
+  two-sentence headline is simply present in the markup, plus the sitewide
+  `.reveal-heading`/`.reveal-body` one-time entrance.
 - Interactive hover/focus states elsewhere (Contact's links, Nav) are plain
   CSS `transition-colors` — no JavaScript, no delay before the state change
   a click or tap depends on.

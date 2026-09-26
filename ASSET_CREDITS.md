@@ -1,6 +1,6 @@
 # NASA Image Credits
 
-Four real photographic/satellite assets, downloaded directly from official
+Seven real photographic/satellite assets, downloaded directly from official
 NASA domains (not third-party mirrors, not AI-generated, not stock photography).
 Originals are preserved untouched in `public/media/nasa/source/`; optimized
 WebP derivatives for the site live in `public/media/nasa/optimized/`.
@@ -60,7 +60,75 @@ NASA endorsement of P32 — the credit lines below are attribution only.
 - **Original:** `source/tin-bider-crater-algeria.jpg` (2500×2500, JPEG)
 - **Optimized:** `optimized/tin-bider-crater-algeria.webp` (2000×2000, 305 KB)
 
+### 5. Orbital sunrise — sun's first rays above Earth's limb
+
+- **Source page:** https://www.nasa.gov/image-article/suns-first-rays-peek-above-earths-limb/
+- **Direct file (full resolution, via the official NASA Image and Video
+  Library API):** https://images-assets.nasa.gov/image/iss059e027932/iss059e027932~orig.jpg
+- **Title:** "The sun's first rays peek above Earth's limb"
+- **Credit:** NASA
+- **Description:** The sun's first rays peek above Earth's limb, highlighting
+  the thin blue atmosphere during an orbital sunrise, as the International
+  Space Station orbited 255 miles above Indonesia.
+- **Date:** April 21, 2019 (NASA ID iss059e027932)
+- **Original:** `source/orbital-sunrise-iss059e027932.jpg` (5568×3712, JPEG)
+- **Optimized:** `optimized/orbital-sunrise.webp` (2560×1707, 22 KB)
+
+### 6. Earth's limb above the Pacific Ocean
+
+- **Source page:** https://www.nasa.gov/image-article/sun-illuminates-earths-limb-above-pacific-ocean/
+- **Direct file (full resolution, via the official NASA Image and Video
+  Library API):** https://images-assets.nasa.gov/image/iss067e221404/iss067e221404~orig.jpg
+- **Title:** "The sun illuminates Earth's limb above the Pacific Ocean"
+- **Credit:** NASA
+- **Description:** The sun illuminates Earth's limb as the International
+  Space Station soared 271 miles above the Pacific Ocean, south of the
+  Australian island state of Tasmania.
+- **Date:** July 31, 2022 (NASA ID iss067e221404)
+- **Original:** `source/earths-limb-pacific-iss067e221404.jpg` (5568×3712, JPEG)
+- **Optimized:** `optimized/earths-limb-pacific.webp` (2560×1707, 127 KB)
+
+### 7. Atmospheric glow and the Milky Way's stars
+
+- **Source page:** https://www.nasa.gov/image-article/atmospheric-glow-milky-ways-stars/
+- **Direct file (full resolution, via the official NASA Image and Video
+  Library API):** https://images-assets.nasa.gov/image/iss062e081621/iss062e081621~orig.jpg
+- **Title:** "The atmospheric glow and the Milky Way's stars"
+- **Credit:** NASA
+- **Description:** The amber hue hovering just above Earth's limb is the
+  atmospheric glow, with the Milky Way's stars in the background, from the
+  International Space Station at 262 miles above Kazakhstan.
+- **Date:** March 4, 2020 (NASA ID iss062e081621)
+- **Original:** `source/atmospheric-glow-milkyway-iss062e081621.jpg` (5568×3712, JPEG)
+- **Optimized:** `optimized/atmospheric-glow-milkyway.webp` (2560×1707, 270 KB)
+
+For assets 5–7: found via the source pages given, then resolved to full
+resolution through NASA's own Image and Video Library API
+(`images-api.nasa.gov`, the same official library at images.nasa.gov) rather
+than using the ~1041×694 web-display copy embedded in the article page —
+the API's `~orig` link is the canonical, unmodified NASA original (5568×3712
+in all three cases), confirmed by content-type/size before use, not assumed.
+
 ---
+
+## Non-NASA asset: Team photograph
+
+### 8. Desert silhouettes — user-provided
+
+- **Source:** Supplied directly by the client (not sourced by Claude), Canon
+  EOS R6 Mark II, EXIF-confirmed capture, processed through Adobe Lightroom.
+- **Usage:** Explicitly approved by the client for the Team section, full-
+  bleed, black-and-white treatment, with the instruction to preserve
+  composition and not add people/weapons/insignia/fake effects.
+- **Original:** `public/media/team/source/team-desert-silhouettes-original.jpg`
+  (6000×4000, JPEG, untouched).
+- **Optimized:** `public/media/team/optimized/team-desert-silhouettes.webp`
+  (2560×1707).
+- **Alt text used on site:** factual description of only what is visible
+  (silhouetted figures in tactical gear walking across desert terrain at
+  low sun) — no claim of identity, unit, nationality, or employment status
+  is made in the alt text or surrounding copy beyond what the client's own
+  approved Team copy already states.
 
 ## Rules followed
 

@@ -190,12 +190,6 @@ button {
   );
 }
 
-@keyframes p32-scan-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes p32-exposure-scan {
   0%,
   100% {
@@ -242,6 +236,45 @@ button {
   100% {
     opacity: 1;
   }
+}
+
+/*
+  Restrained one-time entrance reveal for major statements -- explicitly
+  NOT scroll-linked (it plays once on paint, the moment the element exists,
+  regardless of scroll position or visibility). Pure CSS: if the stylesheet
+  fails to load, the element is simply visible at its default opacity, so
+  content is never hidden behind JavaScript. `both` fill-mode holds the
+  start state before the animation and the end state after; the sitewide
+  reduced-motion rule below collapses it to the end state instantly.
+*/
+@keyframes p32-reveal-heading {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: inset(0 0 0% 0);
+  }
+}
+.reveal-heading {
+  animation: p32-reveal-heading 800ms var(--ease-out) both;
+}
+
+@keyframes p32-reveal-body {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-body {
+  animation: p32-reveal-body 600ms var(--ease-out) 150ms both;
 }
 
 /* Reduced motion: collapse everything to instant, final-state rendering.
