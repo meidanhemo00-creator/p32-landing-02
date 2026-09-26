@@ -127,6 +127,10 @@ type DrawState = {
   scanX: number;
   scanY: number;
   scanActive: boolean;
+  // 0-1: engaging the scan is instant (snaps to 1 on pointer move), but
+  // disengaging eases out over ~300ms instead of cutting the reveal dead --
+  // the system's own response calms down, it doesn't glitch off.
+  scanStrength: number;
   hoveredThreat: number;
 };
 
@@ -214,7 +218,7 @@ function drawScene(ctx: CanvasRenderingContext2D, w: number, h: number, s: DrawS
       const mx = (na.x + nb.x) / 2;
       const my = (na.y + nb.y) / 2;
       const dist = s.scanActive ? Math.hypot(s.scanX - mx, s.scanY - my) : Infinity;
-      const reveal = s.scanActive ? clamp01(1 - (dist - 90) / 130) : 0;
+      const reveal = s.scanActive ? clamp01(1 - (dist - 90) / 130) * s.scanStrength : 0;
       const isHovered = s.hoveredThreat === i;
       // The scan strongly amplifies a direct hit, but stays multiplied by
       // threatOpacity: once the system is reconstructed (threatOpacity 0)
@@ -243,7 +247,7 @@ function drawScene(ctx: CanvasRenderingContext2D, w: number, h: number, s: DrawS
       ctx.fill();
     } else {
       const dist = s.scanActive ? Math.hypot(s.scanX - x, s.scanY - y) : Infinity;
-      const reveal = s.scanActive ? clamp01(1 - (dist - 70) / 120) : 0;
+      const reveal = s.scanActive ? clamp01(1 - (dist - 70) / 120) * s.scanStrength : 0;
       const alpha = clamp01(threatOpacity * (0.1 + reveal * 3));
       if (alpha < 0.01) continue;
       const size = 4 + reveal * 3;
@@ -298,7 +302,10 @@ export function Hero() {
     if (reducedMotion) {
       iris.style.clipPath = "circle(150% at 50% 50%)";
     } else {
-      gsap.set(iris, { clipPath: "circle(0% at 50% 50%)" });
+      // Starts at a small but non-zero aperture -- an iris opens from
+      // "nearly closed," not from a literal zero-size point (nothing
+      // appears from nothing).
+      gsap.set(iris, { clipPath: "circle(6% at 50% 50%)" });
       gsap.to(iris, {
         clipPath: "circle(75% at 50% 50%)",
         duration: 1.3,
@@ -313,6 +320,7 @@ export function Hero() {
         scanX: 0,
         scanY: 0,
         scanActive: false,
+        scanStrength: 0,
         hoveredThreat: -1,
       });
       const onResize = () => {
@@ -322,6 +330,7 @@ export function Hero() {
           scanX: 0,
           scanY: 0,
           scanActive: false,
+          scanStrength: 0,
           hoveredThreat: -1,
         });
       };
@@ -336,11 +345,19 @@ export function Hero() {
       scanX: 0,
       scanY: 0,
       scanActive: false,
+      scanStrength: 0,
       hoveredThreat: -1,
     };
     let rafId = 0;
     let visible = true;
     let sweeping = false;
+    let sweepStart: number | null = null;
+    // A "controlled" scan sequence has an end, not an indefinite loop: on
+    // touch, the automatic sweep runs a bounded number of passes and then
+    // settles, rather than animating forever for as long as the Hero is
+    // in view.
+    const SWEEP_CYCLE_MS = 9000;
+    const SWEEP_MAX_CYCLES = 3;
 
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
@@ -364,16 +381,48 @@ export function Hero() {
       return best;
     }
 
+    function disengageScan() {
+      // Eases out instead of cutting the reveal dead: the system's own
+      // response calms down, it doesn't glitch off.
+      gsap.killTweensOf(state);
+      gsap.to(state, {
+        scanStrength: 0,
+        duration: 0.3,
+        ease: EASE_OUT,
+        onComplete: () => {
+          state.scanActive = false;
+          state.hoveredThreat = -1;
+        },
+      });
+    }
+
+    // Redraw only when something actually changed since the last frame --
+    // a continuous 60fps redraw of the whole scene while the pointer is
+    // still and the page isn't scrolling is exactly the "excessive GPU
+    // usage" a defense-technology Hero shouldn't cost.
+    let lastSignature = "";
     function frame(time: number) {
       if (sweeping) {
-        const t = (time % 9000) / 9000;
-        state.scanX = width * (0.15 + 0.7 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2)));
-        state.scanY = height * (0.2 + 0.6 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2 * 1.7 + 1)));
-        state.scanActive = true;
-        state.hoveredThreat = nearestThreatIndex(state.scanX, state.scanY);
+        if (sweepStart === null) sweepStart = time;
+        const elapsed = time - sweepStart;
+        if (elapsed > SWEEP_CYCLE_MS * SWEEP_MAX_CYCLES) {
+          sweeping = false;
+          disengageScan();
+        } else {
+          const t = (time % SWEEP_CYCLE_MS) / SWEEP_CYCLE_MS;
+          state.scanX = width * (0.15 + 0.7 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2)));
+          state.scanY = height * (0.2 + 0.6 * (0.5 + 0.5 * Math.sin(t * Math.PI * 2 * 1.7 + 1)));
+          state.scanActive = true;
+          state.scanStrength = 1;
+          state.hoveredThreat = nearestThreatIndex(state.scanX, state.scanY);
+        }
       }
-      if (visible && !document.hidden) {
+      const signature = `${state.progress.toFixed(4)}|${Math.round(state.scanX)}|${Math.round(
+        state.scanY
+      )}|${state.scanActive}|${state.scanStrength.toFixed(3)}|${state.hoveredThreat}`;
+      if (visible && !document.hidden && signature !== lastSignature) {
         drawScene(ctx!, width, height, state);
+        lastSignature = signature;
       }
       rafId = requestAnimationFrame(frame);
     }
@@ -384,11 +433,13 @@ export function Hero() {
       state.scanX = e.clientX - rect.left;
       state.scanY = e.clientY - rect.top;
       state.scanActive = true;
+      // Engaging is instant -- only disengaging eases.
+      gsap.killTweensOf(state);
+      state.scanStrength = 1;
       state.hoveredThreat = nearestThreatIndex(state.scanX, state.scanY);
     };
     const onPointerLeave = () => {
-      state.scanActive = false;
-      state.hoveredThreat = -1;
+      disengageScan();
     };
 
     const mm = gsap.matchMedia();
@@ -445,6 +496,7 @@ export function Hero() {
 
     return () => {
       cancelAnimationFrame(rafId);
+      gsap.killTweensOf(state);
       io.disconnect();
       ro.disconnect();
       section!.removeEventListener("pointermove", onPointerMove);

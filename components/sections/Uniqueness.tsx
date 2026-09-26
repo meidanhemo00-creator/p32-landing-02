@@ -66,8 +66,13 @@ function LifecycleTrace() {
       });
 
       dots.forEach((dot, i) => {
+        // Each dot's cx/cy stay fixed at its scatter position; GSAP's x/y
+        // move it via a GPU-composited transform (a translate delta), not
+        // by animating the SVG attributes directly.
         const targetX = NODE_X[SCATTER[i].target];
-        tl.to(dot, { cx: targetX, cy: 20, opacity: 0, duration: 1, ease: EASE_OUT }, 0);
+        const dx = targetX - SCATTER[i].cx;
+        const dy = 20 - SCATTER[i].cy;
+        tl.to(dot, { x: dx, y: dy, opacity: 0, duration: 1, ease: EASE_OUT }, 0);
       });
       tl.to(line, { strokeDashoffset: 0, duration: 0.6, ease: EASE_OUT }, 0.35);
       tl.to(nodes, { opacity: 1, scale: 1, duration: 0.4, stagger: 0.08, ease: EASE_OUT }, 0.55);

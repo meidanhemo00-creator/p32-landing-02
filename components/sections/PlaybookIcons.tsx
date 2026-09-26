@@ -8,19 +8,24 @@ export function DeconstructIcon({ active }: { active: boolean }) {
       {[0, 1, 2, 3].map((i) => {
         const x = i % 2;
         const y = Math.floor(i / 2);
+        // Base position is fixed; the gap is expressed as a GPU-composited
+        // transform, not by animating the rect's own x/y attributes.
         const ox = x === 0 ? -gap : gap;
         const oy = y === 0 ? -gap : gap;
         return (
           <rect
             key={i}
-            x={4 + x * 16 + ox}
-            y={4 + y * 16 + oy}
+            x={4 + x * 16}
+            y={4 + y * 16}
             width="14"
             height="14"
             fill="none"
             stroke="var(--p32-signal)"
             strokeWidth="1.2"
-            style={{ transition: "x 400ms var(--ease-out, ease), y 400ms var(--ease-out, ease)" }}
+            style={{
+              transform: `translate(${ox}px, ${oy}px)`,
+              transition: "transform 400ms var(--ease-out, ease)",
+            }}
           />
         );
       })}

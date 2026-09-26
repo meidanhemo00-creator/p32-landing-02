@@ -89,7 +89,7 @@ export function Playbook() {
           />
           <div
             aria-hidden="true"
-            className="absolute top-0 hidden h-px bg-p32-signal transition-transform duration-500 ease-out md:block"
+            className="absolute top-0 hidden h-px bg-p32-signal transition-transform duration-500 ease-[var(--ease-out)] md:block"
             style={{
               width: "25%",
               transform: `translateX(${active === null ? 0 : active * 100}%)`,
@@ -147,7 +147,7 @@ export function Playbook() {
                     id={panelId}
                     role="region"
                     aria-labelledby={triggerId}
-                    className="relative grid transition-[grid-template-rows] duration-500 ease-out"
+                    className="relative grid transition-[grid-template-rows] duration-500 ease-[var(--ease-out)]"
                     style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                   >
                     <div className="overflow-hidden">

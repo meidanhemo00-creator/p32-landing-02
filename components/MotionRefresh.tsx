@@ -10,14 +10,22 @@ import { ensureGsapRegistered, ScrollTrigger } from "@/lib/gsapSetup";
 // everything exists, keeps all of them accurate.
 export function MotionRefresh() {
   useEffect(() => {
+    let cancelled = false;
     ensureGsapRegistered();
-    const id = requestAnimationFrame(() => ScrollTrigger.refresh());
+    const id = requestAnimationFrame(() => {
+      if (!cancelled) ScrollTrigger.refresh();
+    });
     // Font swap can reflow text after the first layout pass; refresh again
     // once webfonts have actually loaded so pin distances stay accurate.
     if ("fonts" in document) {
-      document.fonts.ready.then(() => ScrollTrigger.refresh());
+      document.fonts.ready.then(() => {
+        if (!cancelled) ScrollTrigger.refresh();
+      });
     }
-    return () => cancelAnimationFrame(id);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(id);
+    };
   }, []);
 
   return null;

@@ -21,12 +21,19 @@ export function RedButtonAbstract({ armed = false }: { armed?: boolean }) {
           opacity={0.5 - i * 0.06}
         />
       ))}
+      {/* Fixed radius; "arming" is a GPU-composited transform scale from
+          its own center, not an animated r attribute. */}
       <circle
         cx="300"
         cy="300"
-        r={armed ? 7 : 4}
+        r={7}
         fill="var(--p32-signal-deep)"
-        style={{ transition: "r 700ms var(--ease-out, ease)" }}
+        style={{
+          transformBox: "fill-box",
+          transformOrigin: "center",
+          transform: armed ? "scale(1)" : "scale(0.55)",
+          transition: "transform 700ms var(--ease-out, ease)",
+        }}
       />
     </svg>
   );

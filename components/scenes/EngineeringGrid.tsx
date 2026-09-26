@@ -20,7 +20,10 @@ export function EngineeringGrid({ active = false }: { active?: boolean }) {
         fill="none"
         stroke={active ? "#9dd2e2" : "#57564f"}
         strokeWidth="1.4"
-        style={{ transition: "stroke 400ms ease, transform 400ms ease", transform: active ? "translateY(-4px)" : "none" }}
+        style={{
+          transition: "stroke 400ms ease, transform 400ms var(--ease-out, ease)",
+          transform: active ? "translateY(-4px)" : "none",
+        }}
       />
       <rect x="96" y="96" width="46" height="30" fill="none" stroke="#57564f" strokeWidth="1" />
       <circle cx="60" cy="84" r="2" fill="#9dd2e2" opacity={active ? 1 : 0.5} />

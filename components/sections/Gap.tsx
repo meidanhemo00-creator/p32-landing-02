@@ -88,7 +88,7 @@ export function Gap() {
         });
         tl.to(line, { scaleY: 1, duration: 0.6, ease: EASE_OUT }).to(
           items,
-          { y: 0, opacity: 1, duration: 0.5, stagger: 0.12, ease: EASE_OUT },
+          { y: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: EASE_OUT },
           "-=0.4"
         );
       }, section);

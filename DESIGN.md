@@ -93,12 +93,32 @@ stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
   to 0 while threat opacity fades to nothing (reconstruction) — controlled
   depth, not random parallax. Reveal alpha is multiplied by that same
   fade, not added on top of it, so a direct scan over a since-secured node
-  correctly shows nothing (see the fix note below). The headline
-  (uppercase, centered on both axes) reveals once via a single aperture
-  `clip-path` iris on load, independent of scroll progress — the
-  statement must be legible without scrolling. Reduced motion: one
-  static draw of the fully secured end state, headline visible
-  immediately, no RAF loop, no pin, no scan.
+  correctly shows nothing. The headline (uppercase, centered on both axes)
+  reveals once via a single aperture `clip-path` iris on load (starting at
+  a non-zero 6% radius, not a literal zero-size point), independent of
+  scroll progress — the statement must be legible without scrolling.
+  Reduced motion: one static draw of the fully secured end state, headline
+  visible immediately, no RAF loop, no pin, no scan.
+
+  **Fixed after a `/review-animations` pass** (see chat for the full
+  findings table): engaging the scan is still instant, but disengaging
+  (`onPointerLeave`, or the automatic sweep reaching its cycle cap) now
+  eases `scanStrength` from 1 to 0 over 300ms via a small `gsap.to()` on
+  the draw-state object, instead of cutting the reveal dead — confirmed
+  by sampling the canvas's own pixel alpha at the reveal point across the
+  fade (102 → 16 → 1), not just by eyeballing a screenshot. The mobile/
+  no-hover automatic sweep is now bounded to 3 cycles (27s) and then
+  settles via the same eased disengage, rather than looping indefinitely
+  for as long as the Hero is in view. The rAF loop now skips `drawScene()`
+  entirely when nothing in the draw state changed since the last frame
+  (a signature string comparison), instead of redrawing the full scene at
+  60fps unconditionally. The three per-step scenes and the lifecycle trace
+  in Uniqueness had SVG geometry attributes (`x`/`y`, `cx`/`cy`, `r`)
+  animated directly in three independent places — none composited, all
+  effectively `top`/`left` in SVG costume — and are now `transform`-based
+  (`translate`/`scale`) throughout. A few CSS transitions reached for
+  Tailwind's bare `ease-out` instead of the project's own `--ease-out`
+  token; fixed to use the token everywhere.
 - **Vision**: a `clip-path` shutter reveal plus a white flash-fade, played
   once on entering (not scrubbed) — a "resolve," not a fade-up.
 - **Gap**: desktop — pinned, scrubbed collision. The three challenges fly in
