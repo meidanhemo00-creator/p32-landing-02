@@ -46,24 +46,71 @@ Contact (dark). Team and Contact break the strict alternation on purpose: one
 sustained dark movement carries the discretion motif into the closing moment
 rather than diluting it with another contrast flip.
 
-## Motion system
+## Motion system (V2: GSAP/ScrollTrigger scroll choreography)
 
-- Hero: one signature interaction (`HeroAssembly`) — a silhouette of panels
-  resolves from a scattered state into a deliberate, engineered curve on
-  load, synced with a two-line masked headline reveal and a single blue
-  seam-line pulse (fires once, not looping).
-- Gap / Uniqueness / Execution: one-shot scroll reveals via
-  `IntersectionObserver` (`hooks/useInView.ts`) driving CSS transitions, not
-  GSAP — lighter, and reduced-motion falls out of it for free via the global
-  transition-duration override.
-- Playbook: its own distinct interaction — hover/focus expand on desktop
-  (pointer-fine only, via `useMediaQuery`), tap-accordion on mobile, same
-  underlying state and ARIA either way.
+Motion tokens live in `app/globals.css` (`--ease-out`, `--ease-in-out`,
+`--ease-drawer`) and are mirrored as literal cubic-beziers in `lib/motion.ts`
+(GSAP cannot resolve CSS custom properties in its `ease` option, so both must
+stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
+
+- **Hero** (`Hero.tsx`): a Canvas 2D scene — an oblique terrain/contour field
+  with a 9-node sensor network — pinned via `ScrollTrigger` on desktop
+  (`+=1.3× viewport height`) so scrolling resolves the network from scattered
+  to one connected hub-and-spoke structure, with a single scan-sweep pass
+  early in the sequence. Pointer movement (desktop, `hover:hover` +
+  `pointer:fine` only) parallaxes the star field / terrain / nodes at three
+  depths, smoothed by manual lerp. Mobile gets the same draw function driven
+  by ordinary (non-pinned) scroll progress through the section, no pointer
+  parallax, no pin. The headline reveal is an **independent load-time intro**
+  (not gated behind scroll progress) — the hero's statement must be legible
+  even if the user never scrolls. Reduced motion: one static draw at
+  progress = 1, headline visible immediately, no RAF loop, no pin.
+- **Vision**: a `clip-path` shutter reveal plus a white flash-fade, played
+  once on entering (not scrubbed) — a "resolve," not a fade-up.
+- **Gap**: desktop — pinned, scrubbed collision. The three challenges fly in
+  from three different directions with **overlapping arrival windows** (each
+  point is still moving when the next starts), so they visibly interrupt each
+  other before settling into the asymmetric layout. Mobile — a simple
+  non-pinned stagger reveal (no wide translateX offsets, which would
+  overflow a narrow viewport; the desktop version is clipped with
+  `overflow-x-hidden` on the section for the same reason at in-between
+  breakpoints).
+- **Uniqueness**: seven scattered "system" dots collapse onto the three
+  lifecycle nodes as the section scrolls into place (many disconnected
+  systems → one controlled lifecycle), scrubbed, not pinned.
+- **Playbook**: pinned on desktop for `2.2× viewport height`; scroll position
+  drives which of the four steps is active, while hover/focus/click can
+  override at any time (a ref-based manual-override flag; scroll resumes
+  from the current `ScrollTrigger.progress` on pointer-leave). Each step has
+  its own small generative SVG mark (`PlaybookIcons.tsx`) that changes state
+  when active — a splitting square, a scanning sweep, stacking blocks, a
+  converging node cluster — rather than a shared icon. Mobile: unchanged
+  tap-accordion, no pin, no scroll-driven index.
+- **Execution**: a decisive one-shot "lock" — words enter individually
+  rotated/offset and snap into place with `back.out` easing (a mechanical
+  overshoot, distinct from every other section's pure ease-out), timed with
+  the underline's own snap.
+- **Team**: three abstracted material planes (no photography) parallax at
+  three different rates as the section scrolls past — depth standing in for
+  "the people behind the systems."
+- **Contact**: deliberately the calmest motion on the page — one slow
+  (1.4s), single opacity/position settle, once, nothing after.
+- Every pinned/scrubbed effect is gated to desktop via `gsap.matchMedia()`
+  (`min-width: 768px`); mobile always gets a lighter, non-pinned equivalent.
+  A `MotionRefresh` component mounts last in `page.tsx` and calls
+  `ScrollTrigger.refresh()` after mount and again once webfonts finish
+  loading, since stacking three pinned triggers (Hero, Gap, Playbook) means
+  later pin-spacing can shift earlier measurements.
 - Every animated component renders a complete, correct static fallback with
-  no JavaScript at all (SSR output = final resolved state); JS only adds the
-  transient animated path on top of it, gated by
-  `prefers-reduced-motion` (`hooks/useReducedMotion.ts`, backed by
-  `useSyncExternalStore`).
+  no JavaScript at all (SSR/no-JS output = the final resolved state); JS only
+  adds the transient animated path on top of it, gated by
+  `prefers-reduced-motion` (`hooks/useReducedMotion.ts`, via
+  `useSyncExternalStore`) — reduced motion skips every pin and RAF loop
+  entirely rather than just shortening durations.
+
+No image- or video-generation capability was available in this environment,
+so every visual above (terrain, network, texture, Team's material planes) is
+procedural (Canvas/SVG/CSS), not a placeholder photograph.
 
 ## What's deliberately not built yet
 

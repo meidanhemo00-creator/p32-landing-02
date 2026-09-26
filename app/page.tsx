@@ -6,6 +6,7 @@ import { Playbook } from "@/components/sections/Playbook";
 import { Execution } from "@/components/sections/Execution";
 import { Team } from "@/components/sections/Team";
 import { Contact } from "@/components/sections/Contact";
+import { MotionRefresh } from "@/components/MotionRefresh";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Execution />
       <Team />
       <Contact />
+      <MotionRefresh />
     </main>
   );
 }
