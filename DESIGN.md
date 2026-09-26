@@ -40,13 +40,15 @@ Derivatives generated from them (all committed alongside their sources):
 
 ## Section sequence
 
-Hero (dark) → Vision (light) → Gap (dark, full-bleed imagery) → Uniqueness
-(light) → Playbook (dark) → Execution (dark, full-screen) → Team (light/
-grayscale) → Contact (dark). Revised from the original alternating pattern
-per an explicit later rhythm instruction ("light or grayscale Team section
-... "); Execution was moved from light to dark to avoid two consecutive
-light sections (Execution/Team) and because a dark field reads better for
-its glowing central point.
+Hero (dark, full-screen image) → Vision (light) → Gap (dark, full-bleed
+imagery) → Uniqueness (light) → Playbook (dark, per-step imagery) →
+Execution (dark, full-screen) → Team (dark, full-screen image-led) →
+Resolution (light, full-bleed image, no copy) → Contact (dark). Team was
+rebuilt from an earlier light/grayscale treatment to a full-screen dark
+photographic section (see "Real photography" below); Resolution was added
+as the "large final image before Contact" breath the brief required —
+the one light beat among three consecutive dark image-led sections
+(Playbook, Execution, Team).
 
 ## Composition: centered axis + image-led (V3)
 
@@ -59,15 +61,21 @@ image-led. Applied:
   Uniqueness headline/body/lifecycle diagram, Playbook's headline, Execution
   statement, Team headline/body/image sequence, Contact (logo, email, phone,
   address, copyright row all centered, not the old split layout).
-- **Image-led**: ten distinct procedural visual scenes in `components/
-  scenes/`, documented with real-photography generation prompts in
-  `ASSETS.md`. No image-generation capability exists in this environment
-  (checked directly); every scene is SVG/Canvas, marked `TEMPORARY —` in its
-  file, sized to a fixed slot so a real asset can drop in later without a
-  layout change. Rhythm varies deliberately: full-screen (Hero, Execution),
-  full-bleed background (Gap, Vision/Uniqueness's `GlobalRoutes`), per-step
-  changing scenes (Playbook), a large-central-image-with-negative-space
-  scroll-crossfade sequence (Team).
+- **Image-led (V4: real photography)**: four official NASA satellite images
+  (Black Marble, Blue Marble, SRTM topography, a Tin Bider crater crop) —
+  see `ASSET_CREDITS.md` for exact sourcing and `ASSETS.md` for the
+  placement map — replace the earlier procedural stand-ins entirely via the
+  shared `NasaPhoto` component (`components/media/NasaPhoto.tsx`), which
+  applies one consistent duotone treatment (grayscale, contrast, a
+  directional darkening gradient, a low-opacity pale-blue color-blend tint)
+  so raw satellite photography reads as part of the brand system rather
+  than stock imagery. Rhythm varies deliberately: full-screen (Hero, Team,
+  Execution), full-bleed background (Gap), a distinct photo per step
+  (Playbook), and one large wordless full-bleed image as the pacing beat
+  before Contact (Resolution). `Vision`'s `GlobalRoutes` and `Execution`'s
+  `RedButtonAbstract` remain procedural — they were not part of the
+  required real-image placement list, and the brief did not ask for a
+  photograph in either slot.
 
 ## Motion system (V2: GSAP/ScrollTrigger scroll choreography)
 
@@ -78,22 +86,25 @@ stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
 
 - **Hero** (`Hero.tsx`, rebuilt as "Secure System Under Pressure," replacing
   an earlier hub-and-spoke network concept entirely — no code from that
-  version was preserved): a Canvas 2D satellite/terrain field carrying a
-  hand-placed 16-node infrastructure mesh, some nodes secure, some
-  compromised. Compromised nodes and their "threat" links (drawn as a
-  deliberately interrupted line, not a dash pattern) render at near-zero
-  opacity until a scan reveals them — the pointer, on desktop
-  (`hover:hover` + `pointer:fine`), or an automatic slow sweep path
-  otherwise — which is a genuine reveal keyed to distance-from-scan, not a
-  glow that follows the cursor. `ScrollTrigger` (pinned on desktop,
-  `+=1.3× viewport height`; a plain non-pinned progress mapping on mobile)
-  drives a triangular "tension" value: 0 at both ends, peaking mid-scroll,
-  so the terrain/mesh/secure-links/threat-links layers separate along
-  fixed per-layer vectors (deconstruction) and realign as tension returns
-  to 0 while threat opacity fades to nothing (reconstruction) — controlled
-  depth, not random parallax. Reveal alpha is multiplied by that same
-  fade, not added on top of it, so a direct scan over a since-secured node
-  correctly shows nothing. The headline (uppercase, centered on both axes)
+  version was preserved): a full-screen real NASA Black Marble photograph
+  (Earth's city lights at night, see `ASSET_CREDITS.md`) sits beneath a
+  Canvas 2D infrastructure-mesh overlay — a hand-placed 16-node mesh, some
+  nodes secure, some compromised (the earlier procedurally-drawn terrain
+  layer was removed once the real photograph took over that role).
+  Compromised nodes and their "threat" links (drawn as a deliberately
+  interrupted line, not a dash pattern) render at near-zero opacity until a
+  scan reveals them — the pointer, on desktop (`hover:hover` +
+  `pointer:fine`), or an automatic slow sweep path otherwise — which is a
+  genuine reveal keyed to distance-from-scan, not a glow that follows the
+  cursor. `ScrollTrigger` (pinned on desktop, `+=1.3× viewport height`; a
+  plain non-pinned progress mapping on mobile) drives a triangular
+  "tension" value: 0 at both ends, peaking mid-scroll, so the
+  mesh/secure-links/threat-links layers separate along fixed per-layer
+  vectors (deconstruction) and realign as tension returns to 0 while threat
+  opacity fades to nothing (reconstruction) — controlled depth, not random
+  parallax. Reveal alpha is multiplied by that same fade, not added on top
+  of it, so a direct scan over a since-secured node correctly shows
+  nothing. The headline (uppercase, centered on both axes)
   reveals once via a single aperture `clip-path` iris on load (starting at
   a non-zero 6% radius, not a literal zero-size point), independent of
   scroll progress — the statement must be legible without scrolling.
@@ -144,9 +155,13 @@ stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
   rotated/offset and snap into place with `back.out` easing (a mechanical
   overshoot, distinct from every other section's pure ease-out), timed with
   the underline's own snap.
-- **Team**: three abstracted material planes (no photography) parallax at
-  three different rates as the section scrolls past — depth standing in for
-  "the people behind the systems."
+- **Team**: rebuilt as full-screen and image-led (`min-h-[100dvh]`, dark).
+  Three crops of the same Black Marble photograph (different
+  `objectPosition`s — many places, quietly lit, no faces) crossfade as the
+  section scrolls, scrubbed via the same `gsap.timeline` +
+  `ScrollTrigger`-scrub mechanism used elsewhere: distributed lights
+  standing in for "the world sees the outcome, it almost never sees the
+  people who built it," rather than portraiture.
 - **Contact**: deliberately the calmest motion on the page — one slow
   (1.4s), single opacity/position settle, once, nothing after.
 - Every pinned/scrubbed effect is gated to desktop via `gsap.matchMedia()`
@@ -162,14 +177,17 @@ stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
   `useSyncExternalStore`) — reduced motion skips every pin and RAF loop
   entirely rather than just shortening durations.
 
-No image- or video-generation capability was available in this environment,
-so every visual above (terrain, network, texture, Team's material planes) is
-procedural (Canvas/SVG/CSS), not a placeholder photograph.
+No image- or video-generation capability is available in this environment
+(checked directly). Every photograph on the page is real official NASA
+satellite imagery (see `ASSET_CREDITS.md` and `ASSETS.md`), not generated;
+the network mesh, lifecycle trace, `GlobalRoutes`, and `RedButtonAbstract`
+remain procedural (Canvas/SVG/CSS) by design, layered on top of or beside
+the real photography rather than replaced by it.
 
 ## What's deliberately not built yet
 
 - No access-code/entry gate (pending spec from Amit) — no routing or UI
   scaffolding for it exists yet, by instruction.
-- No photography/video: no image-generation capability was available in this
-  environment, so every visual (hero panels, lifecycle trace, team texture)
-  is code-driven (CSS/SVG), not a placeholder image.
+- No video: only static photography is used. No video-generation or
+  video-sourcing capability was available in this environment, and none was
+  requested.

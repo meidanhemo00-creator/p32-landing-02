@@ -6,14 +6,34 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsapSetup";
 import { BuildIcon, DeconstructIcon, OrchestrateIcon, ScanIcon } from "./PlaybookIcons";
-import { OpticalMacro } from "@/components/scenes/OpticalMacro";
-import { EngineeringGrid } from "@/components/scenes/EngineeringGrid";
-import { CommandBands } from "@/components/scenes/CommandBands";
+import { NasaPhoto } from "@/components/media/NasaPhoto";
 
 const ICONS = [DeconstructIcon, ScanIcon, BuildIcon, OrchestrateIcon];
-// Per-step background scenes -- this is what makes the Playbook visibly
-// change between steps, not just its text. Step 0 relies on its icon alone.
-const SCENES = [null, OpticalMacro, EngineeringGrid, CommandBands];
+// One real photograph per step -- this is what makes the Playbook visibly
+// change between steps, not just its text. All four NASA assets are used
+// exactly once here (see ASSET_CREDITS.md).
+const STEP_PHOTOS = [
+  {
+    src: "/media/nasa/optimized/tin-bider-crater-algeria.webp",
+    alt: "Satellite crop of Tin Bider crater, Algeria",
+    objectPosition: "42% 45%",
+  },
+  {
+    src: "/media/nasa/optimized/topography-of-the-world.webp",
+    alt: "Global topographic relief map (NASA/JPL/NIMA)",
+    objectPosition: "center",
+  },
+  {
+    src: "/media/nasa/optimized/blue-marble-earth.webp",
+    alt: "True-color composite of Earth (NASA Blue Marble)",
+    objectPosition: "50% 25%",
+  },
+  {
+    src: "/media/nasa/optimized/black-marble-earth-at-night.webp",
+    alt: "Satellite composite of Earth's city lights at night (NASA Black Marble)",
+    objectPosition: "58% 38%",
+  },
+];
 
 export function Playbook() {
   const [active, setActive] = useState<number | null>(null);
@@ -103,7 +123,7 @@ export function Playbook() {
               const panelId = `${baseId}-panel-${i}`;
               const triggerId = `${baseId}-trigger-${i}`;
               const Icon = ICONS[i];
-              const Scene = SCENES[i];
+              const photo = STEP_PHOTOS[i];
               return (
                 <div
                   key={step.index}
@@ -113,15 +133,19 @@ export function Playbook() {
                   onMouseEnter={() => hoverCapable && setManual(i)}
                   onMouseLeave={() => hoverCapable && clearManual()}
                 >
-                  {Scene && (
-                    <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 transition-opacity duration-500"
-                      style={{ opacity: isOpen ? 0.4 : 0.12 }}
-                    >
-                      <Scene active={isOpen} />
-                    </div>
-                  )}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+                    style={{ opacity: isOpen ? 0.55 : 0.22 }}
+                  >
+                    <NasaPhoto
+                      src={photo.src}
+                      alt=""
+                      objectPosition={photo.objectPosition}
+                      gradient="180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%"
+                      sizes="(min-width: 768px) 25vw, 100vw"
+                    />
+                  </div>
                   <button
                     id={triggerId}
                     type="button"

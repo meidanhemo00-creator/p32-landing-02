@@ -6,6 +6,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { hero } from "@/lib/content";
 import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsapSetup";
 import { EASE_OUT } from "@/lib/motion";
+import { NasaPhoto } from "@/components/media/NasaPhoto";
 
 // ---------------------------------------------------------------------------
 // Hero concept: "Secure System Under Pressure."
@@ -61,7 +62,6 @@ const THREAT_LINKS: [number, number][] = [
 // scaled by a triangular tension value -- controlled depth, not random
 // parallax.
 const LAYER_VECTORS = {
-  terrain: { x: 0, y: 22 },
   mesh: { x: -16, y: -10 },
   secure: { x: 4, y: -4 },
   threat: { x: 14, y: 10 },
@@ -140,36 +140,8 @@ function drawScene(ctx: CanvasRenderingContext2D, w: number, h: number, s: DrawS
   const secured = clamp01((s.progress - 0.6) / 0.35); // 0 -> 1 across reconstruction
   const threatOpacity = Math.max(0, (1 - secured) * (0.35 + tension * 0.65));
 
-  // --- Terrain: an oblique, grained field standing in for satellite/
-  // terrain imagery (no image-generation capability is available; see
-  // ASSETS.md). Grain is drawn once per frame at low cost (sparse dots).
-  ctx.save();
-  ctx.translate(LAYER_VECTORS.terrain.x * tension, LAYER_VECTORS.terrain.y * tension);
-  const bands = 10;
-  for (let b = 0; b < bands; b++) {
-    const t = b / (bands - 1);
-    const y0 = h * (0.08 + t * 0.92);
-    const amp = 10 + t * 30;
-    ctx.beginPath();
-    const samples = 40;
-    for (let i = 0; i <= samples; i++) {
-      const xt = i / samples;
-      const x = xt * w;
-      const y = y0 + fbm(xt * 2.6 + b * 0.5, b * 2.3) * amp;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.strokeStyle = `rgba(255,255,255,${0.025 + t * 0.02})`;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  }
-  for (let i = 0; i < 90; i++) {
-    const gx = (i * 197.3) % w;
-    const gy = (i * 131.7 + 60) % h;
-    ctx.fillStyle = `rgba(255,255,255,${0.03 + 0.04 * Math.abs(fbm(i, 9))})`;
-    ctx.fillRect(gx, gy, 1, 1);
-  }
-  ctx.restore();
+  // Terrain is now the real NASA photograph rendered beneath this canvas
+  // (see the Hero() component below) rather than a procedural stand-in.
 
   // --- Global infrastructure mesh: faint great-circle arcs, brightening
   // slightly as the system secures.
@@ -512,6 +484,13 @@ export function Hero() {
       className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-p32-black text-p32-white"
     >
       <Nav />
+      <NasaPhoto
+        src="/media/nasa/optimized/black-marble-earth-at-night.webp"
+        alt="Satellite composite of Earth's city lights at night (NASA Black Marble)"
+        objectPosition="35% 40%"
+        priority
+        gradient="165deg, rgba(0,0,0,0.25) 10%, rgba(2,6,8,0.72) 65%, rgba(0,0,0,0.85) 100%"
+      />
       <canvas
         ref={canvasRef}
         aria-hidden="true"

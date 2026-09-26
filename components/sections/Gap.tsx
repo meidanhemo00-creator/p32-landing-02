@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gap } from "@/lib/content";
-import { TopographicScan } from "@/components/scenes/TopographicScan";
+import { NasaPhoto } from "@/components/media/NasaPhoto";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ensureGsapRegistered, gsap } from "@/lib/gsapSetup";
 import { EASE_OUT } from "@/lib/motion";
@@ -103,9 +103,13 @@ export function Gap() {
       ref={sectionRef}
       className="p32-section tx-grain-dark relative overflow-x-hidden bg-p32-black text-p32-white"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-30">
-        <TopographicScan />
-      </div>
+      <NasaPhoto
+        src="/media/nasa/optimized/topography-of-the-world.webp"
+        alt="Global topographic relief map derived from Shuttle Radar Topography Mission elevation data (NASA/JPL/NIMA)"
+        objectPosition="center"
+        gradient="180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.72) 100%"
+        contrast={1.3}
+      />
       <div className="p32-container relative flex flex-col items-center text-center">
         <h2 className="max-w-3xl font-display text-3xl font-medium leading-[1.1] tracking-tight sm:text-5xl">
           {gap.headline}
