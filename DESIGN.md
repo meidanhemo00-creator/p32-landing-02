@@ -22,18 +22,21 @@ rings). Blue never fills a background or large surface.
 
 ## Logo
 
-The only source of truth is `public/brand/p32-logo-star-source.png` (byte-
-identical copy of the client-supplied file, untouched). Two derivatives are
-generated from it, both committed alongside the source:
-- `p32-lockup-black.png` / `.webp` — the full wordmark+star lockup, cropped to
-  its content bounding box.
-- `p32-mark-p-only.png` — the "P" glyph alone, used only to build the favicon
-  and app icons (`app/icon.png`, `app/apple-icon.png`, `app/favicon.ico`); the
-  star is never used outside the primary lockup, per the brand rules.
+Two confirmed source files are the only sources of truth, both copied
+byte-identical into `public/brand/` and never edited:
+- `p32-logo-star-source.png` — black lockup, for light surfaces.
+- `p32-logo-star-source-white.png` — official reversed/white lockup
+  (confirmed asset, originally supplied as `ORDO (1).png`), for dark
+  surfaces.
 
-No reversed/white lockup exists yet. On dark sections the black lockup sits on
-a small white plate (`P32LogoOnDark` in `components/Logo.tsx`) rather than
-being recolored — the pixels of the logo itself are never modified.
+Derivatives generated from them (all committed alongside their sources):
+- `p32-lockup-black.png` / `.webp` and `p32-lockup-white.png` / `.webp` — each
+  lockup cropped to its content bounding box. `P32Logo` renders the black
+  lockup, `P32LogoOnDark` renders the white one (`components/Logo.tsx`).
+- `p32-mark-p-only.png` — the "P" glyph alone, cropped from the black source,
+  used only to build the favicon and app icons (`app/icon.png`,
+  `app/apple-icon.png`, `app/favicon.ico`); the star is never used outside
+  the primary lockup, per the brand rules.
 
 ## Section sequence
 
@@ -64,7 +67,6 @@ rather than diluting it with another contrast flip.
 
 ## What's deliberately not built yet
 
-- No reversed/white logo (pending from the client).
 - No access-code/entry gate (pending spec from Amit) — no routing or UI
   scaffolding for it exists yet, by instruction.
 - No photography/video: no image-generation capability was available in this
