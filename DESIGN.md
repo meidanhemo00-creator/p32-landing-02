@@ -76,18 +76,29 @@ Motion tokens live in `app/globals.css` (`--ease-out`, `--ease-in-out`,
 (GSAP cannot resolve CSS custom properties in its `ease` option, so both must
 stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
 
-- **Hero** (`Hero.tsx`): a Canvas 2D scene — an oblique terrain/contour field
-  with a 9-node sensor network — pinned via `ScrollTrigger` on desktop
-  (`+=1.3× viewport height`) so scrolling resolves the network from scattered
-  to one connected hub-and-spoke structure, with a single scan-sweep pass
-  early in the sequence. Pointer movement (desktop, `hover:hover` +
-  `pointer:fine` only) parallaxes the star field / terrain / nodes at three
-  depths, smoothed by manual lerp. Mobile gets the same draw function driven
-  by ordinary (non-pinned) scroll progress through the section, no pointer
-  parallax, no pin. The headline reveal is an **independent load-time intro**
-  (not gated behind scroll progress) — the hero's statement must be legible
-  even if the user never scrolls. Reduced motion: one static draw at
-  progress = 1, headline visible immediately, no RAF loop, no pin.
+- **Hero** (`Hero.tsx`, rebuilt as "Secure System Under Pressure," replacing
+  an earlier hub-and-spoke network concept entirely — no code from that
+  version was preserved): a Canvas 2D satellite/terrain field carrying a
+  hand-placed 16-node infrastructure mesh, some nodes secure, some
+  compromised. Compromised nodes and their "threat" links (drawn as a
+  deliberately interrupted line, not a dash pattern) render at near-zero
+  opacity until a scan reveals them — the pointer, on desktop
+  (`hover:hover` + `pointer:fine`), or an automatic slow sweep path
+  otherwise — which is a genuine reveal keyed to distance-from-scan, not a
+  glow that follows the cursor. `ScrollTrigger` (pinned on desktop,
+  `+=1.3× viewport height`; a plain non-pinned progress mapping on mobile)
+  drives a triangular "tension" value: 0 at both ends, peaking mid-scroll,
+  so the terrain/mesh/secure-links/threat-links layers separate along
+  fixed per-layer vectors (deconstruction) and realign as tension returns
+  to 0 while threat opacity fades to nothing (reconstruction) — controlled
+  depth, not random parallax. Reveal alpha is multiplied by that same
+  fade, not added on top of it, so a direct scan over a since-secured node
+  correctly shows nothing (see the fix note below). The headline
+  (uppercase, centered on both axes) reveals once via a single aperture
+  `clip-path` iris on load, independent of scroll progress — the
+  statement must be legible without scrolling. Reduced motion: one
+  static draw of the fully secured end state, headline visible
+  immediately, no RAF loop, no pin, no scan.
 - **Vision**: a `clip-path` shutter reveal plus a white flash-fade, played
   once on entering (not scrubbed) — a "resolve," not a fade-up.
 - **Gap**: desktop — pinned, scrubbed collision. The three challenges fly in
