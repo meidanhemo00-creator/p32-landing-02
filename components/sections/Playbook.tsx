@@ -57,7 +57,7 @@ export function Playbook() {
       const st = ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: () => `+=${window.innerHeight * 2.2}`,
+        end: () => `+=${window.innerHeight * 1.9}`,
         scrub: 0.4,
         pin: true,
         invalidateOnRefresh: true,

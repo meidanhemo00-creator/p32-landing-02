@@ -10,13 +10,15 @@ export const vision = {
   body: "Trusted by nations and intelligence agencies around the globe to bridge the gap between complex operational needs and cutting-edge execution.",
 };
 
+// Superseded hierarchy/copy, supplied directly by the client to replace the
+// original threefold-list presentation below.
 export const gap = {
-  headline: "Today's operational challenges are threefold:",
-  body: "An evolving technological landscape, the friction of integrating disparate systems, and the extreme security risk of exposing needs to the open market.",
+  label: "THE GAP IN MODERN DEFENSE",
+  headline: "THREE PRESSURES DEFINE THE MODERN OPERATIONAL GAP.",
   points: [
-    "An evolving technological landscape",
-    "The friction of integrating disparate systems",
-    "The extreme security risk of exposing needs to the open market",
+    "AN EVOLVING TECHNOLOGICAL LANDSCAPE.",
+    "FRICTION BETWEEN DISPARATE SYSTEMS.",
+    "THE SECURITY RISK OF EXPOSING SENSITIVE NEEDS TO THE OPEN MARKET.",
   ],
 };
 

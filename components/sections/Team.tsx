@@ -6,34 +6,47 @@ import { NasaPhoto } from "@/components/media/NasaPhoto";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ensureGsapRegistered, gsap } from "@/lib/gsapSetup";
 
-// Full-screen, image-led: three crops of the same Black Marble photograph
-// (many places, quietly lit, no faces) crossfade as the section scrolls --
-// "the world sees the outcome, it almost never sees the people," rendered
-// as distributed lights rather than portraiture.
-const CROPS = ["12% 30%", "70% 62%", "45% 15%"];
+// One strong cinematic reveal, not a set of decorative animations: a single
+// curtain-style clip-path opens on the photograph as the two-beat headline
+// resolves alongside it, all as one scrubbed sequence.
+//
+// No photograph of "silhouettes, hands, screens, hardware, technical work"
+// exists in this environment and none can be generated or licensed here
+// (confirmed before writing this file) -- so, consistent with the rest of
+// the page, this reuses the real, credited Black Marble photograph: many
+// quietly lit places standing in for the people behind them, not staged
+// portraiture.
+const [lineOne, lineTwo] = team.headline.split(/(?<=\.)\s+/);
 
 export function Team() {
   const sectionRef = useRef<HTMLElement>(null);
-  const frameRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const line1Ref = useRef<HTMLSpanElement>(null);
+  const line2Ref = useRef<HTMLSpanElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     const section = sectionRef.current;
-    const frames = frameRefs.current;
-    if (!section || frames.some((f) => !f) || reducedMotion) return;
+    const image = imageRef.current;
+    const l1 = line1Ref.current;
+    const l2 = line2Ref.current;
+    const body = bodyRef.current;
+    if (!section || !image || !l1 || !l2 || !body || reducedMotion) return;
 
     ensureGsapRegistered();
     const ctx = gsap.context(() => {
-      gsap.set(frames[1], { opacity: 0 });
-      gsap.set(frames[2], { opacity: 0 });
+      gsap.set(image, { clipPath: "inset(0 50% 0 50%)" });
+      gsap.set([l1, l2], { opacity: 0, y: 16 });
+      gsap.set(body, { opacity: 0, y: 12 });
 
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: section, start: "top top", end: "bottom top", scrub: 0.6 },
+        scrollTrigger: { trigger: section, start: "top 85%", end: "top 20%", scrub: 0.6 },
       });
-      tl.to(frames[0], { opacity: 0, duration: 0.3 }, 0.28)
-        .to(frames[1], { opacity: 1, duration: 0.3 }, 0.28)
-        .to(frames[1], { opacity: 0, duration: 0.3 }, 0.64)
-        .to(frames[2], { opacity: 1, duration: 0.3 }, 0.64);
+      tl.to(image, { clipPath: "inset(0 0% 0 0%)", duration: 0.5, ease: "none" }, 0)
+        .to(l1, { opacity: 1, y: 0, duration: 0.3, ease: "none" }, 0.32)
+        .to(l2, { opacity: 1, y: 0, duration: 0.3, ease: "none" }, 0.52)
+        .to(body, { opacity: 1, y: 0, duration: 0.3, ease: "none" }, 0.74);
     }, section);
 
     return () => ctx.revert();
@@ -44,27 +57,24 @@ export function Team() {
       ref={sectionRef}
       className="relative flex min-h-[100dvh] items-center overflow-hidden bg-p32-black text-p32-white"
     >
-      {CROPS.map((pos, i) => (
-        <div
-          key={i}
-          ref={(el) => {
-            frameRefs.current[i] = el;
-          }}
-          className="absolute inset-0"
-        >
-          <NasaPhoto
-            src="/media/nasa/optimized/black-marble-earth-at-night.webp"
-            alt={i === 0 ? "Satellite composite of Earth's city lights at night, scattered across the globe (NASA Black Marble)" : ""}
-            objectPosition={pos}
-            gradient="180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.8) 100%"
-          />
-        </div>
-      ))}
+      <div ref={imageRef} className="absolute inset-0">
+        <NasaPhoto
+          src="/media/nasa/optimized/black-marble-earth-at-night.webp"
+          alt="Satellite composite of Earth's city lights at night, scattered across the globe (NASA Black Marble)"
+          objectPosition="30% 35%"
+          gradient="180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.82) 100%"
+        />
+      </div>
       <div className="p32-container relative flex flex-col items-center text-center">
         <h2 className="max-w-2xl font-display text-3xl font-medium leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
-          {team.headline}
+          <span ref={line1Ref} className="block">
+            {lineOne}
+          </span>
+          <span ref={line2Ref} className="mt-2 block text-p32-gray-300">
+            {lineTwo}
+          </span>
         </h2>
-        <div className="mx-auto mt-8 max-w-xl space-y-5 text-lg leading-relaxed text-p32-gray-300 md:mt-10 md:text-xl">
+        <div ref={bodyRef} className="mx-auto mt-8 max-w-xl space-y-5 text-lg leading-relaxed text-p32-gray-300 md:mt-10 md:text-xl">
           <p>{team.bodyOne}</p>
           <p>{team.bodyTwo}</p>
         </div>

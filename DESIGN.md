@@ -40,15 +40,63 @@ Derivatives generated from them (all committed alongside their sources):
 
 ## Section sequence
 
-Hero (dark, full-screen image) → Vision (light) → Gap (dark, full-bleed
-imagery) → Uniqueness (light) → Playbook (dark, per-step imagery) →
-Execution (dark, full-screen) → Team (dark, full-screen image-led) →
-Resolution (light, full-bleed image, no copy) → Contact (dark). Team was
-rebuilt from an earlier light/grayscale treatment to a full-screen dark
-photographic section (see "Real photography" below); Resolution was added
-as the "large final image before Contact" breath the brief required —
+Entrance (cinematic discovery gate, once per session) → Hero (dark,
+cinematic montage settling into a full-screen image) → Vision (light) → Gap
+(dark, pinned three-pressure sequence) → Uniqueness (light) → Playbook
+(dark, per-step imagery) → Execution (dark, full-screen) → Team (dark,
+full-screen image-led, single reveal) → Resolution (light, full-bleed
+image, no copy) → Contact (dark). Team was rebuilt from an earlier
+light/grayscale treatment, then again from a three-crop autoplay crossfade
+to one scroll-scrubbed reveal (see "Motion system" below); Resolution was
+added as the "large final image before Contact" breath the brief required —
 the one light beat among three consecutive dark image-led sections
 (Playbook, Execution, Team).
+
+## Entrance (cinematic discovery gate)
+
+`components/entrance/Entrance.tsx`. A full-screen, one-time-per-session
+interaction before the site — explicitly **not** authentication, and not a
+substitute for the server-side access-code gate pending a spec from Amit.
+A field of ~46 drifting system-vocabulary words and coordinate/code-like
+fragments (SYSTEMS, ARCHITECTURE, SIGNAL, THREAT, TERRAIN, PROTOCOL,
+DECONSTRUCTION/RECONSTRUCTION, `GRID-07`, `34.02°N 118.24°W`, etc. — no
+meaningless Matrix-style character rain) hides the word `PROJECT32`,
+rendered as a real, keyboard-focusable `<button>` styled identically to the
+decoys at rest. A pointer acts as a scanner: a rAF-throttled `pointermove`
+handler reads each word's own `getBoundingClientRect()` and writes
+`opacity`/`blur`/`text-shadow` straight to the DOM (bypassing React state,
+since ~47 nodes update on every move) — nearby words sharpen, and
+`PROJECT32` additionally gains a pale-blue glow so it reads as distinct once
+close, not just sharper. After 7s with no discovery, `PROJECT32` receives
+that same signal permanently so a visitor can't stay stuck. Touch/coarse
+pointers skip the proximity scan entirely (there's no hover to scan with)
+and render the target prominently from the start instead. Selecting it (via
+click, or Enter/Space while focused) plays one GSAP timeline — the decoy
+field fades, the target scales and fades, the official logo (`P32LogoOnDark`)
+crossfades in at the same position, the whole overlay fades out — then
+unmounts and signals the Hero to begin its own montage. A discreet
+"Skip intro" control is always present and keyboard-reachable. Completion
+is written to `sessionStorage` so the gate doesn't replay within the same
+browser session. `<main>` carries `inert={!heroReady}` while the gate is up,
+so a keyboard or screen-reader visitor can't reach Nav/section content
+hidden behind the opaque overlay. Reduced motion: the entrance is skipped
+entirely on mount (the interaction is inherently motion-based; this mirrors
+the sitewide reduced-motion convention of a full static end-state rather
+than a degraded-but-still-animated version).
+
+Two real bugs were caught and fixed while building this: (1) combining the
+`tx-grain-dark` texture class (which sets `position: relative` in its own
+CSS rule) with the `fixed` positioning utility on the same element hit a
+same-specificity cascade conflict — `relative` won, collapsing the overlay
+to a ~20px content-sized block instead of covering the viewport, caught by
+checking `getBoundingClientRect()` rather than trusting the class list; the
+fix was to drop the (non-essential) texture from that element rather than
+fight the collision. (2) An unconditional inline `transition: opacity 400ms`
+on the root fought GSAP's own frame-by-frame opacity writes during the
+resolve timeline (a CSS transition re-triggers on every JS style mutation to
+a transitioned property); the fix was to remove the CSS transition entirely
+and drive both the instant-skip and discovered-resolve fades through GSAP
+consistently.
 
 ## Composition: centered axis + image-led (V3)
 
@@ -84,66 +132,59 @@ Motion tokens live in `app/globals.css` (`--ease-out`, `--ease-in-out`,
 (GSAP cannot resolve CSS custom properties in its `ease` option, so both must
 stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
 
-- **Hero** (`Hero.tsx`, rebuilt as "Secure System Under Pressure," replacing
-  an earlier hub-and-spoke network concept entirely — no code from that
-  version was preserved): a full-screen real NASA Black Marble photograph
-  (Earth's city lights at night, see `ASSET_CREDITS.md`) sits beneath a
-  Canvas 2D infrastructure-mesh overlay — a hand-placed 16-node mesh, some
-  nodes secure, some compromised (the earlier procedurally-drawn terrain
-  layer was removed once the real photograph took over that role).
-  Compromised nodes and their "threat" links (drawn as a deliberately
-  interrupted line, not a dash pattern) render at near-zero opacity until a
-  scan reveals them — the pointer, on desktop (`hover:hover` +
-  `pointer:fine`), or an automatic slow sweep path otherwise — which is a
-  genuine reveal keyed to distance-from-scan, not a glow that follows the
-  cursor. `ScrollTrigger` (pinned on desktop, `+=1.3× viewport height`; a
-  plain non-pinned progress mapping on mobile) drives a triangular
-  "tension" value: 0 at both ends, peaking mid-scroll, so the
-  mesh/secure-links/threat-links layers separate along fixed per-layer
-  vectors (deconstruction) and realign as tension returns to 0 while threat
-  opacity fades to nothing (reconstruction) — controlled depth, not random
-  parallax. Reveal alpha is multiplied by that same fade, not added on top
-  of it, so a direct scan over a since-secured node correctly shows
-  nothing. The headline (uppercase, centered on both axes)
-  reveals once via a single aperture `clip-path` iris on load (starting at
-  a non-zero 6% radius, not a literal zero-size point), independent of
-  scroll progress — the statement must be legible without scrolling.
-  Reduced motion: one static draw of the fully secured end state, headline
-  visible immediately, no RAF loop, no pin, no scan.
-
-  **Fixed after a `/review-animations` pass** (see chat for the full
-  findings table): engaging the scan is still instant, but disengaging
-  (`onPointerLeave`, or the automatic sweep reaching its cycle cap) now
-  eases `scanStrength` from 1 to 0 over 300ms via a small `gsap.to()` on
-  the draw-state object, instead of cutting the reveal dead — confirmed
-  by sampling the canvas's own pixel alpha at the reveal point across the
-  fade (102 → 16 → 1), not just by eyeballing a screenshot. The mobile/
-  no-hover automatic sweep is now bounded to 3 cycles (27s) and then
-  settles via the same eased disengage, rather than looping indefinitely
-  for as long as the Hero is in view. The rAF loop now skips `drawScene()`
-  entirely when nothing in the draw state changed since the last frame
-  (a signature string comparison), instead of redrawing the full scene at
-  60fps unconditionally. The three per-step scenes and the lifecycle trace
-  in Uniqueness had SVG geometry attributes (`x`/`y`, `cx`/`cy`, `r`)
-  animated directly in three independent places — none composited, all
-  effectively `top`/`left` in SVG costume — and are now `transform`-based
-  (`translate`/`scale`) throughout. A few CSS transitions reached for
-  Tailwind's bare `ease-out` instead of the project's own `--ease-out`
-  token; fixed to use the token everywhere.
+- **Hero** (`Hero.tsx`, rebuilt again as a fast cinematic montage — the
+  interactive canvas mesh from the previous "Secure System Under Pressure"
+  concept was deleted entirely per an explicit instruction not to preserve
+  or patch it; no canvas code remains). No video-generation,
+  image-generation, or licensed-footage-acquisition capability exists in
+  this environment and no user-supplied footage was provided (checked and
+  disclosed before building this), so the montage is eight distinct
+  crop/zoom "shots" cut from the same four real, credited NASA photographs
+  used elsewhere on the page — not fabricated shots of people, traffic,
+  crowds, or hardware macro. A single GSAP timeline, gated on a
+  `montageReady` prop the entrance flips true on completion, cuts through
+  the eight shots (six ~0.6s cuts, two ~1.3s "breath" holds, each with a
+  small scale move for a Ken-Burns feel), then settles on a ninth resting
+  frame (the Black Marble global view) as the aperture-`clip-path` headline
+  reveal plays over it — one coherent choreography, roughly 7–8s, not a
+  loop. Reduced motion: the resting frame and headline appear immediately,
+  no montage plays. Hero no longer pins the viewport at all (the earlier
+  1.3×-viewport-height pin existed to scrub the mesh's deconstruction/
+  reconstruction, which no longer exists); it now just recedes slightly
+  (opacity/scale) as Vision arrives, non-pinned, scrubbed — a large
+  reduction in overall pinned scroll distance sitewide, aimed directly at
+  the "scroll feels stuck" rejection.
 - **Vision**: a `clip-path` shutter reveal plus a white flash-fade, played
   once on entering (not scrubbed) — a "resolve," not a fade-up.
-- **Gap**: desktop — pinned, scrubbed collision. The three challenges fly in
-  from three different directions with **overlapping arrival windows** (each
-  point is still moving when the next starts), so they visibly interrupt each
-  other before settling into the asymmetric layout. Mobile — a simple
-  non-pinned stagger reveal (no wide translateX offsets, which would
-  overflow a narrow viewport; the desktop version is clipped with
-  `overflow-x-hidden` on the section for the same reason at in-between
-  breakpoints).
+- **Gap** (`Gap.tsx`, rebuilt with new copy/hierarchy supplied directly by
+  the client — see `lib/content.ts`'s `gap` export): a label + primary
+  statement reveal once on entering, then, on desktop, a pinned
+  (`+=2.0× viewport height`) scrubbed crossfade through three full-screen
+  "pressure" panels, each a large statement paired with its own visual —
+  real topography imagery for "an evolving technological landscape,"
+  procedural misaligned panels (`SystemLayers.tsx`) for "friction between
+  disparate systems" (no real photograph fits an abstract systems concept),
+  and a procedural sweeping scan line (`ExposureScan.tsx`) for "the security
+  risk of exposure" (same reasoning). Mobile: the three panels are plain
+  stacked blocks, each revealed once as it scrolls into view — no pin, no
+  crossfade. The pin's `ScrollTrigger` trigger is the panels wrapper alone,
+  not the whole section — an earlier version pinned the whole section
+  (label included), which froze the label at the top of the screen for the
+  full pin duration while panels crossfaded in the remaining space, an
+  overflow-prone layout bug caught by scrolling through it, not by
+  eyeballing a single screenshot. The absolute-overlay positioning the
+  crossfade needs is applied by GSAP (`gsap.set(panels, {position:
+  "absolute", ...})`) only inside the desktop `matchMedia` branch, not as a
+  static `md:absolute` class — this whole effect bails out early under
+  reduced motion, so a static class would have left three panels visually
+  stacked on top of each other at desktop widths with no JS running to hide
+  the inactive ones (a second real bug caught specifically by testing the
+  reduced-motion path at a desktop viewport, not just at mobile widths).
 - **Uniqueness**: seven scattered "system" dots collapse onto the three
   lifecycle nodes as the section scrolls into place (many disconnected
   systems → one controlled lifecycle), scrubbed, not pinned.
-- **Playbook**: pinned on desktop for `2.2× viewport height`; scroll position
+- **Playbook**: pinned on desktop for `1.9× viewport height` (trimmed from
+  `2.2×` in the same scroll-tightening pass as Hero's pin removal); scroll position
   drives which of the four steps is active, while hover/focus/click can
   override at any time (a ref-based manual-override flag; scroll resumes
   from the current `ScrollTrigger.progress` on pointer-leave). Each step has
@@ -155,21 +196,27 @@ stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
   rotated/offset and snap into place with `back.out` easing (a mechanical
   overshoot, distinct from every other section's pure ease-out), timed with
   the underline's own snap.
-- **Team**: rebuilt as full-screen and image-led (`min-h-[100dvh]`, dark).
-  Three crops of the same Black Marble photograph (different
-  `objectPosition`s — many places, quietly lit, no faces) crossfade as the
-  section scrolls, scrubbed via the same `gsap.timeline` +
-  `ScrollTrigger`-scrub mechanism used elsewhere: distributed lights
-  standing in for "the world sees the outcome, it almost never sees the
-  people who built it," rather than portraiture.
+- **Team** (`Team.tsx`, rebuilt again as one strong reveal, replacing an
+  earlier three-crop autoplay crossfade that read as several decorative
+  animations rather than one): no photograph of "silhouettes, hands,
+  screens, hardware" exists or can be generated/licensed here, so — as
+  disclosed rather than faked — this continues to use the real, credited
+  Black Marble photograph as the visual device (distributed lights standing
+  in for the people behind them). A single curtain-style `clip-path`
+  (`inset(0 50% 0 50%)` → `inset(0 0% 0 0%)`, distinct from Hero's circular
+  iris and Vision's bottom-up mask, for compositional variety) opens on the
+  photograph as one scrubbed timeline tied to entering the section; the
+  headline's two sentences ("The world sees the outcome." / "It almost
+  never sees the people who built it.") resolve as sequential beats within
+  that same timeline, not as separate decorative pieces.
 - **Contact**: deliberately the calmest motion on the page — one slow
   (1.4s), single opacity/position settle, once, nothing after.
 - Every pinned/scrubbed effect is gated to desktop via `gsap.matchMedia()`
   (`min-width: 768px`); mobile always gets a lighter, non-pinned equivalent.
   A `MotionRefresh` component mounts last in `page.tsx` and calls
   `ScrollTrigger.refresh()` after mount and again once webfonts finish
-  loading, since stacking three pinned triggers (Hero, Gap, Playbook) means
-  later pin-spacing can shift earlier measurements.
+  loading, since stacking pinned triggers (Gap, Playbook — Hero no longer
+  pins) means later pin-spacing can shift earlier measurements.
 - Every animated component renders a complete, correct static fallback with
   no JavaScript at all (SSR/no-JS output = the final resolved state); JS only
   adds the transient animated path on top of it, gated by
