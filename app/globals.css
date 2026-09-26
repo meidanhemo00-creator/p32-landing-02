@@ -182,19 +182,6 @@ button {
   }
 }
 
-/* Entrance word-field drift. transform-only (GPU); base rotation and drift
-   amplitude come in as custom properties per word so one keyframe serves
-   every instance. */
-@keyframes p32-entrance-drift {
-  from {
-    transform: translate(-50%, -50%) rotate(var(--p32-rot, 0deg));
-  }
-  to {
-    transform: translate(calc(-50% + var(--drift-x, 0px)), calc(-50% + var(--drift-y, 0px)))
-      rotate(var(--p32-rot, 0deg));
-  }
-}
-
 @keyframes p32-exposure-scan {
   0%,
   100% {

@@ -20,9 +20,9 @@ import { NasaPhoto } from "@/components/media/NasaPhoto";
 // background. It does not fabricate shots of people, traffic, crowds, or
 // hardware macro that no real or licensed source exists for.
 //
-// The sequence plays once, gated on `montageReady` (flipped by the entrance
-// experience in app/page.tsx), and settles into a calm resting frame that
-// the headline resolves over -- it does not loop indefinitely.
+// The sequence plays once on mount -- the page opens directly into this
+// Hero -- and settles into a calm resting frame that the headline resolves
+// over -- it does not loop indefinitely.
 // ---------------------------------------------------------------------------
 
 type Shot = {
@@ -49,7 +49,7 @@ const REST_SHOT: Shot = {
   hold: 0,
 };
 
-export function Hero({ montageReady }: { montageReady: boolean }) {
+export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const irisRef = useRef<HTMLDivElement>(null);
   const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -73,8 +73,6 @@ export function Hero({ montageReady }: { montageReady: boolean }) {
     gsap.set(rest, { opacity: 0 });
     gsap.set(iris, { clipPath: "circle(6% at 50% 50%)" });
 
-    if (!montageReady) return;
-
     ensureGsapRegistered();
     const tl = gsap.timeline();
     let t = 0.1;
@@ -96,7 +94,7 @@ export function Hero({ montageReady }: { montageReady: boolean }) {
     return () => {
       tl.kill();
     };
-  }, [reducedMotion, montageReady]);
+  }, [reducedMotion]);
 
   // A light, non-pinned scroll-out: Hero no longer holds the viewport
   // hostage the way a pinned deconstruction/reconstruction sequence did --

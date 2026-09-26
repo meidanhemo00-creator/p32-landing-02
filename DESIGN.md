@@ -40,8 +40,8 @@ Derivatives generated from them (all committed alongside their sources):
 
 ## Section sequence
 
-Entrance (cinematic discovery gate, once per session) → Hero (dark,
-cinematic montage settling into a full-screen image) → Vision (light) → Gap
+Hero (dark, cinematic montage settling into a full-screen image, plays
+directly on load) → Vision (light) → Gap
 (dark, pinned three-pressure sequence) → Uniqueness (light) → Playbook
 (dark, per-step imagery) → Execution (dark, full-screen) → Team (dark,
 full-screen image-led, single reveal) → Resolution (light, full-bleed
@@ -51,52 +51,6 @@ to one scroll-scrubbed reveal (see "Motion system" below); Resolution was
 added as the "large final image before Contact" breath the brief required —
 the one light beat among three consecutive dark image-led sections
 (Playbook, Execution, Team).
-
-## Entrance (cinematic discovery gate)
-
-`components/entrance/Entrance.tsx`. A full-screen, one-time-per-session
-interaction before the site — explicitly **not** authentication, and not a
-substitute for the server-side access-code gate pending a spec from Amit.
-A field of ~46 drifting system-vocabulary words and coordinate/code-like
-fragments (SYSTEMS, ARCHITECTURE, SIGNAL, THREAT, TERRAIN, PROTOCOL,
-DECONSTRUCTION/RECONSTRUCTION, `GRID-07`, `34.02°N 118.24°W`, etc. — no
-meaningless Matrix-style character rain) hides the word `PROJECT32`,
-rendered as a real, keyboard-focusable `<button>` styled identically to the
-decoys at rest. A pointer acts as a scanner: a rAF-throttled `pointermove`
-handler reads each word's own `getBoundingClientRect()` and writes
-`opacity`/`blur`/`text-shadow` straight to the DOM (bypassing React state,
-since ~47 nodes update on every move) — nearby words sharpen, and
-`PROJECT32` additionally gains a pale-blue glow so it reads as distinct once
-close, not just sharper. After 7s with no discovery, `PROJECT32` receives
-that same signal permanently so a visitor can't stay stuck. Touch/coarse
-pointers skip the proximity scan entirely (there's no hover to scan with)
-and render the target prominently from the start instead. Selecting it (via
-click, or Enter/Space while focused) plays one GSAP timeline — the decoy
-field fades, the target scales and fades, the official logo (`P32LogoOnDark`)
-crossfades in at the same position, the whole overlay fades out — then
-unmounts and signals the Hero to begin its own montage. A discreet
-"Skip intro" control is always present and keyboard-reachable. Completion
-is written to `sessionStorage` so the gate doesn't replay within the same
-browser session. `<main>` carries `inert={!heroReady}` while the gate is up,
-so a keyboard or screen-reader visitor can't reach Nav/section content
-hidden behind the opaque overlay. Reduced motion: the entrance is skipped
-entirely on mount (the interaction is inherently motion-based; this mirrors
-the sitewide reduced-motion convention of a full static end-state rather
-than a degraded-but-still-animated version).
-
-Two real bugs were caught and fixed while building this: (1) combining the
-`tx-grain-dark` texture class (which sets `position: relative` in its own
-CSS rule) with the `fixed` positioning utility on the same element hit a
-same-specificity cascade conflict — `relative` won, collapsing the overlay
-to a ~20px content-sized block instead of covering the viewport, caught by
-checking `getBoundingClientRect()` rather than trusting the class list; the
-fix was to drop the (non-essential) texture from that element rather than
-fight the collision. (2) An unconditional inline `transition: opacity 400ms`
-on the root fought GSAP's own frame-by-frame opacity writes during the
-resolve timeline (a CSS transition re-triggers on every JS style mutation to
-a transitioned property); the fix was to remove the CSS transition entirely
-and drive both the instant-skip and discovered-resolve fades through GSAP
-consistently.
 
 ## Composition: centered axis + image-led (V3)
 
@@ -141,9 +95,9 @@ stay in sync). `lib/gsapSetup.ts` registers `ScrollTrigger` once.
   disclosed before building this), so the montage is eight distinct
   crop/zoom "shots" cut from the same four real, credited NASA photographs
   used elsewhere on the page — not fabricated shots of people, traffic,
-  crowds, or hardware macro. A single GSAP timeline, gated on a
-  `montageReady` prop the entrance flips true on completion, cuts through
-  the eight shots (six ~0.6s cuts, two ~1.3s "breath" holds, each with a
+  crowds, or hardware macro. A single GSAP timeline plays on mount -- the
+  page opens directly into this Hero, with no gate in front of it -- and
+  cuts through the eight shots (six ~0.6s cuts, two ~1.3s "breath" holds, each with a
   small scale move for a Ken-Burns feel), then settles on a ninth resting
   frame (the Black Marble global view) as the aperture-`clip-path` headline
   reveal plays over it — one coherent choreography, roughly 7–8s, not a

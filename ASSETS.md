@@ -20,14 +20,13 @@ assets to where they're used.
 | `topography-of-the-world.webp` | NASA/JPL/NIMA SRTM global topographic relief map | Hero (2 montage shots), Gap panel 01 (full-screen), Playbook step 02 |
 | `tin-bider-crater-algeria.webp` | Satellite crop of Tin Bider crater, Algeria | Hero (2 montage shots), Playbook step 01 |
 
-No new photographic assets were sourced for the Hero montage, the entrance,
-or Gap panels 02/03 — the montage is eight distinct crops/zooms of the same
-four files above (see `components/sections/Hero.tsx`'s `SHOTS` array), the
-entrance is text/CSS only, and Gap's second and third panels
-(`SystemLayers.tsx`, `ExposureScan.tsx`) are original, procedural
-CSS/SVG compositions standing in for abstract concepts ("disparate systems,"
-"exposure") that have no real photographic subject — not photographs
-requiring a credit line.
+No new photographic assets were sourced for the Hero montage or Gap panels
+02/03 — the montage is eight distinct crops/zooms of the same four files
+above (see `components/sections/Hero.tsx`'s `SHOTS` array), and Gap's
+second and third panels (`SystemLayers.tsx`, `ExposureScan.tsx`) are
+original, procedural CSS/SVG compositions standing in for abstract concepts
+("disparate systems," "exposure") that have no real photographic subject —
+not photographs requiring a credit line.
 
 ## Treatment
 
