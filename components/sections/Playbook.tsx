@@ -1,10 +1,8 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { playbook } from "@/lib/content";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { ensureGsapRegistered, gsap, ScrollTrigger } from "@/lib/gsapSetup";
 import { BuildIcon, DeconstructIcon, OrchestrateIcon, ScanIcon } from "./PlaybookIcons";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
 
@@ -35,70 +33,41 @@ const STEP_PHOTOS = [
   },
 ];
 
+// An accessible accordion, not a scroll-driven sequence: all four step
+// names show at once; hover/focus preview on desktop, click/tap selects,
+// and arrow keys move between steps -- no information depends only on
+// hover, since focus and click reach the same state.
 export function Playbook() {
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive] = useState(0);
   const hoverCapable = useMediaQuery("(hover: hover) and (pointer: fine)");
-  const reducedMotion = useReducedMotion();
   const baseId = useId();
-  const sectionRef = useRef<HTMLElement>(null);
-  const manualRef = useRef(false);
-  const stRef = useRef<ScrollTrigger | null>(null);
+  const triggerRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // Desktop: pin the section and let scroll drive which step is active,
-  // while hover/focus can still override at any time (manualRef wins until
-  // the pointer leaves, then scroll resumes from wherever it currently is).
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || reducedMotion) return;
-
-    ensureGsapRegistered();
-    const mm = gsap.matchMedia();
-    mm.add("(min-width: 768px)", () => {
-      const st = ScrollTrigger.create({
-        trigger: section,
-        start: "top top",
-        end: () => `+=${window.innerHeight * 1.9}`,
-        scrub: 0.4,
-        pin: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          if (manualRef.current) return;
-          const step = Math.min(3, Math.floor(self.progress * 4));
-          setActive(self.progress <= 0 ? null : step);
-        },
-      });
-      stRef.current = st;
-      return () => {
-        st.kill();
-        stRef.current = null;
-      };
-    });
-
-    return () => mm.revert();
-  }, [reducedMotion]);
-
-  const setManual = (i: number | null) => {
-    manualRef.current = i !== null;
+  const focusStep = (i: number) => {
     setActive(i);
+    triggerRefs.current[i]?.focus();
   };
 
-  const clearManual = () => {
-    manualRef.current = false;
-    const st = stRef.current;
-    if (st) {
-      const step = Math.min(3, Math.floor(Math.max(st.progress, 0) * 4));
-      setActive(st.progress <= 0 ? null : step);
+  const onKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, i: number) => {
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      e.preventDefault();
+      focusStep((i + 1) % playbook.length);
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      e.preventDefault();
+      focusStep((i - 1 + playbook.length) % playbook.length);
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      focusStep(0);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      focusStep(playbook.length - 1);
     }
   };
 
   return (
-    <section
-      ref={sectionRef}
-      className="p32-section tx-grain-dark relative bg-p32-black text-p32-white"
-      id="playbook"
-    >
+    <section className="p32-section tx-grain-dark relative bg-p32-black text-p32-white" id="playbook">
       <div className="p32-container">
-        <h2 className="text-center font-display text-3xl font-medium tracking-tight sm:text-5xl">
+        <h2 className="text-center text-balance font-display text-3xl font-medium tracking-tight sm:text-5xl">
           The Playbook
         </h2>
 
@@ -109,12 +78,8 @@ export function Playbook() {
           />
           <div
             aria-hidden="true"
-            className="absolute top-0 hidden h-px bg-p32-signal transition-transform duration-500 ease-[var(--ease-out)] md:block"
-            style={{
-              width: "25%",
-              transform: `translateX(${active === null ? 0 : active * 100}%)`,
-              opacity: active === null ? 0 : 1,
-            }}
+            className="absolute top-0 hidden h-px bg-p32-signal transition-transform duration-300 ease-[var(--ease-out)] md:block"
+            style={{ width: "25%", transform: `translateX(${active * 100}%)` }}
           />
 
           <div className="grid grid-cols-1 divide-y divide-p32-gray-800 md:grid-cols-4 md:divide-x md:divide-y-0">
@@ -130,8 +95,7 @@ export function Playbook() {
                   className={`relative overflow-hidden border-l-2 pt-8 pl-4 transition-colors duration-300 md:border-l-0 md:px-6 md:pl-6 md:pt-10 md:first:pl-0 ${
                     isOpen ? "border-p32-signal" : "border-transparent"
                   }`}
-                  onMouseEnter={() => hoverCapable && setManual(i)}
-                  onMouseLeave={() => hoverCapable && clearManual()}
+                  onMouseEnter={() => hoverCapable && setActive(i)}
                 >
                   <div
                     aria-hidden="true"
@@ -147,22 +111,26 @@ export function Playbook() {
                     />
                   </div>
                   <button
+                    ref={(el) => {
+                      triggerRefs.current[i] = el;
+                    }}
                     id={triggerId}
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={panelId}
-                    onClick={() => setManual(active === i ? null : i)}
-                    onFocus={() => setManual(i)}
+                    onClick={() => setActive(i)}
+                    onFocus={() => setActive(i)}
+                    onKeyDown={(e) => onKeyDown(e, i)}
                     className="relative block w-full pb-8 text-left md:pb-10"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <span className="font-mono text-sm text-p32-signal">{step.index}</span>
                       <Icon active={isOpen} />
                     </div>
-                    <span className="mt-4 block font-display text-xl font-medium tracking-tight md:text-2xl">
+                    <span className="mt-4 block text-balance font-display text-xl font-medium tracking-tight md:text-2xl">
                       {step.title}
                     </span>
-                    <span className="mt-3 block max-w-xs text-sm leading-relaxed text-p32-gray-300 md:text-base">
+                    <span className="mt-3 block max-w-xs text-pretty text-sm leading-relaxed text-p32-gray-300 md:text-base">
                       {step.statement}
                     </span>
                   </button>
@@ -175,7 +143,7 @@ export function Playbook() {
                     style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                   >
                     <div className="overflow-hidden">
-                      <p className="max-w-xs pb-8 text-sm leading-relaxed text-p32-gray-500 md:pb-10">
+                      <p className="max-w-xs pb-8 text-pretty text-sm leading-relaxed text-p32-gray-500 md:pb-10">
                         {step.expanded}
                       </p>
                     </div>

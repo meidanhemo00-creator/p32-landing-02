@@ -1,132 +1,65 @@
-"use client";
-
-import { useEffect, useRef } from "react";
 import { Nav } from "@/components/Nav";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { hero } from "@/lib/content";
-import { ensureGsapRegistered, gsap } from "@/lib/gsapSetup";
-import { EASE_OUT } from "@/lib/motion";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
 
 // ---------------------------------------------------------------------------
-// Hero: a fast cinematic montage, not a decoration loop.
+// Hero: a cinematic opening film -- no scroll-linked motion, no GSAP, no
+// client-side JavaScript at all. The shot sequence is pure CSS
+// (@keyframes p32-hero-shot / p32-hero-rest in app/globals.css): it
+// autoplays like a native browser animation the instant this HTML paints,
+// and the sitewide prefers-reduced-motion rule already collapses every
+// animation-duration to ~0 -- so reduced motion lands on the settled final
+// frame automatically, no special-case code needed here.
 //
-// No video-generation, image-generation, or licensed-footage-acquisition
-// capability exists in this environment (confirmed before writing this
-// file), and no user-supplied footage was provided. So this montage is built
-// entirely from the four real, credited NASA photographs already in the
-// project (see ASSET_CREDITS.md) -- eight distinct crops/zooms of those four
-// images, cut together like shots rather than shown as one static
-// background. It does not fabricate shots of people, traffic, crowds, or
-// hardware macro that no real or licensed source exists for.
-//
-// The sequence plays once on mount -- the page opens directly into this
-// Hero -- and settles into a calm resting frame that the headline resolves
-// over -- it does not loop indefinitely.
+// No video-generation, image-generation, licensed-footage-acquisition, or
+// video-encoding (no ffmpeg in this environment) capability exists here,
+// and no user-supplied footage was provided -- confirmed and disclosed
+// before building this. So this is not a <video> element: it is a real
+// cinematic-movement-over-imagery sequence (the brief's own sanctioned
+// fallback), built entirely from the four real, credited NASA photographs
+// already in the project, cut and scaled like shots. It does not include
+// shots of people, traffic, crowds, or technical personnel, because no
+// real or licensed source for those exists here -- rather than fabricate
+// them, they are simply not part of the sequence.
 // ---------------------------------------------------------------------------
 
 type Shot = {
   src: string;
   objectPosition: string;
   contrast?: number;
+  delay: number; // seconds
   hold: number; // seconds
 };
 
 const SHOTS: Shot[] = [
-  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "18% 28%", hold: 0.6 },
-  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "62% 70%", contrast: 1.35, hold: 0.6 },
-  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "48% 18%", hold: 0.6 },
-  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "55% 45%", contrast: 1.3, hold: 0.6 },
-  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "78% 62%", hold: 0.6 },
-  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "40% 72%", hold: 0.6 },
-  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "30% 35%", contrast: 1.35, hold: 1.3 },
-  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "42% 45%", contrast: 1.4, hold: 1.3 },
+  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "18% 28%", delay: 0, hold: 0.7 },
+  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "62% 70%", contrast: 1.35, delay: 0.65, hold: 0.7 },
+  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "48% 18%", delay: 1.3, hold: 0.7 },
+  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "55% 45%", contrast: 1.3, delay: 1.95, hold: 0.7 },
+  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "78% 62%", delay: 2.6, hold: 0.7 },
+  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "40% 72%", delay: 3.25, hold: 0.7 },
+  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "30% 35%", contrast: 1.35, delay: 3.9, hold: 1.5 },
+  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "42% 45%", contrast: 1.4, delay: 5.4, hold: 1.5 },
 ];
 
-const REST_SHOT: Shot = {
+const REST_SHOT = {
   src: "/media/nasa/optimized/black-marble-earth-at-night.webp",
   objectPosition: "35% 40%",
-  hold: 0,
 };
 
+const REST_DELAY = 6.7; // seconds -- after the last shot, settle here and stay.
+
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const irisRef = useRef<HTMLDivElement>(null);
-  const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const restRef = useRef<HTMLDivElement>(null);
-  const reducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const iris = irisRef.current;
-    const rest = restRef.current;
-    const layers = layerRefs.current;
-    if (!section || !iris || !rest) return;
-
-    if (reducedMotion) {
-      gsap.set(rest, { opacity: 1 });
-      iris.style.clipPath = "circle(150% at 50% 50%)";
-      return;
-    }
-
-    gsap.set(layers, { opacity: 0, scale: 1.08 });
-    gsap.set(rest, { opacity: 0 });
-    gsap.set(iris, { clipPath: "circle(6% at 50% 50%)" });
-
-    ensureGsapRegistered();
-    const tl = gsap.timeline();
-    let t = 0.1;
-    layers.forEach((layer, i) => {
-      if (!layer) return;
-      const shot = SHOTS[i];
-      tl.to(layer, { opacity: 1, duration: 0.12, ease: "none" }, t);
-      tl.to(layer, { scale: 1.14, duration: shot.hold, ease: "none" }, t);
-      tl.to(layer, { opacity: 0, duration: 0.12, ease: "none" }, t + shot.hold - 0.1);
-      t += shot.hold;
-    });
-    tl.to(rest, { opacity: 1, duration: 0.5, ease: EASE_OUT }, t - 0.1);
-    tl.to(
-      iris,
-      { clipPath: "circle(75% at 50% 50%)", duration: 1.2, ease: EASE_OUT },
-      t + 0.1
-    );
-
-    return () => {
-      tl.kill();
-    };
-  }, [reducedMotion]);
-
-  // A light, non-pinned scroll-out: Hero no longer holds the viewport
-  // hostage the way a pinned deconstruction/reconstruction sequence did --
-  // it just quietly recedes as Vision arrives.
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section || reducedMotion) return;
-    ensureGsapRegistered();
-    const ctx = gsap.context(() => {
-      gsap.to(section, {
-        opacity: 0.55,
-        scale: 0.98,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    }, section);
-    return () => ctx.revert();
-  }, [reducedMotion]);
-
   return (
     <section
       id="top"
-      ref={sectionRef}
       className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden bg-p32-black text-p32-white"
     >
       <Nav />
-      <div ref={restRef} className="absolute inset-0">
+      <div
+        className="absolute inset-0"
+        style={{ animation: `p32-hero-rest 1s ease-out ${REST_DELAY}s 1 both` }}
+      >
         <NasaPhoto
           src={REST_SHOT.src}
           alt="Satellite composite of Earth's city lights at night (NASA Black Marble)"
@@ -138,10 +71,8 @@ export function Hero() {
       {SHOTS.map((shot, i) => (
         <div
           key={i}
-          ref={(el) => {
-            layerRefs.current[i] = el;
-          }}
           className="absolute inset-0"
+          style={{ animation: `p32-hero-shot ${shot.hold}s ease-out ${shot.delay}s 1 both` }}
         >
           <NasaPhoto
             src={shot.src}
@@ -157,8 +88,8 @@ export function Hero() {
         className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%)" }}
       />
-      <div ref={irisRef} className="p32-container relative z-10 flex flex-col items-center py-24 text-center">
-        <h1 className="max-w-4xl font-display text-[8.6vw] font-medium uppercase leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.75rem]">
+      <div className="p32-container relative z-10 flex flex-col items-center py-24 text-center">
+        <h1 className="max-w-4xl text-balance font-display text-[8.6vw] font-medium uppercase leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.75rem]">
           <span className="block">{hero.lineOne}</span>
           <span className="block text-p32-gray-300">{hero.lineTwo}</span>
         </h1>

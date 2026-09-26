@@ -83,6 +83,20 @@ body {
   outline-offset: 3px;
 }
 
+/* Typography audit: headings balance across lines (no orphaned final word),
+   paragraphs use the newer "pretty" wrapping to avoid short dangling lines.
+   `text-wrap: balance` is capped by browsers at ~6 lines, which matches
+   every heading on this page. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
 a,
 button {
   -webkit-tap-highlight-color: transparent;
@@ -192,13 +206,59 @@ button {
   }
 }
 
-/* Reduced motion: collapse everything to instant, final-state rendering. */
+/*
+  Hero opening film: a pure-CSS shot sequence, no JavaScript animation
+  library. Each shot layer gets its own animation-delay/duration (set as
+  inline style) but shares this one keyframe; animation-fill-mode: both
+  holds opacity 0 before a shot's turn and after it, so shots never need
+  JS to coordinate. Autoplays on load like a native browser animation, and
+  because it is transform/opacity only, the sitewide
+  prefers-reduced-motion rule above (which collapses animation-duration to
+  0.001ms) resolves it straight to its settled final frame for free --
+  no separate reduced-motion code path is needed.
+*/
+@keyframes p32-hero-shot {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  12% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.16);
+  }
+}
+
+@keyframes p32-hero-rest {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion: collapse everything to instant, final-state rendering.
+   animation-delay/transition-delay must be zeroed too, not just duration --
+   a delayed animation (e.g. the Hero film's resting frame, scheduled to
+   appear several real seconds in) would otherwise still wait out its real
+   delay under reduced motion before snapping to its end state, leaving a
+   blank frame in the meantime. Caught by actually testing reduced motion,
+   not by reasoning about the duration override alone. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
+    animation-delay: 0s !important;
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
+    transition-delay: 0s !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }

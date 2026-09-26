@@ -1,11 +1,17 @@
 # P32 — Image Asset Manifest
 
-**Status: real photography is in use.** No image- or video-generation
+**Status: real photography is in use.** No image-generation, video-
+generation, licensed-footage-acquisition, or video-encoding (no ffmpeg)
 capability exists in this environment (checked directly, not assumed), so
 every photographic asset on the page is an official NASA satellite image,
-not a generated or procedural stand-in. Full source URLs, titles, and credit
-lines for each file are recorded in `ASSET_CREDITS.md` — this file only maps
-assets to where they're used.
+not a generated, procedural, or video stand-in. Full source URLs, titles,
+and credit lines for each file are recorded in `ASSET_CREDITS.md` — this
+file only maps assets to where they're used.
+
+The Hero's opening "film" is not a `<video>` element for the reason above:
+it is a pure-CSS `@keyframes` sequence of real crop/zoom shots of the same
+four files below (see `components/sections/Hero.tsx`'s `SHOTS` array and
+`app/globals.css`'s `p32-hero-shot`/`p32-hero-rest` keyframes).
 
 ## Source & optimized files
 
@@ -15,9 +21,9 @@ assets to where they're used.
 
 | Optimized file | Original subject | Used in |
 |---|---|---|
-| `black-marble-earth-at-night.webp` | NASA Black Marble — Earth's city lights at night, global composite | Hero (2 montage shots + resting frame), Team (single curtain reveal), Playbook step 04 |
+| `black-marble-earth-at-night.webp` | NASA Black Marble — Earth's city lights at night, global composite | Hero (2 montage shots + resting frame), Team (single static image), Playbook step 04 |
 | `blue-marble-earth.webp` | NASA Blue Marble — true-color whole-Earth composite | Hero (2 montage shots), Resolution (full-bleed, before Contact), Playbook step 03 |
-| `topography-of-the-world.webp` | NASA/JPL/NIMA SRTM global topographic relief map | Hero (2 montage shots), Gap panel 01 (full-screen), Playbook step 02 |
+| `topography-of-the-world.webp` | NASA/JPL/NIMA SRTM global topographic relief map | Hero (2 montage shots), Gap statement 01 (shown when active), Playbook step 02 |
 | `tin-bider-crater-algeria.webp` | Satellite crop of Tin Bider crater, Algeria | Hero (2 montage shots), Playbook step 01 |
 
 No new photographic assets were sourced for the Hero montage or Gap panels

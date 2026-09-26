@@ -11,14 +11,28 @@ export const vision = {
 };
 
 // Superseded hierarchy/copy, supplied directly by the client to replace the
-// original threefold-list presentation below.
+// original threefold-list presentation below. The `context` line per point
+// is the one piece of copy on this page NOT supplied by the client -- it
+// was written to satisfy an explicit "supporting context becomes visible"
+// interaction requirement with nothing to elaborate with. It stays strictly
+// a restatement of the pressure itself (no new P32 capability, client, or
+// metric claims) and should be flagged for the client's review/replacement.
 export const gap = {
   label: "THE GAP IN MODERN DEFENSE",
   headline: "THREE PRESSURES DEFINE THE MODERN OPERATIONAL GAP.",
   points: [
-    "AN EVOLVING TECHNOLOGICAL LANDSCAPE.",
-    "FRICTION BETWEEN DISPARATE SYSTEMS.",
-    "THE SECURITY RISK OF EXPOSING SENSITIVE NEEDS TO THE OPEN MARKET.",
+    {
+      statement: "AN EVOLVING TECHNOLOGICAL LANDSCAPE.",
+      context: "Requirements shift as fast as the technology does — yesterday's platform is rarely tomorrow's answer.",
+    },
+    {
+      statement: "FRICTION BETWEEN DISPARATE SYSTEMS.",
+      context: "Independently built systems rarely speak the same language, and integrating them after the fact costs time no mission can spare.",
+    },
+    {
+      statement: "THE SECURITY RISK OF EXPOSING SENSITIVE NEEDS TO THE OPEN MARKET.",
+      context: "Describing a sensitive requirement to the open market can itself become the exposure — the search for a solution becoming the vulnerability.",
+    },
   ],
 };
 

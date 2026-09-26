@@ -7,7 +7,6 @@ import { Execution } from "@/components/sections/Execution";
 import { Team } from "@/components/sections/Team";
 import { Resolution } from "@/components/sections/Resolution";
 import { Contact } from "@/components/sections/Contact";
-import { MotionRefresh } from "@/components/MotionRefresh";
 
 export default function Home() {
   return (
@@ -21,7 +20,6 @@ export default function Home() {
       <Team />
       <Resolution />
       <Contact />
-      <MotionRefresh />
     </main>
   );
 }
