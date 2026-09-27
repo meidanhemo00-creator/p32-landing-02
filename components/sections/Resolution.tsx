@@ -1,4 +1,5 @@
 import { NasaPhoto } from "@/components/media/NasaPhoto";
+import { SectionBlend } from "@/components/SectionBlend";
 
 // A silent full-bleed image, the pacing "breath" the brief asked for
 // before the close: no copy is invented for it, and none is needed --
@@ -7,6 +8,7 @@ import { NasaPhoto } from "@/components/media/NasaPhoto";
 export function Resolution() {
   return (
     <section className="relative h-[70vh] min-h-[420px] w-full overflow-hidden bg-p32-white md:h-[85vh]">
+      <SectionBlend from="black" />
       <NasaPhoto
         src="/media/nasa/optimized/orbital-sunrise.webp"
         alt="Orbital sunrise: the sun's first rays above Earth's limb, highlighting the thin blue atmosphere, seen from the International Space Station (NASA)"

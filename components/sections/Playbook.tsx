@@ -4,6 +4,7 @@ import { useId, useRef, useState } from "react";
 import { playbook } from "@/lib/content";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
+import { SectionBlend } from "@/components/SectionBlend";
 
 // One large cinematic image stage, not four boxes: a slim step-name strip
 // selects which step is active, and one shared stage below crossfades its
@@ -60,6 +61,7 @@ export function Playbook() {
 
   return (
     <section className="p32-section relative bg-p32-black text-p32-white" id="playbook">
+      <SectionBlend from="white" />
       <div className="p32-container">
         <h2 className="reveal-heading text-center text-balance font-display text-3xl font-medium uppercase tracking-tight sm:text-5xl">
           The Playbook
@@ -91,7 +93,7 @@ export function Playbook() {
                   isActive ? "text-p32-white" : "text-p32-gray-500 hover:text-p32-gray-300"
                 }`}
               >
-                <span className="mr-2 font-mono text-xs text-p32-signal">{step.index}</span>
+                <span className="label-glow mr-2 font-mono text-xs text-p32-signal">{step.index}</span>
                 {step.title}
               </button>
             );
@@ -120,16 +122,18 @@ export function Playbook() {
                   objectPosition={photo.objectPosition}
                   gradient="180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%"
                 />
-                <div className="p32-container relative flex h-full flex-col items-center justify-center gap-5 text-center">
-                  <h3 className="text-balance font-display text-2xl font-medium tracking-tight md:text-4xl">
-                    {step.title}
-                  </h3>
-                  <p className="max-w-2xl text-balance text-lg font-medium leading-snug text-p32-gray-100 md:text-2xl">
-                    {step.statement}
-                  </p>
-                  <p className="max-w-xl text-pretty text-sm leading-relaxed text-p32-gray-400 md:text-base">
-                    {step.expanded}
-                  </p>
+                <div className="p32-container relative flex h-full flex-col items-center justify-center text-center">
+                  <div className="glass-dark flex flex-col items-center gap-5 rounded-3xl px-8 py-10 md:px-16 md:py-14">
+                    <h3 className="text-balance font-display text-2xl font-medium tracking-tight md:text-4xl">
+                      {step.title}
+                    </h3>
+                    <p className="max-w-2xl text-balance text-lg font-medium leading-snug text-p32-gray-100 md:text-2xl">
+                      {step.statement}
+                    </p>
+                    <p className="max-w-xl text-pretty text-sm leading-relaxed text-p32-gray-400 md:text-base">
+                      {step.expanded}
+                    </p>
+                  </div>
                 </div>
               </div>
             );

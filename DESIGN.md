@@ -104,20 +104,56 @@ linked: a one-time mask/fade/scale entrance on major statements. Two CSS
 utility classes in `app/globals.css` (`.reveal-heading`, `.reveal-body`)
 handle this with zero JavaScript:
 
-- `.reveal-heading` — `clip-path` mask + fade + `scale(0.98→1)`, 800ms,
-  `var(--ease-out)`, `animation-fill-mode: both`.
-- `.reveal-body` — fade + `translateY(8px→0)`, 600ms, 150ms delay.
+- `.reveal-heading` — `clip-path` mask + fade + `scale(0.98→1)` +
+  `blur(6px→0)`, 900ms, `var(--ease-out)`, `animation-fill-mode: both`. The
+  blur-to-sharp layer was added in a follow-up pass asking for text to
+  "feel more alive" — still one paint-triggered pass, just a richer one.
+- `.reveal-body` — fade + `translateY(8px→0)`, 700ms, 250ms delay (widened
+  from 150ms in the same pass, for a more deliberate cascade after the
+  heading).
+- `.label-glow` — a slow (4s), continuous, low-contrast opacity breathe
+  (0.65↔1) on small accent labels only (section eyebrows, index numbers:
+  Gap's "01/02/03", Playbook's step indices) — also from the "more alive"
+  request, but ambient rather than one-time, and confirmed to actually
+  freeze under reduced motion (`animation-iteration-count: infinite` is
+  overridden back to a single cycle by the sitewide rule's `!important`).
 
-Both play once, the instant the element exists in the DOM — deliberately
-**not** scroll-triggered (a scroll-linked version was explicitly rejected
-earlier in this project and is not being reintroduced under a different
-name). Because they are pure CSS: if the stylesheet fails to load, the
-element is simply visible at default opacity — content is never hidden
-behind JavaScript, satisfying "do not hide content if JavaScript fails."
-The sitewide `prefers-reduced-motion` rule (see below) collapses both to
-their end state instantly. Applied to each section's primary
-statement/body — not to Hero's headline, which explicitly stays reveal-free
-("the film provides the movement, the typography provides control").
+Both `.reveal-*` classes play once, the instant the element exists in the
+DOM — deliberately **not** scroll-triggered (a scroll-linked version was
+explicitly rejected earlier in this project and is not being reintroduced
+under a different name). Because they are pure CSS: if the stylesheet fails
+to load, the element is simply visible at default opacity — content is
+never hidden behind JavaScript, satisfying "do not hide content if
+JavaScript fails." The sitewide `prefers-reduced-motion` rule (see below)
+collapses all three to their end state instantly. `.reveal-*` are applied
+to each section's primary statement/body — not to Hero's headline, which
+explicitly stays reveal-free ("the film provides the movement, the
+typography provides control").
+
+## Section-to-section gradient blends and glass panels
+
+Two further polish requests: sections meeting at a hard color cut (black ↔
+white) should blend smoothly, and content sitting directly on a photograph
+or on plain black/white should read as a considered "glass" panel rather
+than bare text. Both are static (no animation, nothing to freeze under
+reduced motion):
+
+- `SectionBlend.tsx` — a thin (`h-28 md:h-40`) absolutely-positioned
+  gradient at the top of a section, fading in the color of whichever
+  section precedes it (`from="black"` or `"white"`), `z-[1]` so it sits
+  above a section's own background/image but below its content. Added to
+  every section whose neighbor above it is the opposite color: Vision,
+  Gap, Uniqueness, Playbook, Resolution, Contact. Not added between
+  same-color neighbors (Playbook→Execution→Team are all black).
+- `.glass-light` / `.glass-dark` (in `app/globals.css`) — one consistent
+  frosted-panel treatment (`backdrop-filter: blur(20px)`, a translucent
+  gradient fill, a hairline border, a soft shadow) reused everywhere a
+  panel is needed, instead of one-off inline styles per section:
+  `.glass-light` on Vision's white section; `.glass-dark` on Playbook's
+  stage text, Execution, Team, and Contact's content block. Gap
+  deliberately does **not** get a glass panel — an earlier, more specific
+  instruction for that section was explicit ("large full-width statements
+  ... not cards"), and a boxed panel there would contradict it.
 
 ## Motion system (V3: no scroll-linked animation, GSAP removed entirely)
 

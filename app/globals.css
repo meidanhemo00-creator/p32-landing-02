@@ -264,15 +264,17 @@ button {
     opacity: 0;
     transform: scale(0.98);
     clip-path: inset(0 0 100% 0);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: scale(1);
     clip-path: inset(0 0 0% 0);
+    filter: blur(0);
   }
 }
 .reveal-heading {
-  animation: p32-reveal-heading 800ms var(--ease-out) both;
+  animation: p32-reveal-heading 900ms var(--ease-out) both;
 }
 
 @keyframes p32-reveal-body {
@@ -286,7 +288,43 @@ button {
   }
 }
 .reveal-body {
-  animation: p32-reveal-body 600ms var(--ease-out) 150ms both;
+  animation: p32-reveal-body 700ms var(--ease-out) 250ms both;
+}
+
+/* Subtle, continuous "alive" detail for small accent labels (section
+   eyebrows, index numbers) -- an ambient opacity breathe, not tied to
+   scroll or paint-once. Kept slow and low-contrast so it reads as quiet
+   life, not a distraction. */
+@keyframes p32-label-glow {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.label-glow {
+  animation: p32-label-glow 4s ease-in-out infinite;
+}
+
+/* High-end glass panels. `.glass-light` for content on white/light
+   sections, `.glass-dark` for content on black/dark sections -- one
+   consistent "prestige" treatment reused everywhere a panel is needed,
+   rather than one-off inline styles per section. */
+.glass-light {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.55));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 60px rgba(0, 0, 0, 0.06);
+}
+.glass-dark {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 1px 60px rgba(0, 0, 0, 0.4);
 }
 
 /* Reduced motion: collapse everything to instant, final-state rendering.

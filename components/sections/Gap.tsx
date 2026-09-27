@@ -5,6 +5,7 @@ import { gap } from "@/lib/content";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
 import { SystemLayers } from "@/components/scenes/SystemLayers";
 import { ExposureScan } from "@/components/scenes/ExposureScan";
+import { SectionBlend } from "@/components/SectionBlend";
 
 // Three large full-width statements, not cards, not a bordered list --
 // spacing and image scale do the separating, not visible rule lines. Hover
@@ -32,8 +33,9 @@ export function Gap() {
 
   return (
     <section className="p32-section relative bg-p32-black text-p32-white">
+      <SectionBlend from="white" />
       <div className="p32-container relative flex flex-col items-center text-center">
-        <p className="reveal-body font-mono text-xs tracking-[0.3em] text-p32-signal md:text-sm">{gap.label}</p>
+        <p className="label-glow reveal-body font-mono text-xs tracking-[0.3em] text-p32-signal md:text-sm">{gap.label}</p>
         <h2 className="reveal-heading mt-5 max-w-4xl text-balance font-display text-3xl font-medium uppercase leading-[1.1] tracking-tight sm:text-5xl md:mt-6 md:text-6xl">
           {gap.headline}
         </h2>
@@ -61,7 +63,7 @@ export function Gap() {
                 <Visual index={i} />
               </div>
               <div className="p32-container relative flex h-full min-h-[34vh] flex-col items-center justify-center gap-4 text-center md:min-h-[30vh]">
-                <span className="font-mono text-sm text-p32-signal">{`0${i + 1}`}</span>
+                <span className="label-glow font-mono text-sm text-p32-signal">{`0${i + 1}`}</span>
                 <p
                   className={`max-w-3xl text-balance font-display font-medium uppercase leading-[1.15] tracking-tight transition-colors duration-300 ${
                     isActive ? "text-p32-white" : "text-p32-gray-500 group-hover:text-p32-gray-300"
