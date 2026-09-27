@@ -17,15 +17,13 @@ export function Execution() {
         <RedButtonAbstract armed />
       </div>
       <div className="p32-container relative flex flex-col items-center text-center">
-        <div className="glass-dark flex flex-col items-center rounded-3xl px-8 py-14 md:px-20 md:py-20">
-          <div aria-hidden="true" className="mb-10 h-px w-24 bg-p32-signal-deep md:mb-14" />
-          <h2 className="reveal-heading text-balance font-display text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
-            {execution.lineOne}
-          </h2>
-          <p className="reveal-body mx-auto mt-6 max-w-2xl text-balance font-display text-2xl font-medium leading-snug tracking-tight text-p32-gray-300 sm:text-3xl md:mt-8 md:text-4xl">
-            {execution.lineTwo}
-          </p>
-        </div>
+        <div aria-hidden="true" className="mb-10 h-px w-24 bg-p32-signal-deep md:mb-14" />
+        <h2 className="reveal-heading text-balance font-display text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
+          {execution.lineOne}
+        </h2>
+        <p className="reveal-body mx-auto mt-6 max-w-2xl text-balance font-display text-2xl font-medium leading-snug tracking-tight text-p32-gray-300 sm:text-3xl md:mt-8 md:text-4xl">
+          {execution.lineTwo}
+        </p>
       </div>
     </section>
   );

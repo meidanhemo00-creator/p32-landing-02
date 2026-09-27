@@ -308,25 +308,6 @@ button {
   animation: p32-label-glow 4s ease-in-out infinite;
 }
 
-/* High-end glass panels. `.glass-light` for content on white/light
-   sections, `.glass-dark` for content on black/dark sections -- one
-   consistent "prestige" treatment reused everywhere a panel is needed,
-   rather than one-off inline styles per section. */
-.glass-light {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.55));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 1px 60px rgba(0, 0, 0, 0.06);
-}
-.glass-dark {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: 0 1px 60px rgba(0, 0, 0, 0.4);
-}
-
 /* Reduced motion: collapse everything to instant, final-state rendering.
    animation-delay/transition-delay must be zeroed too, not just duration --
    a delayed animation (e.g. the Hero film's resting frame, scheduled to

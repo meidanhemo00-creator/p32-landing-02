@@ -27,15 +27,13 @@ export function Team() {
         />
       </div>
       <div className="p32-container relative flex flex-col items-center text-center">
-        <div className="glass-dark rounded-3xl px-8 py-12 md:px-20 md:py-16">
-          <h2 className="reveal-heading max-w-2xl text-balance font-display text-3xl font-medium uppercase leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
-            <span className="block">{lineOne}</span>
-            <span className="mt-2 block text-p32-gray-300">{lineTwo}</span>
-          </h2>
-          <div className="reveal-body mx-auto mt-8 max-w-xl space-y-5 text-pretty text-lg leading-relaxed text-p32-gray-300 md:mt-10 md:text-xl">
-            <p>{team.bodyOne}</p>
-            <p>{team.bodyTwo}</p>
-          </div>
+        <h2 className="reveal-heading max-w-2xl text-balance font-display text-3xl font-medium uppercase leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
+          <span className="block">{lineOne}</span>
+          <span className="mt-2 block text-p32-gray-300">{lineTwo}</span>
+        </h2>
+        <div className="reveal-body mx-auto mt-8 max-w-xl space-y-5 text-pretty text-lg leading-relaxed text-p32-gray-300 md:mt-10 md:text-xl">
+          <p>{team.bodyOne}</p>
+          <p>{team.bodyTwo}</p>
         </div>
       </div>
     </section>

@@ -1,6 +1,5 @@
 import { P32Logo } from "@/components/Logo";
 import { uniqueness } from "@/lib/content";
-import { SectionBlend } from "@/components/SectionBlend";
 
 function Headline() {
   const [before, after] = uniqueness.headline.split("P32");
@@ -49,9 +48,8 @@ function LifecycleTrace() {
 
 export function Uniqueness() {
   return (
-    <section className="p32-section relative tx-grain-light bg-p32-white text-p32-black">
-      <SectionBlend from="black" />
-      <div className="p32-container relative flex flex-col items-center text-center">
+    <section className="p32-section tx-grain-light bg-p32-white text-p32-black">
+      <div className="p32-container flex flex-col items-center text-center">
         <Headline />
         <p className="reveal-body mx-auto mt-8 max-w-xl text-pretty text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl">
           {uniqueness.body}

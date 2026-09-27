@@ -5,7 +5,6 @@ import { gap } from "@/lib/content";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
 import { SystemLayers } from "@/components/scenes/SystemLayers";
 import { ExposureScan } from "@/components/scenes/ExposureScan";
-import { SectionBlend } from "@/components/SectionBlend";
 
 // Three large full-width statements, not cards, not a bordered list --
 // spacing and image scale do the separating, not visible rule lines. Hover
@@ -33,7 +32,6 @@ export function Gap() {
 
   return (
     <section className="p32-section relative bg-p32-black text-p32-white">
-      <SectionBlend from="white" />
       <div className="p32-container relative flex flex-col items-center text-center">
         <p className="label-glow reveal-body font-mono text-xs tracking-[0.3em] text-p32-signal md:text-sm">{gap.label}</p>
         <h2 className="reveal-heading mt-5 max-w-4xl text-balance font-display text-3xl font-medium uppercase leading-[1.1] tracking-tight sm:text-5xl md:mt-6 md:text-6xl">

@@ -130,30 +130,19 @@ to each section's primary statement/body — not to Hero's headline, which
 explicitly stays reveal-free ("the film provides the movement, the
 typography provides control").
 
-## Section-to-section gradient blends and glass panels
+## Tried and reverted: section gradient blends and glass panels
 
-Two further polish requests: sections meeting at a hard color cut (black ↔
-white) should blend smoothly, and content sitting directly on a photograph
-or on plain black/white should read as a considered "glass" panel rather
-than bare text. Both are static (no animation, nothing to freeze under
-reduced motion):
-
-- `SectionBlend.tsx` — a thin (`h-28 md:h-40`) absolutely-positioned
-  gradient at the top of a section, fading in the color of whichever
-  section precedes it (`from="black"` or `"white"`), `z-[1]` so it sits
-  above a section's own background/image but below its content. Added to
-  every section whose neighbor above it is the opposite color: Vision,
-  Gap, Uniqueness, Playbook, Resolution, Contact. Not added between
-  same-color neighbors (Playbook→Execution→Team are all black).
-- `.glass-light` / `.glass-dark` (in `app/globals.css`) — one consistent
-  frosted-panel treatment (`backdrop-filter: blur(20px)`, a translucent
-  gradient fill, a hairline border, a soft shadow) reused everywhere a
-  panel is needed, instead of one-off inline styles per section:
-  `.glass-light` on Vision's white section; `.glass-dark` on Playbook's
-  stage text, Execution, Team, and Contact's content block. Gap
-  deliberately does **not** get a glass panel — an earlier, more specific
-  instruction for that section was explicit ("large full-width statements
-  ... not cards"), and a boxed panel there would contradict it.
+A gradient blend between adjacent black/white sections (`SectionBlend.tsx`)
+and a consistent frosted-glass panel treatment (`.glass-light`/`.glass-dark`
+in `app/globals.css`) were built, applied sitewide, verified, and committed
+— then explicitly rejected in the very next round ("i dont like the
+gradient scratch that," "i dont like the glass buttons remove as well") and
+fully removed: the component file deleted, the CSS classes deleted, every
+section reverted to its plain hard-cut/no-panel form. `.reveal-heading`,
+`.reveal-body`, `.label-glow`, and Vision's `OrbitField` ambient animation
+were kept — only the gradient-blend and glass-panel pieces were disliked,
+not the rest of that same round's work. Noted here so a future pass doesn't
+re-propose the same two ideas without knowing they were already tried.
 
 ## Motion system (V3: no scroll-linked animation, GSAP removed entirely)
 
