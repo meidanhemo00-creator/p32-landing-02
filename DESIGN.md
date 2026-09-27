@@ -170,14 +170,19 @@ nothing depends on scroll position to reveal content.
   footage-acquisition, or video-encoding capability exists in this
   environment (no ffmpeg installed; checked and disclosed before building
   this) and no user-supplied footage was provided for this sequence, so
-  this is not a `<video>` element — it is ten real crop/zoom shots of seven
-  already-credited NASA photographs (Black Marble, Blue Marble, SRTM
-  topography, a Tin Bider crater crop, plus an orbital sunrise, Earth's
-  limb over the Pacific, and atmospheric glow with the Milky Way added in
-  this pass), cut like a film, not a fabricated montage of people, traffic,
-  dense cities, or technical personnel that no real or licensed source
-  exists for here. It settles on an eleventh resting frame (the Black
-  Marble global view) after ~8s and stays there — it does not loop. The
+  this is not a `<video>` element — it is twelve real crop/zoom shots of
+  nine already-credited NASA photographs (Black Marble, Blue Marble, SRTM
+  topography, a Tin Bider crater crop, an orbital sunrise, Earth's limb
+  over the Pacific, atmospheric glow with the Milky Way, and — added for a
+  "scale of people from afar" request — the city lights of Lahore and
+  Lucknow, two real named cities photographed from the ISS), cut like a
+  film, not a fabricated montage of people, traffic, or technical
+  personnel that no real or licensed source exists for here. No satellite
+  or orbital photograph, day or night, can resolve individual people —
+  that's a physical limit of the altitude, not a sourcing gap; the two
+  city-lights photos are the honest match. It settles on a thirteenth
+  resting frame (the Black Marble global view) after ~9s and stays there —
+  it does not loop. The
   headline is present in the static markup from the first paint, with no
   reveal animation of its own, not even the sitewide `.reveal-heading`
   ("no animated letters... the film provides the movement, the typography

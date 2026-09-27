@@ -32,7 +32,15 @@ files below (see `components/sections/Hero.tsx`'s `SHOTS` array and
 | `orbital-sunrise.webp` | The sun's first rays above Earth's limb, orbital sunrise (ISS) | Hero (1 shot), Resolution (full-bleed, before Contact) |
 | `earths-limb-pacific.webp` | The sun illuminates Earth's limb above the Pacific Ocean (ISS) | Hero (1 shot), Playbook step 03 |
 | `atmospheric-glow-milkyway.webp` | Atmospheric glow with the Milky Way's stars (ISS) | Hero (1 shot), Execution (full-screen background) |
+| `city-lights-lahore.webp` | The city lights of Lahore, Pakistan's second-largest city (ISS) | Hero (1 shot) |
+| `city-lights-lucknow.webp` | The city lights of Lucknow, India (ISS) | Hero (1 shot) |
 | `team-desert-silhouettes.webp` (in `public/media/team/optimized/`) | Client-supplied photograph: silhouetted figures in tactical gear, desert terrain, low sun | Team (full-bleed, single image) |
+
+Lahore and Lucknow were added specifically for a "scale of people from
+afar, satellite images of big crowded cities" request. No satellite/orbital
+photograph, day or night, can resolve individual people — a physical limit
+of the altitude. These are the honest match: real, named, densely-populated
+cities photographed from the ISS, not a fabricated crowd scene.
 
 No procedural stand-in is used for any of the above. Gap's second and third
 statements (`SystemLayers.tsx`, `ExposureScan.tsx`) remain original,
@@ -47,7 +55,7 @@ and moved to Resolution instead.
 
 ## Treatment
 
-The seven NASA images are rendered through the shared `NasaPhoto` component
+The nine NASA images are rendered through the shared `NasaPhoto` component
 (`components/media/NasaPhoto.tsx`): `grayscale(1)` + a contrast/brightness
 adjustment to bring color satellite photography into the black/white
 system, a directional darkening gradient (tuned per placement for text

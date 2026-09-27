@@ -109,6 +109,43 @@ than using the ~1041×694 web-display copy embedded in the article page —
 the API's `~orig` link is the canonical, unmodified NASA original (5568×3712
 in all three cases), confirmed by content-type/size before use, not assumed.
 
+### 8. The city lights of Lahore, Pakistan
+
+- **Source:** Official NASA Image and Video Library (`images-api.nasa.gov`
+  / images.nasa.gov), NASA ID iss069e009939.
+- **Direct file (full resolution):** https://images-assets.nasa.gov/image/iss069e009939/iss069e009939~orig.jpg
+- **Title:** "The city lights of Lahore, Pakistan"
+- **Credit:** NASA
+- **Description:** The city lights of Lahore, Pakistan's second-largest
+  city, pictured by UAE astronaut and Expedition 69 Flight Engineer Sultan
+  Alneyadi from the International Space Station, orbiting 259 miles above.
+- **Date:** May 10, 2023 (NASA ID iss069e009939)
+- **Original:** `source/city-lights-lahore-iss069e009939.jpg` (5568×3712, JPEG)
+- **Optimized:** `optimized/city-lights-lahore.webp` (2560×1707, 686 KB)
+
+### 9. The city lights of Lucknow, India
+
+- **Source:** Official NASA Image and Video Library (`images-api.nasa.gov`
+  / images.nasa.gov), NASA ID iss069e010770.
+- **Direct file (full resolution):** https://images-assets.nasa.gov/image/iss069e010770/iss069e010770~orig.jpg
+- **Title:** "The city lights of Lucknow, India"
+- **Credit:** NASA
+- **Description:** The city lights of Lucknow, in northern India, pictured
+  by UAE astronaut and Expedition 69 Flight Engineer Sultan Alneyadi from
+  the International Space Station, orbiting 262 miles above.
+- **Date:** May 15, 2023 (NASA ID iss069e010770)
+- **Original:** `source/city-lights-lucknow-iss069e010770.jpg` (5568×3712, JPEG)
+- **Optimized:** `optimized/city-lights-lucknow.webp` (2560×1707, 830 KB)
+
+Assets 8–9 were sourced specifically in response to a request for Hero
+imagery showing "scale of people from afar" via satellite/orbital views of
+crowded cities. Disclosed directly: no satellite or orbital photograph —
+day or night — can resolve individual people; that is an optical/physical
+limit of the altitude, not a sourcing gap. These are the closest honest
+match available: real, named, densely-populated cities (Lahore is
+Pakistan's second-largest city) photographed from the ISS, conveying the
+scale of human settlement rather than literal visible figures.
+
 ---
 
 ## Non-NASA asset: Team photograph

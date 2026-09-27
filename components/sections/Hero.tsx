@@ -17,15 +17,18 @@ import { NasaPhoto } from "@/components/media/NasaPhoto";
 // and no user-supplied footage was provided for this sequence -- confirmed
 // and disclosed before building this. So this is not a <video> element: it
 // is a real cinematic-movement-over-imagery sequence (the brief's own
-// sanctioned fallback), built entirely from seven real, credited NASA
+// sanctioned fallback), built entirely from nine real, credited NASA
 // photographs (see ASSET_CREDITS.md) -- Black Marble, Blue Marble, SRTM
-// topography, a Tin Bider crater crop, and three orbital/atmospheric ISS
+// topography, a Tin Bider crater crop, three orbital/atmospheric ISS
 // photographs (orbital sunrise, Earth's limb over the Pacific, atmospheric
-// glow). It moves between orbital, atmospheric, and terrestrial scale, but
-// does not include shots of people, traffic, crowds, dense cities, or
-// technical personnel, because no real or licensed source for those exists
-// here -- rather than fabricate them, they are simply not part of the
-// sequence.
+// glow), and two named-city night photographs (Lahore, Lucknow) added for
+// "scale of people from afar." No satellite or orbital photograph -- day or
+// night -- can resolve individual people; that is a physical limit of the
+// altitude, not a sourcing gap. These two are the closest honest match:
+// real, densely-populated, named cities (Lahore is Pakistan's second-
+// largest) photographed from the ISS, not a fabricated crowd scene. It does
+// not include shots of people at ground level, traffic, or technical
+// personnel, because no real or licensed source for those exists here.
 // ---------------------------------------------------------------------------
 
 type Shot = {
@@ -38,15 +41,17 @@ type Shot = {
 
 const SHOTS: Shot[] = [
   { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "18% 28%", delay: 0, hold: 0.6 },
-  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "62% 70%", contrast: 1.35, delay: 0.55, hold: 0.6 },
-  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "48% 18%", delay: 1.1, hold: 0.6 },
-  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "55% 45%", contrast: 1.3, delay: 1.65, hold: 0.6 },
-  { src: "/media/nasa/optimized/orbital-sunrise.webp", objectPosition: "center", delay: 2.2, hold: 0.6 },
-  { src: "/media/nasa/optimized/earths-limb-pacific.webp", objectPosition: "center 55%", delay: 2.75, hold: 0.6 },
-  { src: "/media/nasa/optimized/atmospheric-glow-milkyway.webp", objectPosition: "center 40%", delay: 3.3, hold: 0.6 },
-  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "78% 62%", delay: 3.85, hold: 0.6 },
-  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "30% 35%", contrast: 1.35, delay: 4.4, hold: 1.4 },
-  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "42% 45%", contrast: 1.4, delay: 5.8, hold: 1.4 },
+  { src: "/media/nasa/optimized/city-lights-lahore.webp", objectPosition: "center", contrast: 1.25, delay: 0.55, hold: 0.6 },
+  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "62% 70%", contrast: 1.35, delay: 1.1, hold: 0.6 },
+  { src: "/media/nasa/optimized/blue-marble-earth.webp", objectPosition: "48% 18%", delay: 1.65, hold: 0.6 },
+  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "55% 45%", contrast: 1.3, delay: 2.2, hold: 0.6 },
+  { src: "/media/nasa/optimized/orbital-sunrise.webp", objectPosition: "center", delay: 2.75, hold: 0.6 },
+  { src: "/media/nasa/optimized/earths-limb-pacific.webp", objectPosition: "center 55%", delay: 3.3, hold: 0.6 },
+  { src: "/media/nasa/optimized/city-lights-lucknow.webp", objectPosition: "center", contrast: 1.25, delay: 3.85, hold: 0.6 },
+  { src: "/media/nasa/optimized/atmospheric-glow-milkyway.webp", objectPosition: "center 40%", delay: 4.4, hold: 0.6 },
+  { src: "/media/nasa/optimized/black-marble-earth-at-night.webp", objectPosition: "78% 62%", delay: 4.95, hold: 0.6 },
+  { src: "/media/nasa/optimized/topography-of-the-world.webp", objectPosition: "30% 35%", contrast: 1.35, delay: 5.5, hold: 1.4 },
+  { src: "/media/nasa/optimized/tin-bider-crater-algeria.webp", objectPosition: "42% 45%", contrast: 1.4, delay: 6.9, hold: 1.4 },
 ];
 
 const REST_SHOT = {
@@ -54,7 +59,7 @@ const REST_SHOT = {
   objectPosition: "35% 40%",
 };
 
-const REST_DELAY = 7.0; // seconds -- after the last shot, settle here and stay.
+const REST_DELAY = 8.3; // seconds -- after the last shot, settle here and stay.
 
 export function Hero() {
   return (
