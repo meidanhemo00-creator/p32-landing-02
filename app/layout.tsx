@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Archivo, JetBrains_Mono } from "next/font/google";
+import { assetPath } from "@/lib/basePath";
 import "./globals.css";
 
 // Body copy: Inter, as specified in the approved brief.
@@ -34,8 +35,8 @@ export const metadata: Metadata = {
   description:
     "P32: Defense Solution Architects. An objective, trusted executor operating without conflict of interest across the full defense technology lifecycle.",
   icons: {
-    icon: "/icon.png",
-    apple: "/apple-icon.png",
+    icon: assetPath("/icon.png"),
+    apple: assetPath("/apple-icon.png"),
   },
   openGraph: {
     title: "P32",
