@@ -16,6 +16,7 @@ export function NasaPhoto({
   tint = true,
   contrast = 1.15,
   sizes = "100vw",
+  reveal = false,
 }: {
   src: string;
   alt: string;
@@ -25,9 +26,10 @@ export function NasaPhoto({
   tint?: boolean;
   contrast?: number;
   sizes?: string;
+  reveal?: boolean;
 }) {
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div className="absolute inset-0 overflow-hidden" data-reveal={reveal ? "image" : undefined}>
       <Image
         src={assetPath(src)}
         alt={alt}

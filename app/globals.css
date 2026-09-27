@@ -24,7 +24,7 @@
   --p32-signal-deep: #288eae;
 
   --section-pad-y: 7rem;
-  --section-pad-y-sm: 4.5rem;
+  --section-pad-y-sm: 2.75rem;
   --container-max: 1440px;
   --container-pad: 1.5rem;
 
@@ -282,10 +282,16 @@ button {
   is its own inline-block span; a real space (a separate text node, not
   inside the span) sits between them so normal line-wrapping/text-wrap:
   balance still works. `--word-index`, set inline per word by
-  lib/splitWords.tsx, staggers the delay. Still purely paint-triggered, not
-  scroll-linked -- same rule as `.reveal-heading`, which this replaces on
-  headings that use it. `both` fill-mode + the reduced-motion rule below
-  behave the same way: instant, fully visible, once the duration collapses.
+  lib/splitWords.tsx, staggers the delay.
+
+  Trigger moment: gated by an ancestor's `data-reveal="words"` scroll-reveal
+  state (see the scroll-triggered reveal system further down this file),
+  not unconditional on mount -- a heading that is off-screen at load time
+  must not have already finished animating by the time it scrolls into
+  view. `.word-reveal` alone (no `data-reveal="words"` ancestor, e.g. text
+  inside an already-interactive tab/accordion panel) is intentionally
+  inert/static here; those elements are driven by their own component state
+  instead.
 */
 @keyframes p32-word-in {
   from {
@@ -301,8 +307,6 @@ button {
 }
 .word-reveal {
   display: inline-block;
-  animation: p32-word-in 700ms var(--ease-out) both;
-  animation-delay: calc(70ms * var(--word-index, 0));
 }
 
 /* Subtle, continuous "alive" detail for small accent labels (section
@@ -351,4 +355,81 @@ button {
   img[data-hero-video-poster] {
     display: block !important;
   }
+}
+
+/*
+  Scroll-triggered entrance reveals (final polish pass). Unlike
+  .reveal-body/.word-reveal above -- which animate the instant an element
+  exists in the DOM, i.e. on initial page load for a static page, meaning
+  everything below the fold had already finished animating long before a
+  visitor scrolled to see it -- these actually trigger the moment an element
+  enters the viewport, once, during normal scrolling.
+
+  Default state (no `data-reveal` styling applied) is fully visible: content
+  only ever becomes hidden-then-revealed once `html.js-reveal` is present,
+  which the inline bootstrap script in app/layout.tsx adds synchronously
+  before paint, and only when `prefers-reduced-motion` is NOT set. So: no JS
+  -> visible. Reduced motion -> visible immediately, no gating at all. JS +
+  full motion -> hidden until RevealObserver (components/RevealObserver.tsx)
+  adds `.in-view` on intersection, one time, via IntersectionObserver.
+*/
+[data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+html.js-reveal [data-reveal]:not(.in-view) {
+  opacity: 0;
+}
+html.js-reveal [data-reveal="up"]:not(.in-view) {
+  transform: translateY(24px);
+}
+html.js-reveal [data-reveal="scale"]:not(.in-view) {
+  transform: scale(0.97);
+}
+html.js-reveal [data-reveal="image"]:not(.in-view) {
+  transform: scale(1.08);
+}
+html.js-reveal [data-reveal].in-view {
+  opacity: 1;
+  transform: none;
+}
+html.js-reveal [data-reveal="up"].in-view,
+html.js-reveal [data-reveal="scale"].in-view {
+  transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+}
+html.js-reveal [data-reveal="image"].in-view {
+  transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+}
+
+/* Sequential stagger for groups of reveal items (numbered points, step
+   tabs): each item's own transition-delay, set inline via
+   --reveal-index, same pattern as --word-index above. */
+html.js-reveal [data-reveal].in-view {
+  transition-delay: calc(70ms * var(--reveal-index, 0));
+}
+
+/* Word-level heading stagger, gated by the same ancestor in-view state
+   instead of firing on paint. Reuses the existing .word-reveal spans and
+   --word-index stagger (lib/splitWords.tsx) unchanged -- only the trigger
+   moment changes. */
+html.js-reveal [data-reveal="words"]:not(.in-view) .word-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.94);
+  filter: blur(5px);
+}
+html.js-reveal [data-reveal="words"].in-view .word-reveal {
+  animation: p32-word-in 700ms var(--ease-out) both;
+  animation-delay: calc(70ms * var(--word-index, 0));
+}
+
+/* Pressable elements: instant, subtle feedback confirming the tap/click
+   landed. Gated to fine-pointer hover only where hover itself changes
+   layout-adjacent transforms; :active is safe ungated since it only fires
+   on an actual press. */
+.p32-press {
+  transition: transform 160ms var(--ease-out);
+}
+.p32-press:active {
+  transform: scale(0.97);
 }

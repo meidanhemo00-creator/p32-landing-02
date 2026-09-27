@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useId, useRef, useState } from "react";
 import { playbook } from "@/lib/content";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -62,14 +63,17 @@ export function Playbook() {
   return (
     <section className="p32-section relative bg-p32-black text-p32-white" id="playbook">
       <div className="p32-container">
-        <h2 className="text-center text-balance font-display text-3xl font-medium uppercase tracking-tight sm:text-5xl">
+        <h2
+          data-reveal="words"
+          className="text-center text-balance font-display text-3xl font-medium uppercase tracking-tight sm:text-5xl"
+        >
           {splitWords("The Playbook")}
         </h2>
 
         <div
           role="tablist"
           aria-label="Playbook steps"
-          className="reveal-body mt-14 flex flex-wrap justify-center gap-x-8 gap-y-3 border-b border-p32-gray-800 pb-5 md:mt-16 md:gap-x-12"
+          className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 border-b border-p32-gray-800 pb-5 md:mt-16 md:gap-x-12"
         >
           {playbook.map((step, i) => {
             const isActive = active === i;
@@ -88,7 +92,9 @@ export function Playbook() {
                 onMouseEnter={() => hoverCapable && setActive(i)}
                 onClick={() => setActive(i)}
                 onKeyDown={(e) => onKeyDown(e, i)}
-                className={`whitespace-nowrap pb-1 text-sm font-medium tracking-tight transition-colors md:text-base ${
+                data-reveal="up"
+                style={{ "--reveal-index": i } as CSSProperties}
+                className={`p32-press whitespace-nowrap pb-1 text-sm font-medium tracking-tight transition-colors md:text-base ${
                   isActive ? "text-p32-white" : "text-p32-gray-500 hover:text-p32-gray-300"
                 }`}
               >
@@ -103,7 +109,8 @@ export function Playbook() {
           id={`${baseId}-stage`}
           role="tabpanel"
           aria-labelledby={`${baseId}-tab-${active}`}
-          className="relative mt-4 min-h-[62vh] overflow-hidden md:min-h-[68vh]"
+          data-reveal="up"
+          className="relative mt-4 min-h-[58vh] overflow-hidden md:min-h-[68vh]"
         >
           {playbook.map((step, i) => {
             const isActive = active === i;

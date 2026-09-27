@@ -62,8 +62,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${inter.variable} ${archivo.variable} ${jbMono.variable}`}
+      suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        {/* Synchronous, before-paint: adds `js-reveal` to <html> unless the
+            visitor prefers reduced motion. CSS in globals.css only hides
+            [data-reveal] elements when this class is present, so content
+            stays fully visible if JS fails to load or run, and reduced-
+            motion visitors never see anything wait to appear. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('js-reveal')}}catch(e){}",
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

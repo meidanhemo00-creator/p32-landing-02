@@ -1,3 +1,4 @@
+import { RevealObserver } from "@/components/RevealObserver";
 import { Hero } from "@/components/sections/Hero";
 import { Vision } from "@/components/sections/Vision";
 import { Gap } from "@/components/sections/Gap";
@@ -11,6 +12,7 @@ import { Contact } from "@/components/sections/Contact";
 export default function Home() {
   return (
     <main>
+      <RevealObserver />
       <Hero />
       <Vision />
       <Gap />

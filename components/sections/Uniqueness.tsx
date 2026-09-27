@@ -7,7 +7,10 @@ function Headline() {
   const [before, after] = uniqueness.headline.split("P32");
   const logoIndex = before.trim().split(" ").filter(Boolean).length;
   return (
-    <h2 className="max-w-4xl text-balance font-display text-3xl font-medium leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
+    <h2
+      data-reveal="words"
+      className="max-w-4xl text-balance font-display text-3xl font-medium leading-[1.15] tracking-tight sm:text-5xl md:text-6xl"
+    >
       {splitWords(before)}{" "}
       <span
         className="word-reveal inline-flex items-center align-baseline"
@@ -28,7 +31,7 @@ const NODE_X = [4, 300, 596];
 function LifecycleTrace() {
   const stages = uniqueness.lifecycle;
   return (
-    <div className="mx-auto mt-16 flex max-w-2xl flex-col items-center md:mt-24">
+    <div data-reveal="scale" className="mx-auto mt-10 flex max-w-2xl flex-col items-center md:mt-24">
       <svg viewBox="-20 -10 640 50" className="w-full max-w-2xl overflow-visible" aria-hidden="true">
         <line x1="4" y1="20" x2="596" y2="20" stroke="var(--p32-signal-deep)" strokeWidth="1.5" />
         {NODE_X.map((x, i) => (
@@ -57,7 +60,10 @@ export function Uniqueness() {
     <section className="p32-section tx-grain-light bg-p32-white text-p32-black">
       <div className="p32-container flex flex-col items-center text-center">
         <Headline />
-        <p className="reveal-body mx-auto mt-8 max-w-xl text-pretty text-lg leading-relaxed text-p32-gray-700 md:mt-10 md:text-xl">
+        <p
+          data-reveal="up"
+          className="mx-auto mt-6 max-w-xl text-pretty text-base leading-relaxed text-p32-gray-700 sm:text-lg md:mt-10 md:text-xl"
+        >
           {uniqueness.body}
         </p>
         <LifecycleTrace />

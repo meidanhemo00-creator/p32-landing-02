@@ -1,9 +1,7 @@
 // All copy below is reproduced verbatim from the approved P32 brief.
 // Nothing here is invented: no clients, partners, metrics, or capabilities
-// have been added. Where the source text itself uses an em dash (e.g. in the
-// numbered Playbook titles), it has been preserved exactly as supplied rather
-// than silently corrected, per the client's instruction not to silently
-// rewrite approved claims.
+// have been added. Per the client's explicit instruction, every em/en dash
+// originally in this file has been normalized to a plain hyphen.
 
 export const vision = {
   headline: "DEFENSE SOLUTION ARCHITECTS that will make your MISSION POSSIBLE",
@@ -23,7 +21,7 @@ export const gap = {
   points: [
     {
       statement: "AN EVOLVING TECHNOLOGICAL LANDSCAPE.",
-      context: "Requirements shift as fast as the technology does — yesterday's platform is rarely tomorrow's answer.",
+      context: "Requirements shift as fast as the technology does - yesterday's platform is rarely tomorrow's answer.",
     },
     {
       statement: "FRICTION BETWEEN DISPARATE SYSTEMS.",
@@ -31,14 +29,14 @@ export const gap = {
     },
     {
       statement: "THE SECURITY RISK OF EXPOSING SENSITIVE NEEDS TO THE OPEN MARKET.",
-      context: "Describing a sensitive requirement to the open market can itself become the exposure — the search for a solution becoming the vulnerability.",
+      context: "Describing a sensitive requirement to the open market can itself become the exposure - the search for a solution becoming the vulnerability.",
     },
   ],
 };
 
 export const uniqueness = {
   headline: "As an objective & Trusted Executor, P32 operates without conflict of interest.",
-  body: "We manage the entire lifecycle: from scouting and development—to integration—to ensure an unfair advantage in the field.",
+  body: "We manage the entire lifecycle: from scouting and development - to integration - to ensure an unfair advantage in the field.",
   lifecycle: ["Scouting", "Development", "Integration"],
 };
 
@@ -57,7 +55,7 @@ export const playbook = [
     statement:
       "Scanning the global landscape for Deep Tech and existing innovations that fit the gap.",
     expanded:
-      "We continuously scout the global landscape—from defense innovations to cyber capabilities—to pinpoint the exact tools that match your specific mission gaps.",
+      "We continuously scout the global landscape - from defense innovations to cyber capabilities - to pinpoint the exact tools that match your specific mission gaps.",
   },
   {
     index: "03",

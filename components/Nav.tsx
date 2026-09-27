@@ -10,7 +10,7 @@ export function Nav() {
         </Link>
         <Link
           href="#contact"
-          className="text-sm text-p32-white/80 transition-colors hover:text-p32-white"
+          className="p32-press text-sm text-p32-white/80 transition-colors hover:text-p32-white"
         >
           Contact
         </Link>

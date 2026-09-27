@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useState } from "react";
 import { gap } from "@/lib/content";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
@@ -34,13 +35,16 @@ export function Gap() {
   return (
     <section className="p32-section relative bg-p32-black text-p32-white">
       <div className="p32-container relative flex flex-col items-center text-center">
-        <p className="label-glow reveal-body font-mono text-xs tracking-[0.3em] text-p32-signal md:text-sm">{gap.label}</p>
-        <h2 className="mt-5 max-w-4xl text-balance font-display text-3xl font-medium uppercase leading-[1.1] tracking-tight sm:text-5xl md:mt-6 md:text-6xl">
+        <p className="label-glow font-mono text-xs tracking-[0.3em] text-p32-signal md:text-sm">{gap.label}</p>
+        <h2
+          data-reveal="words"
+          className="mt-4 max-w-4xl text-balance font-display text-3xl font-medium uppercase leading-[1.1] tracking-tight sm:text-5xl md:mt-6 md:text-6xl"
+        >
           {splitWords(gap.headline)}
         </h2>
       </div>
 
-      <div className="mt-16 flex flex-col gap-3 md:mt-20 md:gap-4">
+      <div className="mt-10 flex flex-col gap-2 md:mt-20 md:gap-4">
         {gap.points.map((point, i) => {
           const isActive = active === i;
           return (
@@ -51,8 +55,11 @@ export function Gap() {
               onFocus={() => setActive(i)}
               onClick={() => setActive(i)}
               aria-pressed={isActive}
-              className="group relative block min-h-[34vh] w-full overflow-hidden text-left transition-[min-height] duration-500 ease-out md:min-h-[30vh]"
-              style={{ minHeight: isActive ? "48vh" : undefined }}
+              data-reveal="up"
+              style={{ "--reveal-index": i } as CSSProperties}
+              className={`p32-press group relative block w-full overflow-hidden text-left transition-[min-height] duration-500 ease-out ${
+                isActive ? "min-h-[34vh] md:min-h-[48vh]" : "min-h-[20vh] md:min-h-[30vh]"
+              }`}
             >
               <div
                 aria-hidden="true"
@@ -61,7 +68,11 @@ export function Gap() {
               >
                 <Visual index={i} />
               </div>
-              <div className="p32-container relative flex h-full min-h-[34vh] flex-col items-center justify-center gap-4 text-center md:min-h-[30vh]">
+              <div
+                className={`p32-container relative flex h-full flex-col items-center justify-center gap-3 text-center md:gap-4 ${
+                  isActive ? "min-h-[34vh] md:min-h-[48vh]" : "min-h-[20vh] md:min-h-[30vh]"
+                }`}
+              >
                 <span className="label-glow font-mono text-sm text-p32-signal">{`0${i + 1}`}</span>
                 <p
                   className={`max-w-3xl text-balance font-display font-medium uppercase leading-[1.15] tracking-tight transition-colors duration-300 ${
