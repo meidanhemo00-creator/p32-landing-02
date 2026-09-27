@@ -1,4 +1,5 @@
 import { Nav } from "@/components/Nav";
+import { P32LogoOnDark } from "@/components/Logo";
 import { hero } from "@/lib/content";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
 
@@ -95,6 +96,7 @@ export function Hero() {
         style={{ background: "radial-gradient(ellipse at center, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 100%)" }}
       />
       <div className="p32-container relative z-10 flex flex-col items-center py-24 text-center">
+        <P32LogoOnDark height={34} priority className="mb-8 md:mb-10" />
         <h1 className="max-w-4xl text-balance font-display text-[8.6vw] font-medium uppercase leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.75rem]">
           <span className="block">{hero.lineOne}</span>
           <span className="block text-p32-gray-300">{hero.lineTwo}</span>
