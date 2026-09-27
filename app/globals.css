@@ -251,36 +251,21 @@ button {
 }
 
 /*
-  Restrained one-time entrance reveal for major statements -- explicitly
-  NOT scroll-linked (it plays once on paint, the moment the element exists,
+  Restrained one-time entrance reveal for supporting text -- explicitly NOT
+  scroll-linked (it plays once on paint, the moment the element exists,
   regardless of scroll position or visibility). Pure CSS: if the stylesheet
   fails to load, the element is simply visible at its default opacity, so
   content is never hidden behind JavaScript. `both` fill-mode holds the
   start state before the animation and the end state after; the sitewide
   reduced-motion rule below collapses it to the end state instantly.
+  (Headings now use the word-level `.word-reveal` stagger below instead --
+  see lib/splitWords.tsx.)
 */
-@keyframes p32-reveal-heading {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-    clip-path: inset(0 0 100% 0);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-    clip-path: inset(0 0 0% 0);
-    filter: blur(0);
-  }
-}
-.reveal-heading {
-  animation: p32-reveal-heading 900ms var(--ease-out) both;
-}
 
 @keyframes p32-reveal-body {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -288,7 +273,36 @@ button {
   }
 }
 .reveal-body {
-  animation: p32-reveal-body 700ms var(--ease-out) 250ms both;
+  animation: p32-reveal-body 800ms var(--ease-out) 350ms both;
+}
+
+/*
+  Word-level heading entrance -- more movement than a single mask reveal,
+  short of animating individual letters (which stays off-limits). Each word
+  is its own inline-block span; a real space (a separate text node, not
+  inside the span) sits between them so normal line-wrapping/text-wrap:
+  balance still works. `--word-index`, set inline per word by
+  lib/splitWords.tsx, staggers the delay. Still purely paint-triggered, not
+  scroll-linked -- same rule as `.reveal-heading`, which this replaces on
+  headings that use it. `both` fill-mode + the reduced-motion rule below
+  behave the same way: instant, fully visible, once the duration collapses.
+*/
+@keyframes p32-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.94);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+.word-reveal {
+  display: inline-block;
+  animation: p32-word-in 700ms var(--ease-out) both;
+  animation-delay: calc(70ms * var(--word-index, 0));
 }
 
 /* Subtle, continuous "alive" detail for small accent labels (section

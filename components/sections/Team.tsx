@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { team } from "@/lib/content";
 import { assetPath } from "@/lib/basePath";
+import { splitWords } from "@/lib/splitWords";
 
 // The client's own approved photograph, full-bleed, cinematic black-and-
 // white -- not the earlier NASA stand-in. No people/weapons/insignia/effects
@@ -27,9 +28,11 @@ export function Team() {
         />
       </div>
       <div className="p32-container relative flex flex-col items-center text-center">
-        <h2 className="reveal-heading max-w-2xl text-balance font-display text-3xl font-medium uppercase leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
-          <span className="block">{lineOne}</span>
-          <span className="mt-2 block text-p32-gray-300">{lineTwo}</span>
+        <h2 className="max-w-2xl text-balance font-display text-3xl font-medium uppercase leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
+          <span className="block">{splitWords(lineOne)}</span>
+          <span className="mt-2 block text-p32-gray-300">
+            {splitWords(lineTwo, lineOne.split(" ").filter(Boolean).length)}
+          </span>
         </h2>
         <div className="reveal-body mx-auto mt-8 max-w-xl space-y-5 text-pretty text-lg leading-relaxed text-p32-gray-300 md:mt-10 md:text-xl">
           <p>{team.bodyOne}</p>

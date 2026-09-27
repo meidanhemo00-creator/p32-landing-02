@@ -1,15 +1,21 @@
+import type { CSSProperties } from "react";
 import { P32Logo } from "@/components/Logo";
 import { uniqueness } from "@/lib/content";
+import { splitWords } from "@/lib/splitWords";
 
 function Headline() {
   const [before, after] = uniqueness.headline.split("P32");
+  const logoIndex = before.trim().split(" ").filter(Boolean).length;
   return (
-    <h2 className="reveal-heading max-w-4xl text-balance font-display text-3xl font-medium leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
-      {before}
-      <span className="inline-flex items-center align-baseline">
+    <h2 className="max-w-4xl text-balance font-display text-3xl font-medium leading-[1.15] tracking-tight sm:text-5xl md:text-6xl">
+      {splitWords(before)}{" "}
+      <span
+        className="word-reveal inline-flex items-center align-baseline"
+        style={{ "--word-index": logoIndex } as CSSProperties}
+      >
         <P32Logo height={34} className="inline-block h-[0.62em] w-auto translate-y-[0.05em]" />
-      </span>
-      {after}
+      </span>{" "}
+      {splitWords(after, logoIndex + 1)}
     </h2>
   );
 }

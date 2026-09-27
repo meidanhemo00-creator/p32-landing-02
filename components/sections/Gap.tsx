@@ -5,6 +5,7 @@ import { gap } from "@/lib/content";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
 import { SystemLayers } from "@/components/scenes/SystemLayers";
 import { ExposureScan } from "@/components/scenes/ExposureScan";
+import { splitWords } from "@/lib/splitWords";
 
 // Three large full-width statements, not cards, not a bordered list --
 // spacing and image scale do the separating, not visible rule lines. Hover
@@ -34,8 +35,8 @@ export function Gap() {
     <section className="p32-section relative bg-p32-black text-p32-white">
       <div className="p32-container relative flex flex-col items-center text-center">
         <p className="label-glow reveal-body font-mono text-xs tracking-[0.3em] text-p32-signal md:text-sm">{gap.label}</p>
-        <h2 className="reveal-heading mt-5 max-w-4xl text-balance font-display text-3xl font-medium uppercase leading-[1.1] tracking-tight sm:text-5xl md:mt-6 md:text-6xl">
-          {gap.headline}
+        <h2 className="mt-5 max-w-4xl text-balance font-display text-3xl font-medium uppercase leading-[1.1] tracking-tight sm:text-5xl md:mt-6 md:text-6xl">
+          {splitWords(gap.headline)}
         </h2>
       </div>
 
@@ -68,7 +69,7 @@ export function Gap() {
                   }`}
                   style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
                 >
-                  {point.statement}
+                  {splitWords(point.statement)}
                 </p>
                 <div
                   className="grid w-full max-w-xl transition-[grid-template-rows] duration-500 ease-out"

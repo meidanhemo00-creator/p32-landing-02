@@ -4,6 +4,7 @@ import { useId, useRef, useState } from "react";
 import { playbook } from "@/lib/content";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { NasaPhoto } from "@/components/media/NasaPhoto";
+import { splitWords } from "@/lib/splitWords";
 
 // One large cinematic image stage, not four boxes: a slim step-name strip
 // selects which step is active, and one shared stage below crossfades its
@@ -61,8 +62,8 @@ export function Playbook() {
   return (
     <section className="p32-section relative bg-p32-black text-p32-white" id="playbook">
       <div className="p32-container">
-        <h2 className="reveal-heading text-center text-balance font-display text-3xl font-medium uppercase tracking-tight sm:text-5xl">
-          The Playbook
+        <h2 className="text-center text-balance font-display text-3xl font-medium uppercase tracking-tight sm:text-5xl">
+          {splitWords("The Playbook")}
         </h2>
 
         <div
@@ -122,10 +123,10 @@ export function Playbook() {
                 />
                 <div className="p32-container relative flex h-full flex-col items-center justify-center gap-5 text-center">
                   <h3 className="text-balance font-display text-2xl font-medium tracking-tight md:text-4xl">
-                    {step.title}
+                    {splitWords(step.title)}
                   </h3>
                   <p className="max-w-2xl text-balance text-lg font-medium leading-snug text-p32-gray-100 md:text-2xl">
-                    {step.statement}
+                    {splitWords(step.statement)}
                   </p>
                   <p className="max-w-xl text-pretty text-sm leading-relaxed text-p32-gray-400 md:text-base">
                     {step.expanded}

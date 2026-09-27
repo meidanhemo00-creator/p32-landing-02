@@ -100,34 +100,50 @@ was not adopted, only its confidence and restraint from chrome.
 ## Entrance reveal (restrained, one-time, non-scroll-linked)
 
 A later revision asked for *some* motion back, specifically not scroll-
-linked: a one-time mask/fade/scale entrance on major statements. Two CSS
-utility classes in `app/globals.css` (`.reveal-heading`, `.reveal-body`)
-handle this with zero JavaScript:
+linked: a one-time entrance on major statements. Then, in a further pass,
+"more movement and animations on the texts." All of it stays paint-
+triggered (plays once, the instant an element exists in the DOM) and pure
+CSS — never scroll-triggered, since a scroll-linked version was explicitly
+rejected earlier in this project and is not being reintroduced under a
+different name.
 
-- `.reveal-heading` — `clip-path` mask + fade + `scale(0.98→1)` +
-  `blur(6px→0)`, 900ms, `var(--ease-out)`, `animation-fill-mode: both`. The
-  blur-to-sharp layer was added in a follow-up pass asking for text to
-  "feel more alive" — still one paint-triggered pass, just a richer one.
-- `.reveal-body` — fade + `translateY(8px→0)`, 700ms, 250ms delay (widened
-  from 150ms in the same pass, for a more deliberate cascade after the
-  heading).
+- **`.word-reveal`** (`app/globals.css`, built via `lib/splitWords.tsx`) —
+  every section heading (Vision, Gap, Uniqueness, Playbook, Execution,
+  Team, plus Gap's and Playbook's large per-statement/per-step text) is
+  now split into per-word `<span>` elements, each fading/rising/un-blurring
+  in with a 70ms stagger per word (`translateY(28px→0)`, `scale(0.94→1)`,
+  `blur(5px→0)`, 700ms, `var(--ease-out)`). This replaced the earlier
+  single-block `.reveal-heading` (deleted, along with its keyframe, once
+  nothing referenced it) — word-level movement is explicitly the ceiling
+  here, not letter-level, which stays off-limits everywhere on the site,
+  Hero especially. `splitWords()` keeps real space characters as separate
+  text nodes between the word-spans (not inside them), so normal line-
+  wrapping and `text-wrap: balance` are unaffected — verified at 390px.
+  Confirmed genuinely animating (not just correctly delayed) by sampling
+  every `.word-reveal` element's computed opacity immediately after
+  navigation: word 0 of every heading sitewide read ~42% opacity, word 1
+  ~2%, later words 0% — all mid-flight simultaneously, not a static state.
+  Also confirmed all 135 instances resolve to opacity 1 under reduced
+  motion. Uniqueness's headline (which embeds the inline P32 logo
+  mid-sentence) gives the logo its own word-index slot so it animates in
+  sequence with the surrounding words rather than popping in separately.
+- `.reveal-body` — fade + `translateY(14px→0)`, 800ms, 350ms delay
+  (widened again in this same pass). Still a single block, not staggered
+  per word — supporting/body text explicitly does not get word-by-word
+  stagger, per an earlier, more specific instruction; only headings do.
 - `.label-glow` — a slow (4s), continuous, low-contrast opacity breathe
   (0.65↔1) on small accent labels only (section eyebrows, index numbers:
-  Gap's "01/02/03", Playbook's step indices) — also from the "more alive"
-  request, but ambient rather than one-time, and confirmed to actually
-  freeze under reduced motion (`animation-iteration-count: infinite` is
-  overridden back to a single cycle by the sitewide rule's `!important`).
+  Gap's "01/02/03", Playbook's step indices) — ambient rather than
+  one-time, confirmed to actually freeze under reduced motion
+  (`animation-iteration-count: infinite` is overridden back to a single
+  cycle by the sitewide rule's `!important`).
 
-Both `.reveal-*` classes play once, the instant the element exists in the
-DOM — deliberately **not** scroll-triggered (a scroll-linked version was
-explicitly rejected earlier in this project and is not being reintroduced
-under a different name). Because they are pure CSS: if the stylesheet fails
-to load, the element is simply visible at default opacity — content is
-never hidden behind JavaScript, satisfying "do not hide content if
-JavaScript fails." The sitewide `prefers-reduced-motion` rule (see below)
-collapses all three to their end state instantly. `.reveal-*` are applied
-to each section's primary statement/body — not to Hero's headline, which
-explicitly stays reveal-free ("the film provides the movement, the
+Because all of this is pure CSS: if the stylesheet fails to load, every
+element is simply visible at default opacity — content is never hidden
+behind JavaScript, satisfying "do not hide content if JavaScript fails."
+The sitewide `prefers-reduced-motion` rule (see below) collapses all of it
+to its end state instantly. None of this is applied to Hero's headline,
+which explicitly stays reveal-free ("the film provides the movement, the
 typography provides control").
 
 ## Tried and reverted: section gradient blends and glass panels
