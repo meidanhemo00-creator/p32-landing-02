@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { team } from "@/lib/content";
+import { assetPath } from "@/lib/basePath";
 
 // The client's own approved photograph, full-bleed, cinematic black-and-
 // white -- not the earlier NASA stand-in. No people/weapons/insignia/effects
@@ -13,7 +14,7 @@ export function Team() {
     <section className="relative flex min-h-[100dvh] items-center overflow-hidden bg-p32-black text-p32-white">
       <div className="absolute inset-0">
         <Image
-          src="/media/team/optimized/team-desert-silhouettes.webp"
+          src={assetPath("/media/team/optimized/team-desert-silhouettes.webp")}
           alt="Silhouetted figures in tactical gear walking across desert terrain at low sun"
           fill
           sizes="100vw"

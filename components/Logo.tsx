@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { assetPath } from "@/lib/basePath";
 
 // The official P32 lockup (wordmark + star), used unmodified wherever the
 // brand name appears visually. Two confirmed source files exist: the black
@@ -23,7 +24,7 @@ function P32LogoBase({
   const width = Math.round((height * ASPECT_W) / ASPECT_H);
   return (
     <Image
-      src={src}
+      src={assetPath(src)}
       alt="P32"
       width={width}
       height={height}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { assetPath } from "@/lib/basePath";
 
 // Real NASA photography (see ASSET_CREDITS.md), treated as one cohesive
 // duotone system rather than shown in raw stock color: grayscale base,
@@ -28,7 +29,7 @@ export function NasaPhoto({
   return (
     <div className="absolute inset-0 overflow-hidden">
       <Image
-        src={src}
+        src={assetPath(src)}
         alt={alt}
         fill
         priority={priority}

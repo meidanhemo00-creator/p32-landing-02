@@ -8,10 +8,10 @@ export function Resolution() {
   return (
     <section className="relative h-[70vh] min-h-[420px] w-full overflow-hidden bg-p32-white md:h-[85vh]">
       <NasaPhoto
-        src="/media/nasa/optimized/blue-marble-earth.webp"
-        alt="True-color composite of the whole Earth (NASA Blue Marble)"
-        objectPosition="center"
-        gradient="180deg, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0.1) 100%"
+        src="/media/nasa/optimized/orbital-sunrise.webp"
+        alt="Orbital sunrise: the sun's first rays above Earth's limb, highlighting the thin blue atmosphere, seen from the International Space Station (NASA)"
+        objectPosition="center 60%"
+        gradient="180deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0.08) 100%"
         contrast={1.05}
       />
     </section>

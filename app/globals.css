@@ -200,6 +200,18 @@ button {
   }
 }
 
+/* Vision's ambient orbit background -- continuous, not scroll-linked. */
+@keyframes p32-orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes p32-orbit-spin-reverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
 /*
   Hero opening film: a pure-CSS shot sequence, no JavaScript animation
   library. Each shot layer gets its own animation-delay/duration (set as

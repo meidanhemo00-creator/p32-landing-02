@@ -29,7 +29,7 @@ files below (see `components/sections/Hero.tsx`'s `SHOTS` array and
 | `blue-marble-earth.webp` | NASA Blue Marble — true-color whole-Earth composite | Hero (2 shots) |
 | `topography-of-the-world.webp` | NASA/JPL/NIMA SRTM global topographic relief map | Hero (2 shots), Gap statement 01 (shown when active), Playbook step 02 |
 | `tin-bider-crater-algeria.webp` | Satellite crop of Tin Bider crater, Algeria | Hero (2 shots), Playbook step 01 |
-| `orbital-sunrise.webp` | The sun's first rays above Earth's limb, orbital sunrise (ISS) | Hero (1 shot), Vision (full-width band) |
+| `orbital-sunrise.webp` | The sun's first rays above Earth's limb, orbital sunrise (ISS) | Hero (1 shot), Resolution (full-bleed, before Contact) |
 | `earths-limb-pacific.webp` | The sun illuminates Earth's limb above the Pacific Ocean (ISS) | Hero (1 shot), Playbook step 03 |
 | `atmospheric-glow-milkyway.webp` | Atmospheric glow with the Milky Way's stars (ISS) | Hero (1 shot), Execution (full-screen background) |
 | `team-desert-silhouettes.webp` (in `public/media/team/optimized/`) | Client-supplied photograph: silhouetted figures in tactical gear, desert terrain, low sun | Team (full-bleed, single image) |
@@ -40,7 +40,10 @@ procedural CSS/SVG compositions standing in for abstract concepts
 ("disparate systems," "exposure") that have no real photographic subject —
 not photographs requiring a credit line. `Execution`'s `RedButtonAbstract`
 is likewise a procedural overlay layered *over* a real photograph, not a
-substitute for one.
+substitute for one. `Vision`'s `OrbitField.tsx` (ambient orbit-ring
+background) is the same kind of original procedural motif, not a
+substitute for the real orbital-sunrise photograph that was tried there
+and moved to Resolution instead.
 
 ## Treatment
 

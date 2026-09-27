@@ -157,11 +157,30 @@ nothing depends on scroll position to reveal content.
   reveal animation of its own, not even the sitewide `.reveal-heading`
   ("no animated letters... the film provides the movement, the typography
   remains confident and stable").
-- **Vision, Uniqueness, Execution, Contact**: fully static. No refs, no
-  effects, no client-side JavaScript. `Uniqueness`'s lifecycle diagram lost
-  its scroll-scrubbed dot-collapse animation and is now just the settled
+- **Vision**: the one section with a deliberate, continuous (not one-time,
+  not scroll-linked) ambient background animation -- three concentric orbit
+  rings drifting at different speeds (`OrbitField.tsx`, `@keyframes
+  p32-orbit-spin` / `p32-orbit-spin-reverse`), added after the plain static
+  version was called out as "boring." Pure CSS `transform: rotate()`,
+  `animation-iteration-count: infinite`; the sitewide reduced-motion rule's
+  `!important` on `animation-iteration-count` overrides `infinite` back to
+  a single (effectively instant) cycle, freezing it — confirmed by sampling
+  the computed transform 1s apart under both settings. The statement sits
+  in a single frosted glass panel (`backdrop-blur`, translucent gradient
+  fill, soft shadow) over the rings and a soft radial pale-blue glow behind
+  it, rather than bare text on white. The real orbital-sunrise photograph
+  originally placed here as a full-width image band was removed — it
+  produced a large image block followed by the section's own bottom
+  padding as a visually blank gap before Gap's dark section began (a real
+  layout bug caught by scrolling through it, not by inspecting the section
+  in isolation) — and moved to `Resolution` instead, where it replaced
+  Blue Marble as the large silent image before Contact.
+- **Uniqueness, Execution, Contact**: fully static. No refs, no effects, no
+  client-side JavaScript. `Uniqueness`'s lifecycle diagram lost its
+  scroll-scrubbed dot-collapse animation and is now just the settled
   three-node diagram; `Execution` lost its scroll-triggered word-by-word
-  "lock" animation and is now stable centered typography from first paint.
+  "lock" animation and is now stable centered typography from first paint,
+  over a real photograph.
 - **Gap** (`Gap.tsx`): three large full-width statements, `useState` holds
   which one is active (index 0 by default, so there is always a selected
   state — "the other two remain discoverable" implies one is already
