@@ -17,14 +17,14 @@ const STEP_PHOTOS = [
     objectPosition: "42% 45%",
   },
   {
-    src: "/media/nasa/optimized/topography-of-the-world.webp",
-    alt: "Global topographic relief map (NASA/JPL/NIMA)",
-    objectPosition: "center",
+    src: "/media/nasa/optimized/blue-marble-earth.webp",
+    alt: "Blue Marble composite of Earth's full disc, land and cloud cover (NASA)",
+    objectPosition: "48% 22%",
   },
   {
-    src: "/media/nasa/optimized/earths-limb-pacific.webp",
-    alt: "The sun illuminates Earth's limb above the Pacific Ocean, seen from the International Space Station (NASA)",
-    objectPosition: "center 55%",
+    src: "/media/nasa/optimized/city-lights-lucknow.webp",
+    alt: "Satellite view of dense urban infrastructure and lights, Lucknow (NASA)",
+    objectPosition: "center",
   },
   {
     src: "/media/nasa/optimized/black-marble-earth-at-night.webp",
@@ -65,7 +65,7 @@ export function Playbook() {
       <div className="p32-container">
         <h2
           data-reveal="words"
-          className="text-center text-balance font-display text-3xl font-medium uppercase tracking-tight sm:text-5xl"
+          className="text-center text-balance font-mono text-2xl font-medium uppercase tracking-tight sm:text-4xl"
         >
           {splitWords("The Playbook")}
         </h2>
@@ -73,7 +73,7 @@ export function Playbook() {
         <div
           role="tablist"
           aria-label="Playbook steps"
-          className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 border-b border-p32-gray-800 pb-5 md:mt-16 md:gap-x-12"
+          className="mt-8 grid grid-cols-2 gap-x-4 gap-y-4 border-b border-p32-gray-800 pb-5 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-8 sm:gap-y-3 md:mt-14 md:gap-x-12"
         >
           {playbook.map((step, i) => {
             const isActive = active === i;
@@ -94,7 +94,7 @@ export function Playbook() {
                 onKeyDown={(e) => onKeyDown(e, i)}
                 data-reveal="up"
                 style={{ "--reveal-index": i } as CSSProperties}
-                className={`p32-press whitespace-nowrap pb-1 text-sm font-medium tracking-tight transition-colors md:text-base ${
+                className={`p32-press pb-1 text-left text-sm font-medium tracking-tight transition-colors sm:whitespace-nowrap sm:text-center md:text-base ${
                   isActive ? "text-p32-white" : "text-p32-gray-500 hover:text-p32-gray-300"
                 }`}
               >

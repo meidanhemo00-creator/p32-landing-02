@@ -371,41 +371,49 @@ button {
   before paint, and only when `prefers-reduced-motion` is NOT set. So: no JS
   -> visible. Reduced motion -> visible immediately, no gating at all. JS +
   full motion -> hidden until RevealObserver (components/RevealObserver.tsx)
-  adds `.in-view` on intersection, one time, via IntersectionObserver.
+  sets `data-in-view` on intersection, one time, via IntersectionObserver.
+
+  Revealed state is read from a `data-in-view` ATTRIBUTE, not a class --
+  see the comment in RevealObserver.tsx for why a class breaks the instant
+  it sits on an element whose className is also driven by React state (an
+  active/hover toggle, say): React overwrites the whole `class` attribute
+  on every render where that string changes, silently deleting any class
+  added from outside React. A `data-*` attribute React's JSX never mentions
+  is never touched by its reconciler, so it survives every re-render.
 */
 [data-reveal] {
   opacity: 1;
   transform: none;
 }
 
-html.js-reveal [data-reveal]:not(.in-view) {
+html.js-reveal [data-reveal]:not([data-in-view]) {
   opacity: 0;
 }
-html.js-reveal [data-reveal="up"]:not(.in-view) {
+html.js-reveal [data-reveal="up"]:not([data-in-view]) {
   transform: translateY(24px);
 }
-html.js-reveal [data-reveal="scale"]:not(.in-view) {
+html.js-reveal [data-reveal="scale"]:not([data-in-view]) {
   transform: scale(0.97);
 }
-html.js-reveal [data-reveal="image"]:not(.in-view) {
+html.js-reveal [data-reveal="image"]:not([data-in-view]) {
   transform: scale(1.08);
 }
-html.js-reveal [data-reveal].in-view {
+html.js-reveal [data-reveal][data-in-view] {
   opacity: 1;
   transform: none;
 }
-html.js-reveal [data-reveal="up"].in-view,
-html.js-reveal [data-reveal="scale"].in-view {
+html.js-reveal [data-reveal="up"][data-in-view],
+html.js-reveal [data-reveal="scale"][data-in-view] {
   transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
 }
-html.js-reveal [data-reveal="image"].in-view {
+html.js-reveal [data-reveal="image"][data-in-view] {
   transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
 }
 
 /* Sequential stagger for groups of reveal items (numbered points, step
    tabs): each item's own transition-delay, set inline via
    --reveal-index, same pattern as --word-index above. */
-html.js-reveal [data-reveal].in-view {
+html.js-reveal [data-reveal][data-in-view] {
   transition-delay: calc(70ms * var(--reveal-index, 0));
 }
 
@@ -413,12 +421,12 @@ html.js-reveal [data-reveal].in-view {
    instead of firing on paint. Reuses the existing .word-reveal spans and
    --word-index stagger (lib/splitWords.tsx) unchanged -- only the trigger
    moment changes. */
-html.js-reveal [data-reveal="words"]:not(.in-view) .word-reveal {
+html.js-reveal [data-reveal="words"]:not([data-in-view]) .word-reveal {
   opacity: 0;
   transform: translateY(28px) scale(0.94);
   filter: blur(5px);
 }
-html.js-reveal [data-reveal="words"].in-view .word-reveal {
+html.js-reveal [data-reveal="words"][data-in-view] .word-reveal {
   animation: p32-word-in 700ms var(--ease-out) both;
   animation-delay: calc(70ms * var(--word-index, 0));
 }

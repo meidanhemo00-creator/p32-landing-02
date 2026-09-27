@@ -1,19 +1,17 @@
 import Image from "next/image";
 import { assetPath } from "@/lib/basePath";
 
-// Real NASA photography (see ASSET_CREDITS.md), treated as one cohesive
-// duotone system rather than shown in raw stock color: grayscale base,
-// a directional darkening gradient for text legibility, and a low-opacity
-// pale-blue color tint (mix-blend-mode: color) -- the same restrained
-// signal blue used everywhere else on the page, applied to a photograph
-// instead of invented as a gradient.
+// Real NASA photography (see ASSET_CREDITS.md): true grayscale plus a
+// directional darkening gradient for text legibility only. No color tint --
+// the client's explicit direction is that photographs stay strictly
+// black-and-white, with the pale signal blue reserved for UI accents
+// (numbers, lines, focus states), never applied to imagery.
 export function NasaPhoto({
   src,
   alt,
   objectPosition = "center",
   priority = false,
   gradient = "180deg, rgba(0,0,0,0.15), rgba(2,8,10,0.6)",
-  tint = true,
   contrast = 1.15,
   sizes = "100vw",
   reveal = false,
@@ -23,7 +21,6 @@ export function NasaPhoto({
   objectPosition?: string;
   priority?: boolean;
   gradient?: string;
-  tint?: boolean;
   contrast?: number;
   sizes?: string;
   reveal?: boolean;
@@ -47,13 +44,6 @@ export function NasaPhoto({
         className="absolute inset-0"
         style={{ background: `linear-gradient(${gradient})` }}
       />
-      {tint && (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0"
-          style={{ backgroundColor: "#9dd2e2", mixBlendMode: "color", opacity: 0.18 }}
-        />
-      )}
     </div>
   );
 }

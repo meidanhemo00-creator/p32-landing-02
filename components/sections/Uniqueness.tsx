@@ -46,7 +46,7 @@ function LifecycleTrace() {
           />
         ))}
       </svg>
-      <div className="mt-4 flex w-full max-w-2xl justify-between text-sm text-p32-gray-600">
+      <div className="mt-4 flex w-full max-w-2xl justify-between font-mono text-sm text-p32-gray-600">
         {stages.map((stage) => (
           <span key={stage}>{stage}</span>
         ))}
