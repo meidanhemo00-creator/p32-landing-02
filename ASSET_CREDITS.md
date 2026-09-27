@@ -150,7 +150,7 @@ scale of human settlement rather than literal visible figures.
 
 ## Non-NASA asset: Team photograph
 
-### 8. Desert silhouettes — user-provided
+### 10. Desert silhouettes — user-provided
 
 - **Source:** Supplied directly by the client (not sourced by Claude), Canon
   EOS R6 Mark II, EXIF-confirmed capture, processed through Adobe Lightroom.
@@ -167,11 +167,81 @@ scale of human settlement rather than literal visible figures.
   is made in the alt text or surrounding copy beyond what the client's own
   approved Team copy already states.
 
+---
+
+## Non-NASA assets: user-provided stock/cinematic media for Hero
+
+Six files supplied directly by the client from their own machine (two
+video files, four still images), for a request to include more "people and
+scale of people from afar" in the Hero montage. **Provenance disclosure:**
+these arrived as local files with stock-footage-style filenames (e.g.
+`City_Traffic_Light_Turns_Green_uhd_1057057.mp4`), not from an official or
+NASA source. Claude did not select, generate, or independently verify
+licensing for any of the six — they are used here on the client's direct
+instruction ("use all of these"), the same basis as the Team photograph.
+The client should confirm they hold the necessary rights/license for each
+before this site is ever made public.
+
+### 11. City traffic light turning green — video, real footage
+
+- **Source:** Supplied by the client;
+  `City_Traffic_Light_Turns_Green_uhd_1057057.mp4` (original 3840×2160,
+  8.92s, 46.6 MB — genuine photographed footage, not CGI).
+- **Not committed to the repository** (original too large for a web
+  project's git history) — the path above is the client's local file for
+  reference; only the derivative below is tracked.
+- **Optimized derivative:** `public/media/video/optimized/city-traffic-light-green.mp4`
+  (1280×720, 1.3s clip starting at the 2s mark, 727 KB), transcoded locally
+  with macOS's built-in AVFoundation encoder (`avconvert`, `Preset1280x720`
+  — no ffmpeg in this environment). Poster frame extracted with `qlmanage`
+  and saved as `city-traffic-light-green-poster.webp`.
+- **Used in:** Hero (one shot, real `<video>` element, autoplay/muted/loop/
+  playsInline; swapped for its poster frame under reduced motion via CSS).
+
+### 12. City skyscrapers top view — video, disclosed as CGI/motion graphics
+
+- **Source:** Supplied by the client;
+  `City_Skyscrapers_Top_View_source_939429.mov` (original 1920×1080, 20.0s,
+  351.8 MB).
+- **Disclosed:** visually, this is a stock 3D-rendered/motion-graphics shot
+  of a stylised city (repeating geometric building forms, artificial
+  lighting) — **not a photograph of a real city**, unlike every other
+  visual asset on this page. Flagged here so the client is fully informed;
+  used anyway per their explicit instruction.
+- **Not committed to the repository** (same size reasoning as above).
+- **Optimized derivative:** `public/media/video/optimized/city-skyscrapers-top-view.mp4`
+  (1280×720, 1.4s clip starting at the 4s mark, 1.4 MB), transcoded the
+  same way. Poster frame: `city-skyscrapers-top-view-poster.webp`.
+- **Used in:** Hero (one shot, same real `<video>` treatment as above).
+
+### 13–16. Four stock/cinematic still images — provenance unconfirmed
+
+Supplied by the client from a local folder (`p32 (5)/30.png`–`33.png`), no
+further source metadata available. Likely stock photography or AI-generated
+cinematic imagery based on visual style; not independently verified.
+
+| # | Original | Subject (as visible) | Optimized file |
+|---|---|---|---|
+| 13 | `30.png` | Satellite/orbital hardware over Earth, monochrome | `satellite-orbit.webp` |
+| 14 | `31.png` | Silhouetted figure walking through a crowded terminal/mall, teal grade | `crowd-terminal-silhouette.webp` |
+| 15 | `32.png` | Crowd in a stadium at night, motion blur | `stadium-crowd-night.webp` |
+| 16 | `33.png` | Overhead crosswalk, one still figure amid a blurred crowd, black and white | `crosswalk-crowd-overhead.webp` |
+
+Originals (1920×1080 PNG) preserved untouched in `public/media/stock/source/`;
+WebP derivatives (quality 85) in `public/media/stock/optimized/`. All four
+used as additional Hero shots via the shared `NasaPhoto` treatment
+component (reused generically here — the component name predates these
+non-NASA images).
+
 ## Rules followed
 
 - No NASA branding, insignia, or logo used anywhere on the site.
 - No wording anywhere implies NASA endorsement, partnership, or
   affiliation with P32.
-- No third-party (non-NASA) copyrighted material included in this set.
-- Every original file is byte-identical to what NASA serves at the URL
-  above; only the `optimized/` derivatives are resized/re-encoded.
+- No third-party (non-NASA) copyrighted material was *sourced by Claude*;
+  assets 11–16 were supplied directly by the client, their provenance is
+  disclosed above exactly as found, and licensing was not independently
+  verified — the client should confirm rights before any public launch.
+- Every NASA original file (assets 1–9) is byte-identical to what NASA
+  serves at the URL given; only the `optimized/` derivatives are
+  resized/re-encoded.

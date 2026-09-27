@@ -160,33 +160,35 @@ autoplays on paint like a native browser animation. Nothing pins the
 viewport, nothing scrubs opacity or transform against scroll progress,
 nothing depends on scroll position to reveal content.
 
-- **Hero** (`Hero.tsx`): a plain server component — no `"use client"`, no
-  refs, no `useEffect`, no JavaScript animation at all. The ten-shot
-  cinematic sequence (`@keyframes p32-hero-shot` / `p32-hero-rest` in
-  `app/globals.css`) is pure CSS: each shot layer gets its own
-  `animation-delay`/`animation-duration` as inline style, `animation-fill-mode:
-  both` holds it hidden before and after its turn, and it just plays the
-  instant the HTML paints. No video-generation, image-generation, licensed-
-  footage-acquisition, or video-encoding capability exists in this
-  environment (no ffmpeg installed; checked and disclosed before building
-  this) and no user-supplied footage was provided for this sequence, so
-  this is not a `<video>` element — it is twelve real crop/zoom shots of
-  nine already-credited NASA photographs (Black Marble, Blue Marble, SRTM
-  topography, a Tin Bider crater crop, an orbital sunrise, Earth's limb
-  over the Pacific, atmospheric glow with the Milky Way, and — added for a
-  "scale of people from afar" request — the city lights of Lahore and
-  Lucknow, two real named cities photographed from the ISS), cut like a
-  film, not a fabricated montage of people, traffic, or technical
-  personnel that no real or licensed source exists for here. No satellite
-  or orbital photograph, day or night, can resolve individual people —
-  that's a physical limit of the altitude, not a sourcing gap; the two
-  city-lights photos are the honest match. It settles on a thirteenth
-  resting frame (the Black Marble global view) after ~9s and stays there —
-  it does not loop. The
-  headline is present in the static markup from the first paint, with no
-  reveal animation of its own, not even the sitewide `.reveal-heading`
-  ("no animated letters... the film provides the movement, the typography
-  remains confident and stable").
+- **Hero** (`Hero.tsx`): still a plain server component — no
+  `"use client"`, no refs, no custom `useEffect`, no hand-written JavaScript
+  animation logic. The eighteen-shot cinematic sequence
+  (`@keyframes p32-hero-shot` / `p32-hero-rest` in `app/globals.css`) is
+  pure CSS: each shot layer gets its own `animation-delay`/
+  `animation-duration` as inline style, `animation-fill-mode: both` holds
+  it hidden before and after its turn, and it just plays the instant the
+  HTML paints. Sixteen of the eighteen shots are still real crop/zoom
+  photographs (nine credited NASA images plus four client-supplied stock
+  stills — a lone figure in a crowded terminal, an overhead crosswalk, a
+  stadium crowd, a satellite render — added for "scale of people from
+  afar"; see `ASSET_CREDITS.md` for the provenance disclosure on the
+  latter, since their exact licensing wasn't sourced or verified here). The
+  other two shots are genuine `<video>` elements: the client supplied two
+  source video files directly (a real, unstaged traffic-light shot, and a
+  stock CGI/motion-graphics render of a stylised city — disclosed as such,
+  it is not a real-city photograph). Both were transcoded locally with
+  macOS's built-in AVFoundation encoder (`avconvert` — still no ffmpeg in
+  this environment) from 46 MB/352 MB sources down to ~700 KB–1.4 MB
+  720p clips matching each shot's `hold` duration; poster frames were
+  extracted with `qlmanage` and are swapped in for the video by a pure-CSS
+  rule under reduced motion (`video[data-hero-video] { display: none }` /
+  `img[data-hero-video-poster] { display: block }`) — no JavaScript needed
+  to drive, autoplay, loop, or fall back either video. It settles on the
+  Black Marble global view as the nineteenth/resting frame after ~14s and
+  stays there — it does not loop. The headline is present in the static
+  markup from the first paint, with no reveal animation of its own, not
+  even the sitewide `.reveal-heading` ("no animated letters... the film
+  provides the movement, the typography remains confident and stable").
 - **Vision**: the one section with a deliberate, continuous (not one-time,
   not scroll-linked) ambient background animation -- three concentric orbit
   rings drifting at different speeds (`OrbitField.tsx`, `@keyframes

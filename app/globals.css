@@ -326,4 +326,15 @@ button {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* Hero's two video shots: swap the playing <video> for its static poster
+     frame entirely under reduced motion, rather than just letting it keep
+     autoplaying (the animation overrides above only stop CSS animations,
+     not native video playback). Pure CSS, no JS. */
+  video[data-hero-video] {
+    display: none;
+  }
+  img[data-hero-video-poster] {
+    display: block !important;
+  }
 }
