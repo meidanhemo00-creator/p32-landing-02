@@ -233,6 +233,33 @@ used as additional Hero shots via the shared `NasaPhoto` treatment
 component (reused generically here — the component name predates these
 non-NASA images).
 
+## Client-supplied personnel portraits (September 2026)
+
+### 17–23. Seven portraits — Organizational Structure & Key Personnel
+
+| # | Person | Source supplied | Committed original | Optimized |
+|---|---|---|---|---|
+| 17 | Liron Parche | Embedded image (xref 26) in `p32 (14).pdf`, 775×1162 with alpha | `team/portraits/source/liron-parche.png` | `team/portraits/liron-parche.webp` |
+| 18 | Boris Shaglov | Embedded image (xref 27) in `p32 (14).pdf`, 517×774 with alpha | `…/source/boris-shaglov.png` | `…/boris-shaglov.webp` |
+| 19 | Daniel Goldberg | Embedded image (xref 30) in `p32 (14).pdf`, 615×410 with alpha | `…/source/daniel-goldberg.png` | `…/daniel-goldberg.webp` |
+| 20 | Guy Parche | Embedded image (xref 24) in `p32 (14).pdf`, 765×1147 with alpha | `…/source/guy-parche.png` | `…/guy-parche.webp` |
+| 21 | Boris Plis | Embedded image (xref 25) in `p32 (14).pdf`, 517×775 with alpha | `…/source/boris-plis.png` | `…/boris-plis.webp` |
+| 22 | Dana Toren | Client-supplied photo (brief name `image(1).png`), 944×912 JPEG | `…/source/dana-toren.jpg` | `…/dana-toren.webp` |
+| 23 | Yuval Segev | Client-supplied photo (brief name `image.png`), 1306×1114 JPEG | `…/source/yuval-segev.jpg` | `…/yuval-segev.webp` |
+
+The five deck portraits were extracted losslessly from the PDF's embedded
+image streams with their soft masks (PyMuPDF) — not screenshotted from the
+rendered page. Each optimized file is an 800×800 square normalized offline
+(Pillow) to one head scale and one grayscale tone curve; the five studio
+cutouts are composited on the same neutral-gray backdrop so they match the
+bright, out-of-focus backgrounds of the two photographs. Faces are not
+retouched or reshaped. Daniel Goldberg's source is the smallest (615×410),
+so his optimized file is upscaled ~2.3× and is the softest of the set; a
+higher-resolution original would improve it. Names and roles on the page
+follow the client's September 2026 brief, which supersedes the deck's
+older printed spellings/titles ("Farache", "Shagalov", "Biz Dev", "US
+Director").
+
 ## Rules followed
 
 - No NASA branding, insignia, or logo used anywhere on the site.

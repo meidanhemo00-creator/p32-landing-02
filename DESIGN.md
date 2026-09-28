@@ -1,16 +1,22 @@
 # P32 — Design & Build Notes (V1)
 
-## Type substitution
+## Typography (V6: Instrument Sans + JetBrains Mono)
 
-Key Grotesk was specified as the display face but no licensed files were
-supplied. **Archivo** (next/font/google) is used in its place: a grotesk with
-the same controlled, engineered character (tight apertures, a true medium/bold
-weight for large statements). Body copy uses **Inter** and technical metadata
-(Playbook step indices) uses **JetBrains Mono**, both as specified.
+Inter and the Archivo display substitute were both removed at the client's
+request. The site now runs on two families, both via `next/font/google`
+(self-hosted, preloaded, with metric-matched fallbacks so the swap causes no
+layout shift) in `app/layout.tsx`:
 
-If Key Grotesk license files are supplied later, swap the `Archivo` import in
-`app/layout.tsx` for a `next/font/local` declaration; the `--font-archivo` CSS
-variable and every `font-display` usage stay unchanged.
+- **Instrument Sans** (`--font-instrument`, mapped to both `font-sans` and
+  `font-display`) — body copy, descriptions, buttons, names, role titles,
+  and the large statements. Headings stay at weight 500, never bold.
+- **JetBrains Mono** (`--font-jbmono`, `font-mono`) — section titles,
+  indexes, numbers, metadata, small navigation labels, process-stage names.
+
+Archivo was only ever a stand-in for Key Grotesk (no licensed files were
+supplied), so it did not meet the "keep a licensed display grotesk" bar and
+was dropped rather than kept for the hero. If Key Grotesk files arrive,
+load them with `next/font/local` and point `--font-display` at them.
 
 ## Color tokens
 
@@ -308,3 +314,28 @@ nothing depends on scroll position to reveal content.
   animated crops rather than a `<video>` element. No video-generation,
   video-sourcing, or video-encoding (no ffmpeg) capability was available in
   this environment.
+
+## Personnel register and Cyber Intelligence page (V6)
+
+- **Team** is now a compact introduction: headline, a controlled editorial
+  photo frame, the approved two lines of body copy, then the
+  Organizational Structure & Key Personnel register
+  (`components/sections/Personnel.tsx`). Two ruled bands: Advisory Board
+  (five) and Cyber Leadership & Strategic Advisory (two). Both use the same
+  portrait size so the second tier is distinct by band, not diminished.
+  Hover/focus firms the portrait's monochrome and extends a pale-blue index
+  rule; names and roles are always visible. Phones use compact
+  portrait-and-text rows. No biographies (none approved).
+- **/cyber-intelligence** (`app/cyber-intelligence/page.tsx`,
+  `components/cyber/CyberSections.tsx`) rebuilds the approved one-pager
+  left-aligned on a 12-column grid, alternating dark/light: hero, the three
+  questions as one ruled chain, a paired-row comparison (labels visible on
+  mobile, screen-reader labels on desktop), Who We Are linking back to the
+  register, a five-stage track that draws once (`data-reveal="line"`),
+  grouped deliverables, a four-stage engagement path with an ownership
+  scale, a closing statement, and the shared Contact block.
+- Entry points: nav link "Cyber Intelligence", the "Explore capability"
+  link beside the cyber-leadership band, and the Contact footer. Links back
+  to `/` from the cyber page set `prefetch={false}` (prefetching the
+  homepage pulls in its Hero preload hints, which Chrome then flags as
+  unused).

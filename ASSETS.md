@@ -109,3 +109,16 @@ unnecessary per "add restrained pale-blue detail only if necessary."
 - Every NASA original file is byte-identical to what NASA serves at the URL
   given in `ASSET_CREDITS.md`; only the `optimized/` derivatives are
   resized/re-encoded.
+
+### Personnel portraits and the Cyber Intelligence page
+
+| File | Used in |
+|---|---|
+| `team/portraits/*.webp` (seven) | Homepage Team → Organizational Structure & Key Personnel register; Dana Toren and Yuval Segev also appear small in the Cyber page's Who We Are |
+| `team/optimized/team-desert-silhouettes.webp` | Team introduction, now a controlled editorial frame (~86% width, 240–330px mobile / 380–480px desktop) rather than full-bleed |
+| `stock/optimized/satellite-orbit.webp` | Cyber page hero (also one Hero film shot on the homepage) |
+| `nasa/optimized/city-lights-lucknow.webp` | Cyber page How We Work backdrop |
+| `nasa/optimized/city-lights-lahore.webp` | Cyber page What We Deliver band |
+| `nasa/optimized/earths-limb-pacific.webp` | Cyber page closing statement |
+
+No image repeats within the Cyber page.

@@ -49,8 +49,8 @@
   --color-p32-signal: var(--p32-signal);
   --color-p32-signal-deep: var(--p32-signal-deep);
 
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-archivo);
+  --font-sans: var(--font-instrument);
+  --font-display: var(--font-instrument);
   --font-mono: var(--font-jbmono);
 }
 
@@ -410,6 +410,23 @@ html.js-reveal [data-reveal="image"][data-in-view] {
   transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
 }
 
+/* A drawn track (Cyber page process): stays visible but collapsed to zero
+   length, then draws once along its own axis. transform-origin is set per
+   element (top for the vertical mobile track, left for the lg horizontal
+   one). */
+html.js-reveal [data-reveal="line"]:not([data-in-view]) {
+  opacity: 1;
+  transform: scaleY(0);
+}
+@media (min-width: 1024px) {
+  html.js-reveal [data-reveal="line"]:not([data-in-view]) {
+    transform: scaleX(0);
+  }
+}
+html.js-reveal [data-reveal="line"][data-in-view] {
+  transition: transform 1400ms var(--ease-in-out);
+}
+
 /* Sequential stagger for groups of reveal items (numbered points, step
    tabs): each item's own transition-delay, set inline via
    --reveal-index, same pattern as --word-index above. */
@@ -440,4 +457,42 @@ html.js-reveal [data-reveal="words"][data-in-view] .word-reveal {
 }
 .p32-press:active {
   transform: scale(0.97);
+}
+
+/*
+  Personnel register (components/sections/Personnel.tsx). Portraits rest
+  in a slightly softer monochrome and firm up on hover/keyboard focus; the
+  pale-blue index rule extends at the same time. Pure CSS transitions on
+  filter/transform/width, so reduced motion resolves them instantly via the
+  sitewide rule. Hover is gated to fine pointers so a tap on touch devices
+  never leaves an entry stuck in its "hovered" state -- names and roles are
+  always visible regardless.
+*/
+.personnel-portrait {
+  object-fit: cover;
+  filter: grayscale(1) contrast(0.94) brightness(0.97);
+  transform: scale(1.001);
+  transition:
+    filter 500ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+.personnel-rule {
+  width: 1.5rem;
+  transition: width 500ms var(--ease-out);
+}
+.personnel-entry:focus-visible .personnel-portrait {
+  filter: grayscale(1) contrast(1.14) brightness(1);
+  transform: scale(1.03);
+}
+.personnel-entry:focus-visible .personnel-rule {
+  width: 100%;
+}
+@media (hover: hover) and (pointer: fine) {
+  .personnel-entry:hover .personnel-portrait {
+    filter: grayscale(1) contrast(1.14) brightness(1);
+    transform: scale(1.03);
+  }
+  .personnel-entry:hover .personnel-rule {
+    width: 100%;
+  }
 }

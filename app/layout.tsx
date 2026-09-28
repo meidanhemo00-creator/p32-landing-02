@@ -1,26 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, Archivo, JetBrains_Mono } from "next/font/google";
+import { Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import { assetPath } from "@/lib/basePath";
 import "./globals.css";
 
-// Body copy: Inter, as specified in the approved brief.
-const inter = Inter({
-  variable: "--font-inter",
+// Primary face: Instrument Sans -- body copy, interactive elements, names,
+// and the large statements (it replaces both Inter and the former Archivo
+// display substitute, so the site runs on exactly two families). Loaded as a
+// variable font through next/font: self-hosted, preloaded, and paired with
+// an automatically metric-matched fallback so the swap causes no layout
+// shift.
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument",
   subsets: ["latin"],
   display: "swap",
 });
 
-// Display face: Key Grotesk was specified but no licensed files were supplied.
-// Archivo is used as the documented substitute — a grotesk with the same
-// controlled, technical character (tight apertures, engineered proportions,
-// a true black weight for maximum statements). See DESIGN.md.
-const archivo = Archivo({
-  variable: "--font-archivo",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-// Technical metadata only: step indices, coordinates, system labels.
+// Technical voice: section titles, indexes, numbers, metadata, small nav.
 const jbMono = JetBrains_Mono({
   variable: "--font-jbmono",
   subsets: ["latin"],
@@ -61,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${archivo.variable} ${jbMono.variable}`}
+      className={`${instrumentSans.variable} ${jbMono.variable}`}
       suppressHydrationWarning
     >
       <body>

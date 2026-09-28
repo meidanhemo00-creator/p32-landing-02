@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { P32LogoOnDark } from "@/components/Logo";
 import { contact } from "@/lib/content";
 
 // Calm dark conclusion, static. No motion needed to signal that the system
 // has resolved -- it simply presents the functional contact details.
-export function Contact() {
+export function Contact({ page = "home" }: { page?: "home" | "cyber" }) {
   return (
     <section id="contact" className="p32-section bg-p32-black text-p32-white">
       <div data-reveal="up" className="p32-container flex flex-col items-center text-center">
@@ -27,7 +28,15 @@ export function Contact() {
 
         <div className="mt-12 flex w-full max-w-md items-center justify-between border-t border-p32-gray-800 pt-6 text-xs text-p32-gray-600 md:mt-28">
           <span>© {new Date().getFullYear()} P32</span>
-          <span>Tel Aviv</span>
+          {page === "home" ? (
+            <Link href="/cyber-intelligence" className="transition-colors hover:text-p32-white">
+              Cyber Intelligence
+            </Link>
+          ) : (
+            <Link href="/" prefetch={false} className="transition-colors hover:text-p32-white">
+              Main site
+            </Link>
+          )}
         </div>
       </div>
     </section>
