@@ -123,10 +123,10 @@ export const personnel = {
       id: "advisory-board",
       title: "Advisory Board",
       people: [
-        { name: "Liron Parche", roles: ["CEO", "Director", "Co-Founder"], portrait: "liron-parche" },
+        { name: "Liron Farache", roles: ["CEO", "Director", "Co-Founder"], portrait: "liron-farache" },
         { name: "Boris Shaglov", roles: ["VP Business Development", "Director", "Co-Founder"], portrait: "boris-shaglov" },
         { name: "Daniel Goldberg", roles: ["COO", "Director", "Co-Founder"], portrait: "daniel-goldberg" },
-        { name: "Guy Parche", roles: ["CGO, USA, Canada & Australia", "Co-Founder"], portrait: "guy-parche" },
+        { name: "Guy Farache", roles: ["CGO, USA, Canada & Australia", "Co-Founder"], portrait: "guy-farache" },
         { name: "Boris Plis", roles: ["CTO", "Co-Founder"], portrait: "boris-plis" },
       ] satisfies Person[],
     },
