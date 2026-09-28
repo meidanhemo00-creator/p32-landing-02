@@ -228,3 +228,12 @@ export const cyber = {
     scaleEnd: "Run by your team",
   },
 };
+
+// Homepage teaser for the Cyber Intelligence page -- copy supplied by the
+// client for this section specifically.
+export const cyberTeaser = {
+  label: "Cyber Intelligence & Exposure",
+  headline: "Intelligence that ends in a decision.",
+  body: "P32 tracks the adversaries targeting your organization, tests whether they can actually reach you, and identifies what must happen first.",
+  cta: "Explore cyber capability",
+};

@@ -339,3 +339,11 @@ nothing depends on scroll position to reveal content.
   to `/` from the cyber page set `prefetch={false}` (prefetching the
   homepage pulls in its Hero preload hints, which Chrome then flags as
   unused).
+- **Homepage Cyber teaser** (`components/sections/CyberTeaser.tsx`), placed
+  between Execution and Team: a dark full-width section over its own Black
+  Marble crop (Europe / Mediterranean / Middle East), centered mono label
+  and mono headline, Instrument Sans body and CTA. The CTA is the page's one
+  solid white control; hover (fine pointers) and focus turn it pale blue and
+  extend its rule, pressed scales to 0.97. Uses the existing one-time reveal
+  system only. Browser Back from the Cyber page restores the homepage
+  scroll position (verified).

@@ -496,3 +496,65 @@ html.js-reveal [data-reveal="words"][data-in-view] .word-reveal {
     width: 100%;
   }
 }
+
+/*
+  Homepage Cyber teaser CTA (components/sections/CyberTeaser.tsx). A solid
+  white bar on the dark image -- the one filled control on the page. Hover
+  (fine pointers only) and keyboard focus shift it to the pale signal blue
+  and extend the trailing rule; pressed uses the shared .p32-press scale.
+*/
+.cyber-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-height: 3.25rem;
+  padding: 0 1.25rem;
+  background: var(--p32-white);
+  color: var(--p32-black);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color 220ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+.cyber-cta-rule {
+  display: block;
+  height: 1px;
+  width: 1.25rem;
+  background: currentColor;
+  transition: width 320ms var(--ease-out);
+}
+.cyber-cta:focus-visible {
+  background: var(--p32-signal);
+  outline: 2px solid var(--p32-signal);
+  outline-offset: 4px;
+}
+.cyber-cta:focus-visible .cyber-cta-rule {
+  width: 2.25rem;
+}
+@media (hover: hover) and (pointer: fine) {
+  .cyber-cta:hover {
+    background: var(--p32-signal);
+  }
+  .cyber-cta:hover .cyber-cta-rule {
+    width: 2.25rem;
+  }
+}
+/* The narrowest phones (320px) cannot fit the label, rule and padding on
+   one line, so the decorative rule drops out there. */
+@media (max-width: 359px) {
+  .cyber-cta-rule {
+    display: none;
+  }
+}
+@media (min-width: 640px) {
+  .cyber-cta {
+    font-size: 0.9375rem;
+    letter-spacing: 0.12em;
+    padding: 0 2rem;
+  }
+}

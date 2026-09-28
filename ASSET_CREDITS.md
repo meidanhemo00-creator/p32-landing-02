@@ -233,6 +233,15 @@ used as additional Hero shots via the shared `NasaPhoto` treatment
 component (reused generically here — the component name predates these
 non-NASA images).
 
+### 2a. Black Marble crop — Europe, the Mediterranean and the Middle East
+
+`nasa/optimized/black-marble-europe-mideast.webp` (2560×1280) is a new
+derivative of asset 2's untouched source
+(`nasa/source/black-marble-earth-at-night-global-3km.jpg`, 13500×6750):
+grayscale, cropped to x 6075–10125 / y 1012–3037, resized with Lanczos. Same
+credit as asset 2 (NASA Earth Observatory). Used only for the homepage Cyber
+Intelligence teaser.
+
 ## Client-supplied personnel portraits (September 2026)
 
 ### 17–23. Seven portraits — Organizational Structure & Key Personnel

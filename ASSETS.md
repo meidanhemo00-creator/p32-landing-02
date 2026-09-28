@@ -120,5 +120,6 @@ unnecessary per "add restrained pale-blue detail only if necessary."
 | `nasa/optimized/city-lights-lucknow.webp` | Cyber page How We Work backdrop |
 | `nasa/optimized/city-lights-lahore.webp` | Cyber page What We Deliver band |
 | `nasa/optimized/earths-limb-pacific.webp` | Cyber page closing statement |
+| `nasa/optimized/black-marble-europe-mideast.webp` | Homepage Cyber Intelligence teaser (its own crop; not used elsewhere) |
 
 No image repeats within the Cyber page.
