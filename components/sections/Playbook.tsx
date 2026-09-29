@@ -12,9 +12,12 @@ import { splitWords } from "@/lib/splitWords";
 // image and text -- the section's height never changes between steps.
 const STEP_PHOTOS = [
   {
-    src: "/media/nasa/optimized/tin-bider-crater-algeria.webp",
-    alt: "Satellite crop of Tin Bider crater, Algeria",
-    objectPosition: "42% 45%",
+    // Real, unstaged workshop photograph (NASA public domain, see
+    // ASSET_CREDITS.md): an engineering technician at a milling machine --
+    // hands-on breakdown of a problem into parts. No logos in frame.
+    src: "/media/nasa/optimized/fabrication-shop-milling.webp",
+    alt: "An engineering technician operating a milling machine in a fabrication workshop",
+    objectPosition: "62% 40%",
   },
   {
     src: "/media/nasa/optimized/blue-marble-earth.webp",
@@ -70,10 +73,24 @@ export function Playbook() {
           {splitWords("The Playbook")}
         </h2>
 
+        {/* Explicit prompt: without it, visitors on touch screens had no cue
+            that the four steps are selectable. */}
+        <p
+          data-reveal="up"
+          className="mx-auto mt-6 max-w-[22rem] text-center text-balance font-mono text-xs uppercase leading-relaxed tracking-[0.16em] text-p32-signal sm:max-w-none md:mt-10 md:text-sm"
+        >
+          <span aria-hidden="true" className="playbook-cue-dot" />
+          Select a step to explore more capabilities
+        </p>
+
+        {/* Four equal cells -- 2x2 on phones, 1x4 from sm -- divided by
+            hairlines (the 1px gap over a gray background), each centered with
+            its index above its title, so every step carries the same weight
+            and the grid reads symmetrically at every width. */}
         <div
           role="tablist"
           aria-label="Playbook steps"
-          className="mt-8 grid grid-cols-2 gap-x-4 gap-y-4 border-b border-p32-gray-800 pb-5 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-8 sm:gap-y-3 md:mt-14 md:gap-x-12"
+          className="mt-5 grid grid-cols-2 gap-px border border-p32-gray-800 bg-p32-gray-800 sm:grid-cols-4 md:mt-6"
         >
           {playbook.map((step, i) => {
             const isActive = active === i;
@@ -94,12 +111,18 @@ export function Playbook() {
                 onKeyDown={(e) => onKeyDown(e, i)}
                 data-reveal="up"
                 style={{ "--reveal-index": i } as CSSProperties}
-                className={`p32-press pb-1 text-left text-sm font-medium tracking-tight transition-colors sm:whitespace-nowrap sm:text-center md:text-base ${
-                  isActive ? "text-p32-white" : "text-p32-gray-500 hover:text-p32-gray-300"
+                className={`p32-press relative flex min-h-[5.5rem] flex-col items-center justify-center gap-1.5 bg-p32-black px-3 py-4 text-center text-sm font-medium leading-snug tracking-tight transition-colors md:min-h-[6rem] md:text-base ${
+                  isActive ? "text-p32-white" : "text-p32-gray-500 hover:bg-p32-panel hover:text-p32-gray-300"
                 }`}
               >
-                <span className="label-glow mr-2 font-mono text-xs text-p32-signal">{step.index}</span>
-                {step.title}
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-x-0 top-0 h-0.5 origin-center bg-p32-signal transition-transform duration-300 ${
+                    isActive ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
+                <span className="label-glow font-mono text-xs text-p32-signal">{step.index}</span>
+                <span className="text-balance">{step.title}</span>
               </button>
             );
           })}

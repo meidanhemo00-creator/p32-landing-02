@@ -242,6 +242,22 @@ grayscale, cropped to x 6075–10125 / y 1012–3037, resized with Lanczos. Same
 credit as asset 2 (NASA Earth Observatory). Used only for the homepage Cyber
 Intelligence teaser.
 
+### 2b. Experimental Fabrication Branch — machinist at a milling machine
+
+- **NASA ID:** AFRC2023-0033-30 — "Experimental Fabrication Branch Supports
+  NASA Innovation", NASA Armstrong Flight Research Center, 14 March 2023.
+- **Credit:** NASA/Steve Freeman. Public domain (NASA imagery).
+- **Source:** https://images-assets.nasa.gov/image/AFRC2023-0033-30/AFRC2023-0033-30~orig.jpg
+  (4128×2752), saved untouched as
+  `nasa/source/fabrication-shop-milling-afrc2023-0033-30.jpg`.
+- **Derivative:** `nasa/optimized/fabrication-shop-milling.webp` — grayscale,
+  2200px wide, WebP q80.
+- **Used in:** Playbook step 01 (Mission Deconstruction), replacing the Tin
+  Bider crater at the client's request for "people working in a workshop
+  or lab". Real and unstaged; no NASA logo or insignia is visible in frame.
+  The alt text describes only what is visible and does not name the
+  technician or imply any connection to P32.
+
 ## Client-supplied personnel portraits (September 2026)
 
 ### 17–23. Seven portraits — Organizational Structure & Key Personnel

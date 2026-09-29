@@ -347,3 +347,10 @@ nothing depends on scroll position to reveal content.
   extend its rule, pressed scales to 0.97. Uses the existing one-time reveal
   system only. Browser Back from the Cyber page restores the homepage
   scroll position (verified).
+- **Playbook selectors (client note):** the four steps are now equal
+  cells — 2×2 on phones, 1×4 from `sm` — divided by hairlines, each
+  centered with its index above its title and a pale-blue top bar on the
+  active step, so the grid reads symmetrically at every width. A
+  "Select a step to explore more capabilities" prompt with a slow-pulsing
+  dot sits above them, since touch visitors had no cue the steps were
+  selectable. Step 01's image is now a real workshop photograph.

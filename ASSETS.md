@@ -38,7 +38,7 @@ client supplied directly.
 | `black-marble-earth-at-night.webp` | NASA Black Marble — Earth's city lights at night, global composite | Hero (3 shots + resting frame), Resolution, Playbook step 04 |
 | `blue-marble-earth.webp` | NASA Blue Marble — true-color whole-Earth composite | Hero (1 shot) |
 | `topography-of-the-world.webp` | NASA/JPL/NIMA SRTM global topographic relief map | Hero (2 shots), Gap statement 01 (shown when active), Playbook step 02 |
-| `tin-bider-crater-algeria.webp` | Satellite crop of Tin Bider crater, Algeria | Hero (2 shots), Playbook step 01 |
+| `tin-bider-crater-algeria.webp` | Satellite crop of Tin Bider crater, Algeria | Hero (2 shots) |
 | `orbital-sunrise.webp` | The sun's first rays above Earth's limb, orbital sunrise (ISS) | Hero (1 shot), Resolution (full-bleed, before Contact) |
 | `earths-limb-pacific.webp` | The sun illuminates Earth's limb above the Pacific Ocean (ISS) | Hero (1 shot), Playbook step 03 |
 | `atmospheric-glow-milkyway.webp` | Atmospheric glow with the Milky Way's stars (ISS) | Hero (1 shot), Execution (full-screen background) |
@@ -123,3 +123,4 @@ unnecessary per "add restrained pale-blue detail only if necessary."
 | `nasa/optimized/black-marble-europe-mideast.webp` | Homepage Cyber Intelligence teaser (its own crop; not used elsewhere) |
 
 No image repeats within the Cyber page.
+| `nasa/optimized/fabrication-shop-milling.webp` | Playbook step 01, Mission Deconstruction (NASA AFRC2023-0033-30, workshop photograph) |
